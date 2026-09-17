@@ -46,7 +46,7 @@
   document.body.prepend(cv);
   const ctx = cv.getContext("2d", { alpha: true });
 
-  let W = 0, H = 0, glyphs = [], trail = [], colCentre = 0, colHalf = 400;
+  let W = 0, H = 0, glyphs = [], colCentre = 0, colHalf = 400;
   const ptr = { x: -9999, y: -9999, on: false };
 
   /* ---- slow colour drift ----------------------------------------------
@@ -68,8 +68,8 @@
   function palette() {
     const dark = isDark();
     return dark
-      ? { ink: "232,234,240", spark: "245,199,106", lift: 1 }
-      : { ink: "22,23,26",    spark: "182,124,28",  lift: 0.74 };
+      ? { ink: "232,234,240", lift: 1 }
+      : { ink: "22,23,26",    lift: 0.74 };
   }
   let pal = palette();
   darkQ.addEventListener?.("change", () => { pal = palette(); });
@@ -141,18 +141,6 @@
       ctx.fillText(g.text, g.x, g.y + drift);
     }
 
-    for (let i = trail.length - 1; i >= 0; i--) {
-      const p = trail[i], age = (now - p.t) / 1000;
-      if (age >= 1) { trail.splice(i, 1); continue; }
-      ctx.save();
-      ctx.translate(p.x, p.y);
-      ctx.rotate(p.rot * age);
-      ctx.font = `${12 + (1 - age) * 9}px ui-monospace, Menlo, monospace`;
-      ctx.globalAlpha = 1;
-      ctx.fillStyle = `rgba(${pal.spark},${(1 - age) * 0.42 * pal.lift})`;
-      ctx.fillText(p.ch, 0, 0);
-      ctx.restore();
-    }
 
     ctx.globalAlpha = 1;
     requestAnimationFrame(frame);
@@ -167,14 +155,6 @@
   addEventListener("pointermove", e => {
     if (e.pointerType === "touch") return;
     ptr.x = e.clientX; ptr.y = e.clientY; ptr.on = true;
-    if (reduced) return;
-    const last = trail[trail.length - 1];
-    if (!last || Math.hypot(e.clientX - last.x, e.clientY - last.y) > 34) {
-      trail.push({ x: e.clientX, y: e.clientY, t: performance.now(),
-                   ch: SYMBOLS[(Math.random() * SYMBOLS.length) | 0],
-                   rot: (Math.random() - 0.5) * 0.7 });
-      if (trail.length > 18) trail.shift();
-    }
   }, { passive: true });
   addEventListener("pointerleave", () => { ptr.on = false; ptr.x = ptr.y = -9999; });
 

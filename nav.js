@@ -63,6 +63,7 @@
     { label: "On-device tools",     hint: "write-up",  run: () => location.assign("projects/on-device-tools.html") },
     { label: "lc",                  hint: "write-up",  run: () => location.assign("projects/lc.html") },
     { label: "Site source",         hint: "repo",      run: () => open("https://github.com/pbairoliya/pbairoliya.github.io", "_blank") },
+    { label: "Jump to Background",  hint: "section",   run: () => go("about") },
     { label: "Jump to Work",        hint: "section",   run: () => go("work") },
     { label: "Jump to Stack",       hint: "section",   run: () => go("stack") },
     { label: "Jump to Projects",    hint: "section",   run: () => go("projects") },
