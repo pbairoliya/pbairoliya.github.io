@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>lc — Pratik Bairoliya</title>
+<meta name="description" content="A CLI that makes an Obsidian note the source of truth for a LeetCode problem, reconciles it with a Git repo, and schedules spaced-repetition reviews.">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../index.html">← Pratik Bairoliya</a>
+
+  <h1>lc</h1>
+  <p class="lede">
+    A LeetCode workflow that lives in your notes. One command imports a problem, starts a clock,
+    and scaffolds the code; another publishes everything to a Git repo and schedules the review.
+  </p>
+
+  <h2>Why it exists</h2>
+  <p>
+    Practising algorithm problems produces two artefacts that want to live in different places.
+    The <em>thinking</em> — why this pattern, what the invariant is, what you got wrong — belongs
+    in notes you'll actually reread. The <em>code</em> belongs in a repo. Keeping both in sync by
+    hand means you stop doing one of them within a week.
+  </p>
+
+  <h2>The design decision everything hangs off</h2>
+  <p>
+    <strong>The note is the source of truth.</strong> You write in Obsidian; the repo is
+    generated. That's the only way the notes stay current, but taken naively it's dangerous: a
+    sync that always trusts the note will happily overwrite real code with an untouched starter
+    stub.
+  </p>
+  <p>So the reconciliation rule is narrower than "note wins":</p>
+  <pre><code>note has real code   →  note wins, repo is rewritten
+note has the stub    →  repo wins, and the code is written BACK into the note
+neither has code     →  skip the problem entirely</code></pre>
+  <p>
+    That middle case is what makes "note wins" safe to say out loud, and it is where most of the
+    94 tests point.
+  </p>
+
+  <h2>Things that turned out to matter</h2>
+  <ul>
+    <li><strong>Rendering lives in exactly one place.</strong> The Obsidian templates are thin
+      wrappers that shell out to <code>lc new --print</code>, so note formatting can't drift
+      between the terminal and the editor.</li>
+    <li><strong>Refuse to guess.</strong> NeetCode uses different slugs than LeetCode
+      (<code>duplicate-integer</code> is <code>contains-duplicate</code>). Rather than
+      fuzzy-matching, an unknown slug <em>fails with candidates</em> and a command to teach it
+      the mapping. A wrong problem silently imported is far worse than an error.</li>
+    <li><strong>Spaced repetition, not a streak.</strong> Each solve schedules the next review on
+      a ladder that depends on difficulty and how many times you've solved it — and marking a
+      problem as solved-with-help pulls it back sooner.</li>
+    <li><strong>A study session is derived, not authored.</strong> <code>lc session</code> reads
+      the notes and builds a timed block: a recall quiz, everything you solved with help, every
+      review that's due, and the next problems off a roadmap. Nothing to decide at 9pm.</li>
+    <li><strong>macOS <code>/bin/bash</code> is 3.2.</strong> <code>"${@:2}"</code> collapses to
+      one argument there. Found the hard way.</li>
+  </ul>
+
+  <h2>Shape</h2>
+  <pre><code>lc new &lt;url|slug|id&gt;     import, scaffold, start the clock
+lc done [problem]        stop, mark solved, schedule the next review
+lc session [--minutes N] a guided study block built from your own notes
+lc sync / lc push        generate the repo, commit, push (nightly via launchd)</code></pre>
+  <p class="callout">
+    94 offline tests — no network, no fixtures pulled at runtime. Most of them are about the
+    reconciliation matrix, because that's the part that can destroy work.
+  </p>
+
+  <footer><a href="../index.html">← back</a></footer>
+</div>
+</body>
+</html>

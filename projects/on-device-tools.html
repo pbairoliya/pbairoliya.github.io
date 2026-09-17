@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>On-device tools — Pratik Bairoliya</title>
+<meta name="description" content="Three local-first programs sharing one OCR + local-LLM core, with a deterministic rules layer that makes model output behave like software.">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../index.html">← Pratik Bairoliya</a>
+
+  <h1>On-device tools</h1>
+  <p class="lede">
+    Three programs, one shared core: Apple Vision OCR and a local LLM (Ollama, <code>gemma3:12b</code>),
+    wrapped in a deterministic rules layer. Nothing they read ever leaves the machine.
+  </p>
+
+  <h2>The problem I was actually solving</h2>
+  <p>
+    A language model is a terrible component to build on. It is nondeterministic, it drifts
+    between runs, and it will happily invent a plausible answer. Every one of these tools runs
+    unattended on a schedule, which means the same input has to produce the same output — a
+    scheduled job that re-rolls its answer every night is worse than no job at all.
+  </p>
+  <p>
+    So the interesting engineering here isn't the prompting. It's the layer around it:
+  </p>
+  <ul>
+    <li><strong>The model proposes; deterministic code decides.</strong> In the daily briefing
+      the model suggests categories for a task and those suggestions are <em>discarded</em> —
+      a fixed taxonomy assigns every task by keyword precedence, so the note looks identical
+      day to day instead of being reorganised by the model's mood.</li>
+    <li><strong>Append-only state stores make reruns safe.</strong> Sections are regenerated
+      from scratch each run, so any user edit inside them would be erased. Decisions
+      ("stop showing me this sender", "this bill is paid") are persisted outside the generated
+      text and replayed, so a rerun is idempotent rather than destructive.</li>
+    <li><strong>An index is the source of truth, not the files.</strong> The receipt pipeline
+      writes an append-only JSONL index; pantry and expense reports are rebuilt from it every
+      run. Re-scanning the same receipt is a fingerprint match (store + date + time), so it
+      corrects numbers by item delta instead of double-counting.</li>
+    <li><strong>Everything is tested with the world stubbed out.</strong> OCR, the model, and
+      the Google APIs are all replaceable, so the pipeline runs end-to-end in CI with no
+      network, no daemon and no credentials.</li>
+  </ul>
+
+  <h2>The three</h2>
+
+  <h3><a href="https://github.com/pb0224/daily-lookback">daily-lookback</a></h3>
+  <p>
+    Generates a daily note from Calendar, Gmail and iMessage — what's on today, what needs a
+    reply, what a family member mentioned that you'd otherwise miss. Runs from
+    <code>launchd</code> at 00:05 with a 09:00 retry.
+  </p>
+  <p>
+    The hardest part was <strong>not nagging</strong>. A regenerated reminders section will
+    resurface a bill you already paid and an email you already dismissed, forever. That took
+    three separate mechanisms: a grow-only ignore store keyed on (sender, subject) with dates
+    and digits stripped so siblings of a dismissed mail stay visible; paid-bill suppression
+    keyed per billing month so next month's statement still appears; and a signature store so a
+    commitment extracted from a message is surfaced once even when the model rewords it on the
+    next run.
+  </p>
+
+  <h3><a href="https://github.com/pb0224/grocery-receipts">grocery-receipts</a></h3>
+  <p>
+    Drop a photo of any receipt into a watched folder; it comes out the other side as a line in
+    a monthly expense report and, if it's groceries, as pantry stock. The model classifies
+    openly — it can invent a category it has never seen and the pipeline creates the folder.
+  </p>
+  <p>
+    Receipts with poor ink are caught by a simple check (item sum versus printed total off by
+    more than 10%) and held in a review folder with a checkbox; ticking it finalises the record.
+    The watcher holds an <code>fcntl</code> lock so two overlapping runs can't deadlock on
+    Apple Vision. 52 tests.
+  </p>
+
+  <h3><a href="https://github.com/pb0224/screenshot-organizer">screenshot-organizer</a></h3>
+  <p>
+    Sorts a Desktop full of screenshots into a foldered tree by reading what's in them. The rule
+    that shapes the whole design: <strong>existing files are never touched.</strong> The Desktop
+    is read-only and everything is written by copying into a new tree, so the worst case of a bad
+    classification is a misfiled copy, never a lost file.
+  </p>
+
+  <h2>What I'd do differently</h2>
+  <ul>
+    <li>The three tools share <code>ocr.py</code> and <code>ollama.py</code> by copying them
+      between repos. That was the right call for the first week and the wrong one by the third
+      tool; they belong in one installable package.</li>
+    <li>Prompts lived in source until they didn't — a prompt with real names in it is a privacy
+      bug waiting to be published. They're configuration now.</li>
+  </ul>
+
+  <footer><a href="../index.html">← back</a></footer>
+</div>
+</body>
+</html>

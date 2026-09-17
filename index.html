@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pratik Bairoliya — Software Engineer</title>
+<meta name="description" content="Software engineer at Capital One working on financial core migration, batch settlement, Kubernetes and Temporal. Builds local-first tools that run entirely on-device.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Pratik Bairoliya</h1>
+  <p class="lede">
+    Software engineer at Capital One. I own nightly End-of-Day settlement for Card, Bank and
+    Financial Service accounts on FINCORE — the platform replacing the legacy third-party cores —
+    across millions of accounts a night.
+  </p>
+  <p>
+    Outside work I build <strong>local-first tools</strong>: small systems that use a language
+    model but run entirely on your own machine, so nothing personal leaves it. The engineering
+    problem that interests me there is making nondeterministic output behave like software —
+    idempotent, repeatable, testable.
+  </p>
+
+  <div class="contact">
+    <a href="mailto:pratik0520@gmail.com">pratik0520@gmail.com</a>
+    <a href="https://github.com/pb0224">GitHub</a>
+    <a href="https://linkedin.com/in/pbairol">LinkedIn</a>
+    <span class="meta">Raleigh, NC</span>
+  </div>
+
+  <h2>Work</h2>
+
+  <div class="row"><h3 style="margin-top:0">Capital One — Software Engineer II</h3><span class="meta">Jul 2026 –</span></div>
+  <p class="meta" style="margin-bottom:10px">Prometheus FINCORE · End-of-Day batch</p>
+  <ul>
+    <li>Own nightly End-of-Day settlement for every Card, Bank and Financial Service account.</li>
+    <li>Leading SSUI integration into the EOD APIs; building observability for a new
+        Kubernetes + Temporal platform shipped on Argo and Helm.</li>
+  </ul>
+
+  <div class="row"><h3>Capital One — Software Engineer I</h3><span class="meta">Aug 2025 – Jul 2026</span></div>
+  <ul>
+    <li>Took a Batch Data Persistence API from zero to production in Go — now the system of
+        record for EOD settlement.</li>
+    <li>Automated nightly publication of 80M+ records across 2M+ accounts via Hive tuning on
+        AWS EMR.</li>
+  </ul>
+
+  <div class="row"><h3>Fidelity Investments — Software Engineer</h3><span class="meta">Jun 2023 – May 2024</span></div>
+  <ul>
+    <li>Moved 45% of mainframe stock and job requests to AWS with Terraform, serving 400+
+        associates.</li>
+  </ul>
+
+  <h2>Projects</h2>
+
+  <a class="card" href="projects/on-device-tools.html">
+    <h3>On-device tools →</h3>
+    <p>Three programs sharing one core: Apple Vision OCR plus a local LLM, wrapped in a
+       deterministic rules layer so the output behaves like software. A daily briefing, a receipt
+       pipeline, and a screenshot sorter — none of them send your data anywhere.</p>
+    <div class="tags">
+      <span class="tag">Python</span><span class="tag">Ollama</span>
+      <span class="tag">Apple Vision</span><span class="tag">launchd</span>
+      <span class="tag">local-first</span>
+    </div>
+  </a>
+
+  <a class="card" href="projects/lc.html">
+    <h3>lc — a LeetCode workflow that lives in your notes →</h3>
+    <p>A CLI that makes an Obsidian note the source of truth for a problem, reconciles it with a
+       Git repo, schedules spaced-repetition reviews, and pushes nightly. 94 offline tests, most
+       of them about the reconciliation rules.</p>
+    <div class="tags">
+      <span class="tag">Python</span><span class="tag">Git</span>
+      <span class="tag">CLI design</span><span class="tag">spaced repetition</span>
+    </div>
+  </a>
+
+  <h2>Tools I reach for</h2>
+  <p class="meta">
+    Go, Python, Java, TypeScript · Kubernetes, Temporal, Docker, Terraform, Argo, Helm ·
+    AWS (EMR, S3, DynamoDB) · Hive, Postgres, Neo4j · Vue, React ·
+    AWS Certified Solutions Architect – Associate
+  </p>
+
+  <footer>
+    B.S. Computer Science and B.S. Applied Mathematics, NC State (Park Scholar, 4.0).
+    <br>Source for this site: <a href="https://github.com/pb0224/pb0224.github.io">pb0224.github.io</a>
+  </footer>
+
+</div>
+</body>
+</html>
