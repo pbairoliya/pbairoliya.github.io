@@ -3,56 +3,123 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pratik Bairoliya — Software Engineer</title>
-<meta name="description" content="Software engineer at Capital One working on financial core migration, batch settlement, Kubernetes and Temporal. Builds local-first tools that run entirely on-device.">
+<title>Pratik Bairoliya — SWE II @ Capital One</title>
+<meta name="description" content="Software Engineer II at Capital One on the End-of-Day team, building a custom batch ledger for the financial core. Builds local-first tools that run entirely on-device.">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <div class="wrap">
 
   <h1>Pratik Bairoliya</h1>
+  <p class="tagline">SWE II @ Capital One</p>
   <p class="lede">
-    Software engineer at Capital One. I own nightly End-of-Day settlement for Card, Bank and
-    Financial Service accounts on FINCORE — the platform replacing the legacy third-party cores —
-    across millions of accounts a night.
+    I work on the <strong>End-of-Day team</strong>, building a <strong>custom batch ledger</strong>
+    for the financial core. Every night it has to settle millions of accounts and be right by
+    morning — there is no retry window for a bank's books.
   </p>
   <p>
     Outside work I build <strong>local-first tools</strong>: small systems that use a language
-    model but run entirely on your own machine, so nothing personal leaves it. The engineering
-    problem that interests me there is making nondeterministic output behave like software —
-    idempotent, repeatable, testable.
+    model but run entirely on your own machine, so nothing personal leaves it. The problem that
+    interests me there isn't prompting — it's making nondeterministic output behave like software.
   </p>
 
   <div class="contact">
     <a href="mailto:pratik0520@gmail.com">pratik0520@gmail.com</a>
     <a href="https://github.com/pb0224">GitHub</a>
     <a href="https://linkedin.com/in/pbairol">LinkedIn</a>
-    <span class="meta">Raleigh, NC</span>
   </div>
 
   <h2>Work</h2>
 
-  <div class="row"><h3 style="margin-top:0">Capital One — Software Engineer II</h3><span class="meta">Jul 2026 –</span></div>
-  <p class="meta" style="margin-bottom:10px">Prometheus FINCORE · End-of-Day batch</p>
-  <ul>
-    <li>Own nightly End-of-Day settlement for every Card, Bank and Financial Service account.</li>
-    <li>Leading SSUI integration into the EOD APIs; building observability for a new
-        Kubernetes + Temporal platform shipped on Argo and Helm.</li>
-  </ul>
+  <div class="job">
+    <div class="job-head">
+      <h3>Capital One — Software Engineer II</h3>
+      <span class="meta">Jul 2026 –</span>
+    </div>
+    <p class="job-sub">End-of-Day · batch ledger · McLean, VA</p>
+    <ul>
+      <li>Own nightly settlement for every Card, Bank and Financial Service account.</li>
+      <li>Leading the SSUI integration into the End-of-Day APIs.</li>
+      <li>Building observability for a new Kubernetes and Temporal platform, shipped on Argo and Helm.</li>
+    </ul>
+  </div>
 
-  <div class="row"><h3>Capital One — Software Engineer I</h3><span class="meta">Aug 2025 – Jul 2026</span></div>
-  <ul>
-    <li>Took a Batch Data Persistence API from zero to production in Go — now the system of
-        record for EOD settlement.</li>
-    <li>Automated nightly publication of 80M+ records across 2M+ accounts via Hive tuning on
-        AWS EMR.</li>
-  </ul>
+  <div class="job">
+    <div class="job-head">
+      <h3>Capital One — Software Engineer I</h3>
+      <span class="meta">Aug 2025 – Jul 2026</span>
+    </div>
+    <p class="job-sub">End-of-Day · batch ledger · McLean, VA</p>
+    <ul>
+      <li>Took a batch data persistence API from zero to production in Go — now the system of
+          record for End-of-Day.</li>
+      <li>Automated nightly publication of 80M+ records across 2M+ accounts via Hive tuning on AWS EMR.</li>
+      <li>Closed a priority auth gap for Card and Bank accounts with a PoP token integration.</li>
+    </ul>
+  </div>
 
-  <div class="row"><h3>Fidelity Investments — Software Engineer</h3><span class="meta">Jun 2023 – May 2024</span></div>
-  <ul>
-    <li>Moved 45% of mainframe stock and job requests to AWS with Terraform, serving 400+
-        associates.</li>
-  </ul>
+  <div class="job">
+    <div class="job-head">
+      <h3>Fidelity Investments — Software Engineer</h3>
+      <span class="meta">Jun 2023 – May 2024</span>
+    </div>
+    <p class="job-sub">Mainframe modernisation · RTP, NC</p>
+    <ul>
+      <li>Moved 45% of mainframe stock and job requests to AWS with Terraform, serving 400+ associates.</li>
+      <li>Modeled 10,000 mainframe API nodes in Neo4j, cutting 5,000+ duplicates via Cypher automation.</li>
+    </ul>
+  </div>
+
+  <h2>Stack</h2>
+
+  <div class="stack-group">
+    <p class="stack-label">Languages</p>
+    <div class="stack">
+      <span class="tool"><img src="https://cdn.simpleicons.org/go" alt="" loading="lazy">Go</span>
+      <span class="tool"><img src="https://cdn.simpleicons.org/python" alt="" loading="lazy">Python</span>
+      <span class="tool"><img src="https://cdn.simpleicons.org/openjdk" alt="" loading="lazy">Java</span>
+      <span class="tool"><img src="https://cdn.simpleicons.org/typescript" alt="" loading="lazy">TypeScript</span>
+      <span class="tool"><img src="https://cdn.simpleicons.org/gnubash" alt="" loading="lazy">Bash</span>
+    </div>
+  </div>
+
+  <div class="stack-group">
+    <p class="stack-label">Infrastructure</p>
+    <div class="stack">
+      <span class="tool"><span class="txt">AWS</span>AWS</span>
+      <span class="tool"><img src="https://cdn.simpleicons.org/kubernetes" alt="" loading="lazy">Kubernetes</span>
+      <span class="tool"><img src="https://cdn.simpleicons.org/temporal" alt="" loading="lazy">Temporal</span>
+      <span class="tool"><img src="https://cdn.simpleicons.org/docker" alt="" loading="lazy">Docker</span>
+      <span class="tool"><img src="https://cdn.simpleicons.org/terraform" alt="" loading="lazy">Terraform</span>
+      <span class="tool"><img src="https://cdn.simpleicons.org/argo" alt="" loading="lazy">Argo</span>
+      <span class="tool"><img src="https://cdn.simpleicons.org/helm" alt="" loading="lazy">Helm</span>
+      <span class="tool"><img src="https://cdn.simpleicons.org/jenkins" alt="" loading="lazy">Jenkins</span>
+    </div>
+  </div>
+
+  <div class="stack-group">
+    <p class="stack-label">Data &amp; backend</p>
+    <div class="stack">
+      <span class="tool"><img src="https://cdn.simpleicons.org/apachehive" alt="" loading="lazy">Hive</span>
+      <span class="tool"><img src="https://cdn.simpleicons.org/postgresql" alt="" loading="lazy">Postgres</span>
+      <span class="tool"><img src="https://cdn.simpleicons.org/neo4j" alt="" loading="lazy">Neo4j</span>
+      <span class="tool"><img src="https://cdn.simpleicons.org/springboot" alt="" loading="lazy">Spring Boot</span>
+      <span class="tool"><img src="https://cdn.simpleicons.org/graphql" alt="" loading="lazy">GraphQL</span>
+      <span class="tool"><img src="https://cdn.simpleicons.org/nodedotjs" alt="" loading="lazy">Node.js</span>
+    </div>
+  </div>
+
+  <div class="stack-group">
+    <p class="stack-label">Frontend &amp; on-device AI</p>
+    <div class="stack">
+      <span class="tool"><img src="https://cdn.simpleicons.org/react" alt="" loading="lazy">React</span>
+      <span class="tool"><img src="https://cdn.simpleicons.org/vuedotjs" alt="" loading="lazy">Vue</span>
+      <span class="tool"><img src="https://cdn.simpleicons.org/angular" alt="" loading="lazy">Angular</span>
+      <span class="tool"><img src="https://cdn.simpleicons.org/ollama" alt="" loading="lazy">Ollama</span>
+      <span class="tool"><img src="https://cdn.simpleicons.org/pytorch" alt="" loading="lazy">PyTorch</span>
+      <span class="tool"><img src="https://cdn.simpleicons.org/apple" alt="" loading="lazy">Vision</span>
+    </div>
+  </div>
 
   <h2>Projects</h2>
 
@@ -79,16 +146,35 @@
     </div>
   </a>
 
-  <h2>Tools I reach for</h2>
-  <p class="meta">
-    Go, Python, Java, TypeScript · Kubernetes, Temporal, Docker, Terraform, Argo, Helm ·
-    AWS (EMR, S3, DynamoDB) · Hive, Postgres, Neo4j · Vue, React ·
-    AWS Certified Solutions Architect – Associate
-  </p>
+  <h2>Credentials</h2>
+
+  <a class="cred" href="https://www.credly.com/badges/52c43a39-6628-4b8f-af31-9c52fe3b4f9c">
+    <span class="cred-mark">AWS<br>CERT</span>
+    <span class="cred-body">
+      <h3>AWS Certified Solutions Architect – Associate →</h3>
+      <p>Issued March 2026 · verify on Credly</p>
+    </span>
+  </a>
+
+  <a class="cred" href="https://park.ncsu.edu/">
+    <span class="cred-mark">PARK<br>1%</span>
+    <span class="cred-body">
+      <h3>Park Scholar, NC State →</h3>
+      <p>Full-ride merit scholarship, top 1% of applicants — scholarship, leadership, service, character</p>
+    </span>
+  </a>
+
+  <div class="cred" style="border-left-color: var(--line)">
+    <span class="cred-mark" style="color: var(--muted)">B.S.<br>×2</span>
+    <span class="cred-body">
+      <h3>Computer Science &amp; Applied Mathematics</h3>
+      <p>NC State University, 2021–2025 · 4.0 GPA</p>
+    </span>
+  </div>
 
   <footer>
-    B.S. Computer Science and B.S. Applied Mathematics, NC State (Park Scholar, 4.0).
-    <br>Source for this site: <a href="https://github.com/pb0224/pb0224.github.io">pb0224.github.io</a>
+    Source for this site:
+    <a href="https://github.com/pb0224/pb0224.github.io">pb0224.github.io</a>
   </footer>
 
 </div>
