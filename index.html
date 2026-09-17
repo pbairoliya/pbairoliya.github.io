@@ -23,15 +23,18 @@
     interests me there isn't prompting — it's making nondeterministic output behave like software.
   </p>
 
-  <div class="contact">
-    <a href="mailto:pratik0520@gmail.com">pratik0520@gmail.com</a>
-    <a href="https://github.com/pbairoliya">GitHub</a>
-    <a href="https://linkedin.com/in/pbairol">LinkedIn</a>
+  <div class="actions">
+    <a class="btn primary" href="Pratik-Bairoliya-Resume.pdf">Résumé <span class="k">PDF</span></a>
+    <button class="btn" id="copy" type="button" data-mail="pratik0520@gmail.com">
+      <span id="copy-label">Copy email</span>
+    </button>
+    <a class="btn" href="https://github.com/pbairoliya">GitHub</a>
+    <a class="btn" href="https://linkedin.com/in/pbairol">LinkedIn</a>
   </div>
 
-  <h2>Work</h2>
+  <h2 class="reveal">Work</h2>
 
-  <div class="job">
+  <div class="job reveal">
     <div class="job-head">
       <h3>Capital One — Software Engineer II</h3>
       <span class="meta">Jul 2026 –</span>
@@ -44,7 +47,7 @@
     </ul>
   </div>
 
-  <div class="job">
+  <div class="job reveal">
     <div class="job-head">
       <h3>Capital One — Software Engineer I</h3>
       <span class="meta">Aug 2025 – Jul 2026</span>
@@ -58,7 +61,7 @@
     </ul>
   </div>
 
-  <div class="job">
+  <div class="job reveal">
     <div class="job-head">
       <h3>Fidelity Investments — Software Engineer</h3>
       <span class="meta">Jun 2023 – May 2024</span>
@@ -70,9 +73,9 @@
     </ul>
   </div>
 
-  <h2>Stack</h2>
+  <h2 class="reveal">Stack</h2>
 
-  <div class="stack-group">
+  <div class="stack-group reveal">
     <p class="stack-label">Languages</p>
     <div class="stack">
       <span class="tool"><img src="https://cdn.simpleicons.org/go" alt="" loading="lazy">Go</span>
@@ -83,7 +86,7 @@
     </div>
   </div>
 
-  <div class="stack-group">
+  <div class="stack-group reveal">
     <p class="stack-label">Infrastructure</p>
     <div class="stack">
       <span class="tool"><span class="txt">AWS</span>AWS</span>
@@ -97,7 +100,7 @@
     </div>
   </div>
 
-  <div class="stack-group">
+  <div class="stack-group reveal">
     <p class="stack-label">Data &amp; backend</p>
     <div class="stack">
       <span class="tool"><img src="https://cdn.simpleicons.org/apachehive" alt="" loading="lazy">Hive</span>
@@ -109,7 +112,7 @@
     </div>
   </div>
 
-  <div class="stack-group">
+  <div class="stack-group reveal">
     <p class="stack-label">Frontend &amp; on-device AI</p>
     <div class="stack">
       <span class="tool"><img src="https://cdn.simpleicons.org/react" alt="" loading="lazy">React</span>
@@ -121,9 +124,9 @@
     </div>
   </div>
 
-  <h2>Projects</h2>
+  <h2 class="reveal">Projects</h2>
 
-  <a class="card" href="projects/on-device-tools.html">
+  <a class="card reveal" href="projects/on-device-tools.html">
     <h3>On-device tools →</h3>
     <p>Three programs sharing one core: Apple Vision OCR plus a local LLM, wrapped in a
        deterministic rules layer so the output behaves like software. A daily briefing, a receipt
@@ -135,7 +138,7 @@
     </div>
   </a>
 
-  <a class="card" href="projects/lc.html">
+  <a class="card reveal" href="projects/lc.html">
     <h3>lc — a LeetCode workflow that lives in your notes →</h3>
     <p>A CLI that makes an Obsidian note the source of truth for a problem, reconciles it with a
        Git repo, schedules spaced-repetition reviews, and pushes nightly. 94 offline tests, most
@@ -146,9 +149,9 @@
     </div>
   </a>
 
-  <h2>Credentials</h2>
+  <h2 class="reveal">Credentials</h2>
 
-  <a class="cred" href="https://www.credly.com/badges/52c43a39-6628-4b8f-af31-9c52fe3b4f9c">
+  <a class="cred reveal" href="https://www.credly.com/badges/52c43a39-6628-4b8f-af31-9c52fe3b4f9c">
     <span class="cred-mark">AWS<br>CERT</span>
     <span class="cred-body">
       <h3>AWS Certified Solutions Architect – Associate →</h3>
@@ -156,7 +159,7 @@
     </span>
   </a>
 
-  <a class="cred" href="https://park.ncsu.edu/">
+  <a class="cred reveal" href="https://park.ncsu.edu/">
     <span class="cred-mark">PARK<br>1%</span>
     <span class="cred-body">
       <h3>Park Scholar, NC State →</h3>
@@ -164,7 +167,7 @@
     </span>
   </a>
 
-  <div class="cred" style="border-left-color: var(--line)">
+  <div class="cred reveal" style="border-left-color: var(--line)">
     <span class="cred-mark" style="color: var(--muted)">B.S.<br>×2</span>
     <span class="cred-body">
       <h3>Computer Science &amp; Applied Mathematics</h3>
@@ -179,5 +182,32 @@
 
 </div>
 <script src="field.js" defer></script>
+<script>
+(() => {
+  // copy-to-clipboard, with the button reporting what happened
+  const b = document.getElementById("copy"), l = document.getElementById("copy-label");
+  b?.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(b.dataset.mail);
+      l.textContent = "Copied ✓";
+    } catch {
+      l.textContent = b.dataset.mail;      // clipboard blocked: show it instead
+    }
+    setTimeout(() => (l.textContent = "Copy email"), 1800);
+  });
+
+  // reveal sections as they come into view
+  const items = document.querySelectorAll(".reveal");
+  if (!("IntersectionObserver" in window) ||
+      matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    items.forEach(n => n.classList.add("seen"));
+  } else {
+    const io = new IntersectionObserver((rows) => {
+      rows.forEach(r => { if (r.isIntersecting) { r.target.classList.add("seen"); io.unobserve(r.target); } });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    items.forEach(n => io.observe(n));
+  }
+})();
+</script>
 </body>
 </html>

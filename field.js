@@ -4,7 +4,14 @@
 (() => {
   "use strict";
 
-  const SYMBOLS = "∫∑∂∇√π∞λθφΦΩ≈≠≤≥±×÷⊕⊗∀∃∈∉⊆∪∩ℝℕℤℚ⇒⟺⊢⊨⌈⌉⌊⌋¬∧∨".split("");
+  // maths on the left of the join, computer science on the right
+  const SYMBOLS = [
+    ..."∫∑∂∇√π∞λθφΦΩ≈≠≤≥±×÷⊕⊗∀∃∈∉⊆∪∩ℝℕℤℚ⇒⟺⊢⊨⌈⌉⌊⌋¬∧∨∴∅⊤⊥≡≪≫",
+    "&&", "||", "=>", "->", "<-", "|>", "::", "!=", "===", "??", "?.", "++",
+    "{}", "[]", "()", "<>", "/*", "*/", "//", "#!", "~/", "&mut", "*ptr",
+    "0x1F", "0b1010", "\\n", "\\0", "λx.x", "∘", "⊔", "⋈", "π₁", "σ",
+    "O(1)", "Ω(n)", "Θ(1)", "∑ᵢ", "⟨k,v⟩", "⌘", "⇧", "⏎", "^C", "$", ">_",
+  ];
 
   const SNIPPETS = [
     // complexity + algorithms
@@ -37,13 +44,31 @@
   let W = 0, H = 0, glyphs = [], trail = [], colCentre = 0, colHalf = 400;
   const ptr = { x: -9999, y: -9999, on: false };
 
+  /* ---- slow colour drift ----------------------------------------------
+     One hue, wandering 186° → 288° (teal → blue → violet) and back over
+     about three minutes. It drives the CSS accent AND the canvas, so links,
+     borders, the tagline and the field all move together. Nothing jumps:
+     a full sweep takes longer than anyone stays on the page. */
+  const HUE_LO = 186, HUE_HI = 288, HUE_PERIOD = 186000;
+  let hue = HUE_LO;
+
+  function driftHue(now) {
+    const s = (Math.sin((now / HUE_PERIOD) * Math.PI * 2) + 1) / 2;   // 0..1
+    hue = HUE_LO + s * (HUE_HI - HUE_LO);
+    const dark = darkQ.matches;
+    document.documentElement.style.setProperty(
+      "--accent", `hsl(${hue.toFixed(1)} ${dark ? "88% 74%" : "70% 42%"})`);
+  }
+
   function palette() {
-    return darkQ.matches
-      ? { ink: "232,234,240", hot: "122,167,255", spark: "245,199,106", lift: 1 }
-      : { ink: "22,23,26",    hot: "31,95,214",   spark: "196,132,25",  lift: 0.72 };
+    const dark = darkQ.matches;
+    return dark
+      ? { ink: "232,234,240", spark: "245,199,106", lift: 1 }
+      : { ink: "22,23,26",    spark: "182,124,28",  lift: 0.74 };
   }
   let pal = palette();
   darkQ.addEventListener?.("change", () => { pal = palette(); });
+  const hot = () => `hsl(${hue.toFixed(1)} ${darkQ.matches ? "85% 72%" : "68% 44%"})`;
 
   function seed() {
     const dpr = Math.min(devicePixelRatio || 1, 2);
@@ -79,6 +104,8 @@
   const R = 165;                      // cursor influence radius
 
   function frame(now) {
+    if (!reduced) driftHue(now);
+    const hotColour = hot();
     ctx.clearRect(0, 0, W, H);
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
@@ -103,7 +130,8 @@
       const a = (g.base * behindText + near * near * 0.5 * behindText) * pal.lift;
 
       ctx.font = `${g.size}px ui-monospace, SFMono-Regular, Menlo, monospace`;
-      ctx.fillStyle = `rgba(${near > 0.45 ? pal.hot : pal.ink},${a})`;
+      if (near > 0.45) { ctx.globalAlpha = a; ctx.fillStyle = hotColour; }
+      else { ctx.globalAlpha = 1; ctx.fillStyle = `rgba(${pal.ink},${a})`; }
       ctx.fillText(g.text, g.x, g.y + drift);
     }
 
@@ -114,11 +142,13 @@
       ctx.translate(p.x, p.y);
       ctx.rotate(p.rot * age);
       ctx.font = `${12 + (1 - age) * 9}px ui-monospace, Menlo, monospace`;
+      ctx.globalAlpha = 1;
       ctx.fillStyle = `rgba(${pal.spark},${(1 - age) * 0.42 * pal.lift})`;
       ctx.fillText(p.ch, 0, 0);
       ctx.restore();
     }
 
+    ctx.globalAlpha = 1;
     requestAnimationFrame(frame);
   }
 
@@ -143,5 +173,15 @@
   addEventListener("pointerleave", () => { ptr.on = false; ptr.x = ptr.y = -9999; });
 
   seed();
+  driftHue(performance.now());
   requestAnimationFrame(frame);
+
+  console.log(
+    "%cyou opened the console. good instinct.",
+    `font:600 13px ui-monospace,Menlo,monospace;color:hsl(${HUE_LO} 80% 60%)`);
+  console.log(
+    "%cthe background is ~200 glyphs on a canvas with spring physics — no libraries." +
+    "\nsource: github.com/pbairoliya/pbairoliya.github.io" +
+    "\nif you are hiring, i would rather talk than be screened: pratik0520@gmail.com",
+    "font:12px ui-monospace,Menlo,monospace;color:#8a8f9c");
 })();

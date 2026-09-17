@@ -102,3 +102,27 @@ a.cred:hover { border-color: var(--accent); text-decoration: none; }
 .wrap { position: relative; z-index: 1; }
 /* panels sit on solid ground so the field never competes with text */
 .card, .cred, .tool { background: var(--panel); }
+
+/* --- accent transitions smoothly as the hue drifts --- */
+a, .tagline, .tool, .card, .cred, .stack-label { transition: color .9s linear, border-color .9s linear; }
+
+/* --- actions row --- */
+.actions { display: flex; flex-wrap: wrap; gap: 9px; margin: 18px 0 4px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  padding: 9px 15px; font: 13px/1 var(--sans); color: var(--ink);
+  cursor: pointer; transition: border-color .15s, transform .15s, color .9s linear;
+}
+.btn:hover { border-color: var(--accent); text-decoration: none; transform: translateY(-1px); }
+.btn.primary { border-color: var(--accent); color: var(--accent); }
+.btn .k { font: 11px var(--mono); color: var(--muted); }
+
+/* --- sections fade in as you reach them --- */
+.reveal { opacity: 0; transform: translateY(12px);
+          transition: opacity .6s ease, transform .6s cubic-bezier(.2,.7,.3,1); }
+.reveal.seen { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  a, .tagline, .tool, .card, .cred, .stack-label { transition: none; }
+}
