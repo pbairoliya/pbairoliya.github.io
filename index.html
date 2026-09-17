@@ -23,6 +23,7 @@
     interests me there isn't prompting — it's making nondeterministic output behave like software.
   </p>
 
+  <section id="top" data-label="Top">
   <div class="actions">
     <a class="btn primary" href="Pratik-Bairoliya-Resume.pdf">Résumé <span class="k">PDF</span></a>
     <button class="btn" id="copy" type="button" data-mail="pratik0520@gmail.com">
@@ -30,8 +31,18 @@
     </button>
     <a class="btn" href="https://github.com/pbairoliya">GitHub</a>
     <a class="btn" href="https://linkedin.com/in/pbairol">LinkedIn</a>
+    <button class="btn" type="button" data-open-palette>
+      Menu <span class="k">⌘K</span>
+    </button>
+    <span class="theme" role="group" aria-label="Colour theme">
+      <button type="button" data-theme-btn="system" aria-pressed="true">auto</button>
+      <button type="button" data-theme-btn="light"  aria-pressed="false">light</button>
+      <button type="button" data-theme-btn="dark"   aria-pressed="false">dark</button>
+    </span>
   </div>
 
+  </section>
+  <section id="work" data-label="Work">
   <h2 class="reveal">Work</h2>
 
   <div class="job reveal">
@@ -73,6 +84,8 @@
     </ul>
   </div>
 
+  </section>
+  <section id="stack" data-label="Stack">
   <h2 class="reveal">Stack</h2>
 
   <div class="stack-group reveal">
@@ -124,6 +137,8 @@
     </div>
   </div>
 
+  </section>
+  <section id="projects" data-label="Projects">
   <h2 class="reveal">Projects</h2>
 
   <a class="card reveal" href="projects/on-device-tools.html">
@@ -149,6 +164,8 @@
     </div>
   </a>
 
+  </section>
+  <section id="credentials" data-label="Credentials">
   <h2 class="reveal">Credentials</h2>
 
   <a class="cred reveal" href="https://www.credly.com/badges/52c43a39-6628-4b8f-af31-9c52fe3b4f9c">
@@ -175,27 +192,33 @@
     </span>
   </div>
 
+  </section>
+
   <footer>
     Source for this site:
     <a href="https://github.com/pbairoliya/pbairoliya.github.io">pbairoliya.github.io</a>
   </footer>
 
 </div>
+<nav id="spy" aria-label="Section navigation"></nav>
+
+<div id="palette" aria-hidden="true" role="dialog" aria-label="Command palette">
+  <div class="pal-box">
+    <input type="text" placeholder="Type to filter — résumé, email, projects, theme…"
+           aria-label="Filter commands" autocomplete="off" spellcheck="false">
+    <div class="pal-list"></div>
+    <div class="pal-foot">
+      <span><span class="kbd">↑↓</span> move</span>
+      <span><span class="kbd">↵</span> run</span>
+      <span><span class="kbd">esc</span> close</span>
+    </div>
+  </div>
+</div>
+
 <script src="field.js" defer></script>
+<script src="nav.js" defer></script>
 <script>
 (() => {
-  // copy-to-clipboard, with the button reporting what happened
-  const b = document.getElementById("copy"), l = document.getElementById("copy-label");
-  b?.addEventListener("click", async () => {
-    try {
-      await navigator.clipboard.writeText(b.dataset.mail);
-      l.textContent = "Copied ✓";
-    } catch {
-      l.textContent = b.dataset.mail;      // clipboard blocked: show it instead
-    }
-    setTimeout(() => (l.textContent = "Copy email"), 1800);
-  });
-
   // reveal sections as they come into view
   const items = document.querySelectorAll(".reveal");
   if (!("IntersectionObserver" in window) ||

@@ -34,6 +34,11 @@
 
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const darkQ = matchMedia("(prefers-color-scheme: dark)");
+  // an explicit choice (set by nav.js on <html data-theme>) wins over the OS
+  const isDark = () => {
+    const forced = document.documentElement.getAttribute("data-theme");
+    return forced ? forced === "dark" : darkQ.matches;
+  };
 
   const cv = document.createElement("canvas");
   cv.id = "field";
@@ -55,20 +60,21 @@
   function driftHue(now) {
     const s = (Math.sin((now / HUE_PERIOD) * Math.PI * 2) + 1) / 2;   // 0..1
     hue = HUE_LO + s * (HUE_HI - HUE_LO);
-    const dark = darkQ.matches;
+    const dark = isDark();
     document.documentElement.style.setProperty(
       "--accent", `hsl(${hue.toFixed(1)} ${dark ? "88% 74%" : "70% 42%"})`);
   }
 
   function palette() {
-    const dark = darkQ.matches;
+    const dark = isDark();
     return dark
       ? { ink: "232,234,240", spark: "245,199,106", lift: 1 }
       : { ink: "22,23,26",    spark: "182,124,28",  lift: 0.74 };
   }
   let pal = palette();
   darkQ.addEventListener?.("change", () => { pal = palette(); });
-  const hot = () => `hsl(${hue.toFixed(1)} ${darkQ.matches ? "85% 72%" : "68% 44%"})`;
+  addEventListener("themechange", () => { pal = palette(); });
+  const hot = () => `hsl(${hue.toFixed(1)} ${isDark() ? "85% 72%" : "68% 44%"})`;
 
   function seed() {
     const dpr = Math.min(devicePixelRatio || 1, 2);
