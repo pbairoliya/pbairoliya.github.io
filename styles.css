@@ -2,6 +2,7 @@
   --bg: #fbfbfa; --panel: #fff; --ink: #16171a; --muted: #62646b;
   --line: #e6e5e2; --accent: #1f5fd6; --code-bg: #f3f3f1;
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  --serif-ui: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
 }
 @media (prefers-color-scheme: dark) {
@@ -191,3 +192,36 @@ a, .tagline, .tool, .card, .cred, .stack-label { transition: color .9s linear, b
 @media (prefers-reduced-motion: reduce) {
   .spy-dot, #toast, .pal-row { transition: none; }
 }
+
+/* ===== crossing highlight (spotlight.js) ===== */
+.job, .card, .cred, .tool, .btn { position: relative; isolation: isolate; }
+.job::after, .card::after, .cred::after, .tool::after, .btn::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1;
+  opacity: 0; transition: opacity .28s ease;
+  background: radial-gradient(
+    240px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--accent) 16%, transparent), transparent 68%);
+}
+.lit::after { opacity: 1; }
+.lit { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); }
+.job.lit { box-shadow: inset 2px 0 0 var(--accent); }
+.tool.lit, .btn.lit { transform: translateY(-1px); }
+@supports not (background: color-mix(in srgb, red 10%, blue)) {
+  .job::after, .card::after, .cred::after, .tool::after, .btn::after { display: none; }
+  .lit { border-color: var(--accent); }
+}
+
+/* ===== about ===== */
+.about p { max-width: 64ch; }
+.about .pull {
+  margin: 20px 0; padding-left: 16px; border-left: 3px solid var(--accent);
+  font: 400 17px/1.55 var(--serif-ui, Georgia, "Iowan Old Style", serif);
+  color: var(--ink);
+}
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(146px, 1fr));
+         gap: 10px; margin: 22px 0 4px; }
+.fact { background: var(--panel); border: 1px solid var(--line); border-radius: 9px;
+        padding: 13px 15px; }
+.fact b { display: block; font: 600 19px/1.2 var(--sans); color: var(--accent);
+          letter-spacing: -.01em; transition: color .9s linear; }
+.fact span { font-size: 11.5px; color: var(--muted); line-height: 1.4; display: block; margin-top: 4px; }
