@@ -119,7 +119,7 @@
       matches = q ? ACTIONS.filter(a => (a.label + " " + a.hint + " " + a.g).toLowerCase().includes(q)) : ACTIONS;
       cursor = 0; render();
     }
-    let opener = null;
+    let opener = null, release = null;
     function openPal() {
       opener = document.activeElement;
       const b = document.querySelector(".palette-btn");
@@ -127,8 +127,10 @@
       pal.classList.add("on"); pal.setAttribute("aria-hidden", "false");
       document.body.classList.add("no-scroll");
       input.value = ""; filter(""); input.focus();
+      release = window.__trap?.(pal) || null;   // Tab must not walk out behind it
     }
     function close() {
+      release?.(); release = null;
       pal.classList.remove("on");
       pal.setAttribute("aria-hidden", "true");
       document.body.classList.remove("no-scroll");
@@ -147,7 +149,9 @@
             !document.activeElement?.isContentEditable) { e.preventDefault(); openPal(); }
         return;
       }
-      if (k === "escape") { e.stopPropagation(); close(); }
+      /* stopPropagation does nothing to a sibling listener on the same target:
+         settings.js also listens on window, and used to close too. */
+      if (k === "escape") { e.stopImmediatePropagation(); close(); }
       else if (k === "arrowdown") { e.preventDefault(); cursor = (cursor + 1) % Math.max(matches.length, 1); render(); }
       else if (k === "arrowup")   { e.preventDefault(); cursor = (cursor - 1 + matches.length) % Math.max(matches.length, 1); render(); }
       else if (k === "enter")     { e.preventDefault(); const a = matches[cursor]; if (a) { close(); a.run(); } }
