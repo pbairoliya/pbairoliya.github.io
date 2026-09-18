@@ -63,8 +63,10 @@
 
     jobs.forEach((job, i) => {
       /* the stagger is per-bullet and lives in CSS; JS only supplies the index */
-      job.querySelectorAll(".job-body li")
+      job.querySelectorAll(".job-body > div > ul > li")
          .forEach((li, n) => li.style.setProperty("--i", n));
+      job.querySelectorAll(".job-body .courses li")
+         .forEach((li, n) => li.style.setProperty("--c", n));
       /* The whole entry is the target, not just the header row. Two things it
          must not swallow: a click on a real link, and the mouse-up that ends a
          text selection inside an open entry. */
@@ -89,6 +91,18 @@
         }
       });
       set(job, false);
+      /* A link that points AT a collapsed entry should open it — the rail's
+         "School" now targets the degree row, and landing on a closed row that
+         says nothing is a dead end. */
+      if (job.id) {
+        const reveal = () => { if (job.classList.contains("shut")) set(job, true); };
+        addEventListener("hashchange", () => {
+          if (location.hash.slice(1) === job.id) reveal();
+        });
+        document.querySelectorAll('a[href="#' + job.id + '"]')
+                .forEach(a => a.addEventListener("click", reveal));
+        if (location.hash.slice(1) === job.id) reveal();
+      }
       /* a role still running keeps a pulse on its node */
       if (/present/i.test(job.querySelector(".job-toggle .meta")?.textContent || ""))
         job.classList.add("job-now");

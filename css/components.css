@@ -469,7 +469,7 @@ body.side-open { overflow: hidden; }
            display: grid; gap: var(--s2);
            grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
 .courses li { margin: 0; }
-.course-head { margin: var(--s6) 0 var(--s3); align-items: baseline; }
+.course-head { margin: var(--s5) 0 var(--s3); align-items: baseline; }
 .course-head .stack-label { margin: 0; }
 .course-head a { white-space: nowrap; }
 .courses a { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr);
@@ -538,7 +538,6 @@ body.side-open { overflow: hidden; }
 
 
 /* School's contents line up with the entries above them */
-#education > .reveal { padding-left: 0; }
 
 .shelf { display: block; }
 
@@ -613,8 +612,7 @@ body.side-open { overflow: hidden; }
 .tl-year::after { content: ""; flex: 1; height: 1px; background: var(--line); opacity: .7; }
 
 .timeline .job { position: relative; padding-left: var(--lane); }
-.job-dot { position: absolute; left: 46px; top: 50%; width: 11px; height: 11px;
-           margin-top: -5.5px; border-radius: var(--r-pill); box-sizing: border-box;
+.job-dot { position: absolute; left: 46px; top: 16px; width: 11px; height: 11px; border-radius: var(--r-pill); box-sizing: border-box;
            border: 2px solid var(--pin, var(--accent)); background: var(--bg); z-index: 1;
            transition: transform .3s cubic-bezier(.34,1.4,.64,1), background-color .3s; }
 .job:hover .job-dot { transform: scale(1.25); }
@@ -720,4 +718,18 @@ body.side-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .views button, .tlc-bar, .tlc-scrub { transition: none; }
   .tlc-bar:hover { transform: none; }
+}
+
+/* The coursework opens with the degree it belongs to. Tiles cascade in behind
+   the bullets rather than all landing at once — the delay continues the list's
+   own stagger instead of restarting it. */
+.job-body .courses li { transition: opacity .3s ease,
+                        transform .34s cubic-bezier(.34,1.35,.64,1);
+                        transition-delay: calc(var(--c, 0) * 60ms + 160ms); }
+.job.shut .job-body .courses li { opacity: 0; transform: translateY(10px) scale(.97);
+                                  transition-delay: 0s; }
+.job-body .course-head { transition: opacity .3s ease .12s; }
+.job.shut .job-body .course-head { opacity: 0; transition-delay: 0s; }
+@media (prefers-reduced-motion: reduce) {
+  .job-body .courses li, .job-body .course-head { transition: none; }
 }
