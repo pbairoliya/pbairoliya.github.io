@@ -78,10 +78,8 @@
            first sweep. Removing the class, forcing a reflow and adding it back
            is what restarts a CSS animation. */
         if (!reduced) {
-          const node = job.querySelector(".job-node");
-          node.classList.remove("pop");
-          void node.offsetWidth;
-          node.classList.add("pop");
+          const bar = job.querySelector(".span > i");
+          if (bar) { bar.classList.remove("pop"); void bar.offsetWidth; bar.classList.add("pop"); }
         }
         /* an entry opened from far down the page should not push its own
            heading off the top */
@@ -120,11 +118,18 @@
         const t0 = Date.parse(y0 + "-01-01"), t1 = Date.parse(y1 + "-01-01");
         const pct = (v) => ((v - t0) / (t1 - t0)) * 100;
 
+        const grid = document.querySelector("#work .tl-grid");
         for (let y = y0; y < y1; y++) {
+          const at = pct(Date.parse(y + "-01-01")) + "%";
           const tick = document.createElement("i");
-          tick.style.left = pct(Date.parse(y + "-01-01")) + "%";
+          tick.style.left = at;
           tick.dataset.year = String(y).slice(2);
           axis.appendChild(tick);
+          if (grid) {
+            const rule = document.createElement("i");
+            rule.style.left = at;
+            grid.appendChild(rule);
+          }
         }
         dated.forEach(j => {
           const bar = j.querySelector(".span > i");
