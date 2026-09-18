@@ -93,6 +93,6 @@ h2.reveal { transition-duration: .4s, .46s; }
   .boot > *, .stack-group.seen .tool, .fold[open] .fold-body > *,
   .btn.palette-btn.hint { animation: none; }
   .reveal { opacity: 1; transform: none; transition: none; }
-  .job, .card, .cred, .tool, .btn, .job .rail, .pill .glide, #toast { transition: none; }
+  .job, .card, .cred, .tool, .btn, .job .rail, .side a, #toast { transition: none; }
   .job.lit, .card.lit, .cred.lit, .tool.lit, .btn.lit { transform: none; }
 }

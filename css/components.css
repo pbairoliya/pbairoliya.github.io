@@ -1,45 +1,68 @@
 /* components — every discrete piece of UI on the page. */
 
-/* ---- floating pill nav ----
-   Top-centre on a desktop. On a phone the top bar is already carrying the theme
-   switch, so the pill docks to the bottom instead of fighting it for space —
-   which also puts it in thumb reach. */
-.pill {
-  position: fixed; z-index: 8;
-  top: 14px; left: 50%; transform: translateX(-50%);
-  display: flex; align-items: center; gap: 2px; padding: 5px;
-  max-width: calc(100vw - 32px); overflow-x: auto; scrollbar-width: none;
-  background: color-mix(in srgb, var(--panel) 78%, transparent);
-  backdrop-filter: blur(14px) saturate(1.3);
-  -webkit-backdrop-filter: blur(14px) saturate(1.3);
-  border: 1px solid var(--line); border-radius: 999px;
-  box-shadow: 0 10px 34px -16px rgba(0,0,0,.45);
+/* ---- sidebar navigation ----
+   A left rail of pages, the way Notion does it: it never covers the writing,
+   it holds more entries than a top bar can, and it is where anyone who has used
+   Notion already looks. Under 900px there is no room for a permanent rail, so it
+   becomes a sheet behind a button. */
+.side {
+  position: fixed; inset-block: 0; left: 0; z-index: 8; width: 218px;
+  display: flex; flex-direction: column; gap: 2px;
+  padding: clamp(16px, 4vh, 26px) 12px;
+  background: color-mix(in srgb, var(--panel) 62%, transparent);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border-right: 1px solid var(--line);
+  overflow-y: auto; overscroll-behavior: contain;
 }
-.pill::-webkit-scrollbar { display: none; }
-.pill a {
-  position: relative; z-index: 1; border-radius: 999px; white-space: nowrap;
-  padding: 7px clamp(9px, 2.4vw, 14px);
-  font: clamp(11px, 2.9vw, 12.5px)/1 var(--sans);
-  color: var(--muted); transition: color .22s;
+.side-head { display: flex; align-items: center; gap: 9px; padding: 6px 10px 14px; }
+.side-avatar { width: 26px; height: 26px; border-radius: 8px; flex: 0 0 26px;
+               display: grid; place-items: center; color: #fff;
+               font: 700 12px/1 var(--sans); letter-spacing: -.02em;
+               background: linear-gradient(130deg, var(--accent), var(--accent-2)); }
+.side-name { font: 600 13px/1.25 var(--sans); }
+.side-name span { display: block; font: 10.5px/1.3 var(--mono); color: var(--muted); }
+.side-label { padding: 12px 10px 5px; font: 10px/1 var(--mono);
+              letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.side a {
+  display: flex; align-items: center; gap: 9px; padding: 7px 10px; border-radius: 8px;
+  font: 13.5px/1.3 var(--sans); color: var(--muted); position: relative;
+  transition: background-color .16s, color .16s;
 }
-.pill a:hover { color: var(--ink); text-decoration: none; }
-.pill a.on { color: #fff; }
-.pill .glide {
-  position: absolute; top: 5px; left: 0; width: 0; height: calc(100% - 10px);
-  border-radius: 999px; z-index: 0;
-  background: linear-gradient(120deg, var(--accent), var(--accent-2));
-  transition: transform .42s cubic-bezier(.2,.8,.25,1),
-              width .42s cubic-bezier(.2,.8,.25,1), background .9s linear;
-}
+.side a i { font-style: normal; width: 17px; text-align: center; opacity: .85;
+            font-size: 13px; flex: 0 0 17px; }
+.side a:hover { background: var(--code-bg); color: var(--ink); text-decoration: none; }
+.side a.on { color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent); }
+.side a.on::before { content: ""; position: absolute; left: 0; top: 7px; bottom: 7px;
+                     width: 2.5px; border-radius: 3px; background: var(--accent); }
+.side-foot { margin-top: auto; padding: 12px 10px 2px; border-top: 1px solid var(--line);
+             font: 11px/1.5 var(--mono); color: var(--muted); }
+.side-foot a { padding: 4px 0; font: 11px var(--mono); }
 
-@media (max-width: 640px) {
-  .pill {
-    top: auto; bottom: max(12px, env(safe-area-inset-bottom));
-    max-width: calc(100vw - 20px);
-    justify-content: flex-start;
-    box-shadow: 0 -6px 26px -14px rgba(0,0,0,.5);
-  }
+.side-toggle { position: fixed; z-index: 11; display: none; place-items: center;
+               top: max(12px, env(safe-area-inset-top)); left: clamp(12px, 3vw, 18px);
+               width: 36px; height: 36px; border-radius: 999px; cursor: pointer;
+               background: color-mix(in srgb, var(--panel) 84%, transparent);
+               border: 1px solid var(--line); color: var(--muted);
+               backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.side-toggle:hover { color: var(--accent); border-color: var(--accent); }
+.side-toggle svg { width: 16px; height: 16px; fill: currentColor; }
+.side-scrim { position: fixed; inset: 0; z-index: 7; display: none;
+              background: rgba(8,9,12,.45); backdrop-filter: blur(2px); }
+
+/* the page sits beside the rail rather than under it */
+@media (min-width: 901px) {
+  .wrap { margin-left: max(auto, 218px); }
+  body { padding-left: 218px; }
 }
+@media (max-width: 900px) {
+  .side { transform: translateX(-102%); transition: transform .28s cubic-bezier(.2,.8,.3,1);
+          box-shadow: 0 0 60px rgba(0,0,0,.4); width: min(260px, 82vw); }
+  .side-toggle { display: grid; }
+  body.side-open .side { transform: none; }
+  body.side-open .side-scrim { display: block; }
+}
+@media (prefers-reduced-motion: reduce) { .side { transition: none; } }
 
 /* ---- theme switch, pinned ---- */
 .theme { position: fixed; z-index: 9;
@@ -89,9 +112,6 @@
 .card:hover { text-decoration: none; }
 .card h3 { margin: 0 0 6px; }
 .card p  { margin: 0 0 10px; color: var(--muted); font-size: .95rem; }
-.tags { display: flex; flex-wrap: wrap; gap: 6px; }
-.tag  { font: 11px/1 var(--mono); padding: 5px 9px; background: var(--code-bg);
-        border-radius: 999px; color: var(--muted); }
 
 /* ---- stack ---- */
 .stack-group { margin-bottom: 20px; }
@@ -121,26 +141,7 @@ a.cred:hover { text-decoration: none; }
              padding-top: 3px; flex: 0 0 34px; transition: color .8s linear; }
 
 /* ---- background section ---- */
-.about p { max-width: 64ch; }
-.about .pull { margin: 20px 0; padding-left: 16px; border-left: 3px solid var(--accent);
-               font: 400 17px/1.55 var(--serif); color: var(--ink);
-               transition: border-left-color .8s linear; }
-.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(146px, 1fr));
-         gap: 10px; margin: 22px 0 4px; }
-.fact { background: var(--panel); border: 1px solid var(--line); border-radius: 11px;
-        padding: 13px 15px; }
-.fact b { display: block; font: 600 19px/1.2 var(--sans); letter-spacing: -.01em;
-          background: linear-gradient(110deg, var(--accent), var(--accent-2));
-          -webkit-background-clip: text; background-clip: text; color: transparent; }
-.fact span { font-size: 11.5px; color: var(--muted); line-height: 1.4;
-             display: block; margin-top: 4px; }
 
-.fold > summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center;
-                  gap: 9px; color: var(--muted); font: 13px var(--sans); padding: 10px 0; }
-.fold > summary::-webkit-details-marker { display: none; }
-.fold > summary .chev { color: var(--accent); transition: transform .3s cubic-bezier(.2,.8,.3,1); }
-.fold[open] > summary .chev { transform: rotate(90deg); }
-.fold > summary:hover { color: var(--accent); }
 
 /* ---- command palette ---- */
 #palette { position: fixed; inset: 0; z-index: 40; display: none;
@@ -201,20 +202,6 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
 /* ---- properties block ----
    The first thing a recruiter scans. Modelled on a Notion page's property
    table: a narrow label column, values that wrap, and nothing decorative. */
-.props { margin: 20px 0 6px; padding: 0; display: grid; gap: 1px;
-         border: 1px solid var(--line); border-radius: 13px; overflow: hidden;
-         background: var(--line); }
-.prop { display: grid; grid-template-columns: clamp(76px, 22vw, 96px) 1fr; gap: 14px;
-        background: var(--panel); padding: 9px clamp(12px, 3.5vw, 16px);
-        transition: background-color .2s; }
-.prop:hover { background: color-mix(in srgb, var(--accent) 5%, var(--panel)); }
-.props dt { font: 11px/1.55 var(--mono); letter-spacing: .06em; text-transform: uppercase;
-            color: var(--muted); padding-top: 2px; }
-.props dd { margin: 0; font-size: clamp(13px, 3.3vw, 13.8px); line-height: 1.55; }
-@media (max-width: 460px) {
-  .prop { grid-template-columns: 1fr; gap: 1px; }
-  .props dt { padding-top: 0; }
-}
 
 /* ---- long-form reading ---- */
 .post { max-width: 660px; }
@@ -226,7 +213,7 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
 .post .callout { font: 400 clamp(15px, 3.8vw, 17px)/1.6 var(--serif); color: var(--ink); }
 
 /* ---- settings ---- */
-.gear { position: fixed; z-index: 9; display: grid; place-items: center;
+.gear { position: fixed; z-index: 11; display: grid; place-items: center;
         top: max(12px, env(safe-area-inset-top)); right: clamp(12px, 3vw, 18px);
         width: 36px; height: 36px; border-radius: 999px; cursor: pointer;
         background: color-mix(in srgb, var(--panel) 80%, transparent);

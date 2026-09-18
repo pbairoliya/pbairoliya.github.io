@@ -19,12 +19,12 @@
     "binary search: lo + (hi-lo)/2", "left never moves backwards", "LRU", "B-tree",
     "monotonic stack", "two pointers", "memoize", "dp[i] = dp[i-1] + dp[i-2]",
     // systems
-    "at-least-once ≠ exactly-once", "idempotent", "p99 < 250ms", "CAP",
+    "at-least-once ≠ exactly-once", "OpenTelemetry span", "day-over-day diff", "idempotent", "p99 < 250ms", "CAP",
     "quorum = ⌊n/2⌋ + 1", "retry with backoff + jitter", "Raft", "2PC",
     "ACID", "partition key", "write-ahead log", "cache-aside", "backpressure",
     "kubectl apply -f", "go func() { … }()", "defer mu.Unlock()", "ctx, cancel := …",
     "SELECT … GROUP BY", "EXPLAIN ANALYZE", "SHA-256", "git rebase -i",
-    "EOD settle → ledger", "80M records / night",
+    "ledger cutoff", "99M+ accounts / night",
     // maths
     "e^{iπ} + 1 = 0", "∑ 1/n² = π²/6", "∫e^{−x²}dx = √π", "φ = (1+√5)/2",
     "Ax = λx", "det(A − λI) = 0", "∂u/∂t = α∇²u", "P(A|B)P(B) = P(B|A)P(A)",
@@ -57,7 +57,7 @@
      hovering matches the background you are hovering over. */
   const SECTION_HUES = {
     intro:       [200, 232],   // cyan → azure
-    background:  [264, 292],   // indigo → violet
+    education:   [264, 292],   // indigo → violet
     work:        [216, 248],   // azure → indigo
     stack:       [176, 206],   // teal → cyan
     projects:    [292, 318],   // violet → magenta
