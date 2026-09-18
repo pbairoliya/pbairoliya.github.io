@@ -17,7 +17,6 @@
 }
 /* overflow-y:auto computes overflow-x to auto, which clipped the collapsed
    tooltip that escapes the rail. Only the collapsed rail needs to spill. */
-@media (min-width: 900.02px) { body.side-collapsed .side { overflow: visible; } }
 a.side-head { color: inherit; border-radius: 9px; }
 a.side-head:hover { background: var(--code-bg); text-decoration: none; }
 .side-head { display: flex; align-items: center; gap: 9px; padding: 6px 10px 14px; }
@@ -47,6 +46,9 @@ a.side-head:hover { background: var(--code-bg); text-decoration: none; }
 
 /* The toggle must sit UNDER the sheet it opens, or it floats over the sheet's
    own header. Above the scrim (7), below the sheet (8). */
+/* The menu button mirrors the settings gear on the other side: same size, same
+   treatment, same idea. It appears whenever the rail is not on screen — which
+   is any phone, and any desktop where the rail has been collapsed away. */
 .side-toggle { position: fixed; z-index: 6; display: none; place-items: center;
                top: max(12px, env(safe-area-inset-top)); left: clamp(12px, 3vw, 18px);
                width: 36px; height: 36px; border-radius: 999px; cursor: pointer;
@@ -66,7 +68,6 @@ a.side-head:hover { background: var(--code-bg); text-decoration: none; }
   .side-collapse { display: none; }
   .side { transform: translateX(-102%); transition: transform .28s cubic-bezier(.2,.8,.3,1);
           box-shadow: 0 0 60px rgba(0,0,0,.4); width: min(260px, 82vw); }
-  .side-toggle { display: grid; }
   /* once the sheet is open the toggle is both redundant and in the way */
   body.side-open .side-toggle { opacity: 0; pointer-events: none; }
   body.side-open .side { transform: none; }
@@ -280,24 +281,8 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
 .side:hover .side-collapse, .side-collapse:focus-visible { opacity: 1; }
 .side-collapse:hover { background: var(--code-bg); color: var(--accent); }
 /* the same glyph the phone uses, so one icon means "menu" everywhere */
-body.side-collapsed .side-collapse { color: var(--accent); }
 .side-collapse svg { width: 15px; height: 15px; fill: currentColor; }
 
-/* collapsed: the rail keeps its icons and the page takes the width back */
-@media (min-width: 900.02px) {
-  body.side-collapsed .side { width: 58px; padding-inline: 9px; }
-  body.side-collapsed { padding-left: 58px; }
-  body.side-collapsed .side-name,
-  body.side-collapsed .side-label,
-  body.side-collapsed .side-foot,
-  body.side-collapsed .side a > :not(i) { display: none; }
-  body.side-collapsed .side a { justify-content: center; padding-inline: 0; }
-  body.side-collapsed .side-collapse { position: static; margin: 10px auto 0; opacity: 1; }
-
-  body.side-collapsed .side-head { justify-content: center; padding: 6px 0 4px; }
-  body.side-collapsed .side { display: flex; flex-direction: column; }
-  .side, body { transition: width .24s cubic-bezier(.2,.8,.3,1), padding-left .24s cubic-bezier(.2,.8,.3,1); }
-}
 @media (prefers-reduced-motion: reduce) { .side, body, .side-collapse { transition: none; } }
 
 
@@ -322,29 +307,31 @@ body.side-collapsed .side-collapse { color: var(--accent); }
 }
 
 
-/* ---- collapsed rail: the icons need to say what they are ----
-   Collapsing hides every label, which leaves a column of emoji with no way to
-   know what they do. A tooltip on hover/focus restores the name without giving
-   the width back. */
-@media (min-width: 900.02px) {
-  body.side-collapsed .side a { position: relative; }
-  body.side-collapsed .side a::after {
-    content: attr(data-name);
-    position: absolute; left: calc(100% + 10px); top: 50%; translate: 0 -50%;
-    padding: 6px 10px; border-radius: 8px; white-space: nowrap;
-    background: var(--panel); border: 1px solid var(--line); color: var(--ink);
-    font: 12.5px/1 var(--sans); box-shadow: 0 8px 24px -12px rgba(0,0,0,.5);
-    opacity: 0; pointer-events: none; transition: opacity .14s;
-    z-index: 12;
-  }
-  body.side-collapsed .side a:hover::after,
-  body.side-collapsed .side a:focus-visible::after { opacity: 1; }
-}
-
 /* ---- the rail explains its own shortcut ---- */
 .side-foot kbd, .side-hint kbd {
   font: 10px var(--mono); border: 1px solid var(--line); border-bottom-width: 2px;
   border-radius: 4px; padding: 1px 4px; color: var(--muted);
 }
 .side-hint { padding: 10px 10px 0; font: 11px/1.5 var(--mono); color: var(--muted); }
-body.side-collapsed .side-hint { display: none; }
+
+
+/* ===== the rail is present, or it is gone =====
+   Collapsing used to shrink it to a strip of icons, which still took width and
+   still had to be explained with tooltips. Hiding it outright is simpler, gives
+   the page the full width back, and means one mental model instead of three:
+   the rail is open, or a button on the left brings it back. */
+body.side-collapsed .side {
+  transform: translateX(-102%);
+  visibility: hidden;
+  transition: transform .26s cubic-bezier(.2,.8,.3,1), visibility 0s .26s;
+}
+body.side-collapsed { padding-left: 0; }
+body.side-collapsed .side-toggle { display: grid; }
+
+@media (max-width: 900px) {
+  .side-toggle { display: grid; }
+  body.side-open .side-toggle { opacity: 0; pointer-events: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.side-collapsed .side { transition: none; }
+}
