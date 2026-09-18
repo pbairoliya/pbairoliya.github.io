@@ -225,7 +225,8 @@
         bar.style.left = pct(r.start) + "%";
         bar.style.width = Math.max(pct(r.end) - pct(r.start), 2) + "%";
         bar.style.setProperty("--e", rows.indexOf(r));
-        bar.textContent = r.name;
+        /* the name column says the name; a bar repeating it just clips */
+        bar.title = r.name + " · " + r.el.querySelector(".meta").textContent.trim();
         bar.setAttribute("aria-label", "Open " + r.name);
         if (r.open) bar.classList.add("is-open-ended");
         bar.addEventListener("click", () => {

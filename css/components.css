@@ -602,8 +602,8 @@ body.side-open { overflow: hidden; }
    chart needed six vertical lines through everything to place its bars, and
    they were the noisiest thing on the page. */
 .timeline { --lane: 72px; margin: var(--s8) 0 var(--s7); }
-#work { position: relative; }
-#work::before {                       /* the spine */
+#tl-list { position: relative; }
+#tl-list::before {                    /* the list view's spine */
   content: ""; position: absolute; left: 28px; top: 10px; bottom: 18px; width: 2px;
   border-radius: var(--r-pill);
   background: linear-gradient(var(--line) 0 85%, transparent);
@@ -639,7 +639,7 @@ body.side-open { overflow: hidden; }
 
 @media (max-width: 560px) {
   .timeline { --lane: 52px; }
-  #work::before { left: 10px; }
+  #tl-list::before { left: 10px; }
   .job-dot { left: 28px; }
   .tl-year span { width: 26px; font-size: 10px; }
 }
@@ -682,24 +682,22 @@ body.side-open { overflow: hidden; }
             white-space: nowrap; font-size: var(--fs-md); color: var(--muted); }
 .tlc-lane { position: relative; height: 100%; border-left: 1px solid var(--line); }
 
-.tlc-bar { position: absolute; top: 50%; height: 22px; margin-top: -11px;
-           display: flex; align-items: center; padding: 0 8px; overflow: hidden;
-           border: 0; border-radius: var(--r-sm); cursor: pointer;
-           background: color-mix(in srgb, var(--k) 26%, var(--panel));
-           box-shadow: inset 2px 0 0 var(--k);
-           color: var(--ink); font: 600 var(--fs-2xs)/1 var(--sans);
-           white-space: nowrap; text-overflow: ellipsis;
+.tlc-bar { position: absolute; top: 50%; height: 14px; margin-top: -7px;
+           padding: 0; border: 0; border-radius: var(--r-pill); cursor: pointer;
+           background: linear-gradient(90deg,
+             color-mix(in srgb, var(--k) 78%, transparent),
+             color-mix(in srgb, var(--k) 52%, transparent));
            transition: opacity .18s, filter .18s, transform .18s cubic-bezier(.2,.8,.3,1); }
 .tlc-bar[data-kind="work"]       { --k: var(--accent); }
 .tlc-bar[data-kind="teaching"],
 .tlc-bar[data-kind="research"]   { --k: var(--accent-2); }
 .tlc-bar[data-kind="leadership"] { --k: var(--hit); }
 .tlc-bar[data-kind="school"]     { --k: var(--muted); }
-.tlc-bar:hover, .tlc-bar:focus-visible { transform: translateY(-1px);
-           filter: brightness(1.18); outline: none;
-           box-shadow: inset 2px 0 0 var(--k), 0 0 0 1px var(--k); }
+.tlc-bar:hover, .tlc-bar:focus-visible { transform: scaleY(1.3);
+           filter: brightness(1.15); outline: none;
+           box-shadow: 0 0 0 3px color-mix(in srgb, var(--k) 22%, transparent); }
 /* a run with no end yet fades out to the right rather than stopping flat */
-.tlc-bar.is-open-ended { mask-image: linear-gradient(90deg, #000 76%, transparent); }
+.tlc-bar.is-open-ended { mask-image: linear-gradient(90deg, #000 82%, transparent); }
 .tlc-bar.dim { opacity: .18; }
 .tlc-lane.undated::after { content: ""; position: absolute; inset: 50% 8px auto; height: 1px;
             margin-top: -.5px;
