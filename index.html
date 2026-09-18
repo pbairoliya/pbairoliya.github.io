@@ -9,6 +9,7 @@
 </head>
 <body>
 <div class="wrap">
+  <div class="boot">
 
   <h1>Pratik Bairoliya</h1>
   <p class="tagline">SWE II @ Capital One</p>
@@ -23,27 +24,24 @@
     interests me there isn't prompting — it's making nondeterministic output behave like software.
   </p>
   <p>
-    Before that, and still: eight years with <a href="https://inspirenc.us/">InspireNC</a>, a
-    STEAM non-profit in the Triangle — five of them as its <strong>Chairman</strong> — teaching
-    high-schoolers to program and running FRC Team 6908. <a href="#about">More below ↓</a>
+    Before that, and still: eight years with <a href="https://inspirenc.us/">InspireNC</a> —
+    five as its Chairman — teaching high-schoolers to program. <a href="#about">Below ↓</a>
   </p>
+
+  </div>
 
   <section id="top" data-label="Top">
   <div class="actions">
+    <button class="btn palette-btn hint" type="button" data-open-palette>
+      Everything here <span class="k">⌘K</span>
+    </button>
     <a class="btn primary" href="Pratik-Bairoliya-Resume.pdf">Résumé <span class="k">PDF</span></a>
     <button class="btn" id="copy" type="button" data-mail="pratik0520@gmail.com">
       <span id="copy-label">Copy email</span>
     </button>
     <a class="btn" href="https://github.com/pbairoliya">GitHub</a>
     <a class="btn" href="https://linkedin.com/in/pbairol">LinkedIn</a>
-    <button class="btn" type="button" data-open-palette>
-      Menu <span class="k">⌘K</span>
-    </button>
-    <span class="theme" role="group" aria-label="Colour theme">
-      <button type="button" data-theme-btn="system" aria-pressed="true">auto</button>
-      <button type="button" data-theme-btn="light"  aria-pressed="false">light</button>
-      <button type="button" data-theme-btn="dark"   aria-pressed="false">dark</button>
-    </span>
+
   </div>
 
   </section>
@@ -51,37 +49,34 @@
   <section id="about" data-label="Background" class="about">
   <h2 class="reveal">Background</h2>
 
-  <p class="reveal">I came out of <strong>NC State</strong> in 2025 with two degrees —
-  computer science and applied mathematics — a 4.0, and a <strong>Park Scholarship</strong>,
-  the full ride NC State gives to about the top 1% of applicants for leadership and service
-  rather than grades alone. The maths half is not decoration: it is why a batch ledger that has
-  to reconcile to the cent every night feels like a natural place to work.</p>
+  <p class="reveal">Two degrees from <strong>NC State</strong> — computer science and applied
+  maths, 4.0, on a <a href="https://park.ncsu.edu/">Park Scholarship</a>: a full ride given to
+  roughly the top 1% of applicants for leadership and service rather than grades.</p>
 
-  <p class="reveal">The longer thread is teaching. I joined
-  <a href="https://inspirenc.us/">InspireNC</a> at seventeen — a community non-profit in
-  North Carolina's Triangle whose stated aim is to <em>promote interest, knowledge and
-  involvement in STEAM</em> and to build leadership in the people who come through it. I
-  started as a mechanical designer and programmer on <strong>FRC Team 6908, “Infuzed”</strong>,
-  its FIRST Robotics Competition team for 9th–12th graders. I became the team's Robotics
-  Representative, and then the organisation's <strong>Chairman</strong> — a role I held for five
-  years, until I graduated. Eight years with one organisation, most of them spent getting other
-  people started.</p>
+  <p class="reveal">And eight years with <a href="https://inspirenc.us/">InspireNC</a>, a STEAM
+  non-profit in the Triangle. I joined at seventeen as a programmer on <strong>FRC Team 6908,
+  “Infuzed”</strong>, and left five years later as its <strong>Chairman</strong> — free
+  bootcamps, Java to cohorts of 35, a competitive robotics season to keep funded and building.
+  <strong>100+ students</strong> through it.</p>
 
-  <p class="reveal">In practice that is free bootcamps and weekend workshops for high-schoolers
-  who would not otherwise get near a robot, teaching <strong>Java to cohorts of 35 at a
-  time</strong>, running outreach across the Triangle, and keeping a competitive FRC team
-  funded and building through a season. The programme has reached <strong>100+ students</strong>.
-  Alongside it I was a teaching assistant for <strong>Advanced MATLAB</strong> in NC State's CS
-  department, where I answered over <strong>1,000 questions</strong> on the course forum and
-  rebuilt the assignment set around what students were actually getting stuck on.</p>
+  <p class="pull reveal">I have been teaching people to program for almost as long as I have
+  been programming.</p>
 
-  <p class="pull reveal">I have been teaching people to program for almost as long as I have been
-  programming. It is the part of the work I would keep if I had to give up the rest.</p>
-
-  <p class="reveal">It shows up in how I build. The write-ups on this site are the same instinct —
-  explain the decision, name the thing that nearly went wrong, say what I would do differently.
-  A system nobody else can reason about is a system with one point of failure, and it is
-  usually me.</p>
+  <details class="fold reveal">
+    <summary><span class="chev">›</span> the longer version</summary>
+    <div class="fold-body">
+      <p>I was a mechanical designer before I was a programmer on that team — building the robot,
+      then writing what drove it. Robotics Representative, then Chairman for five years, most of
+      it spent getting other people started rather than competing myself.</p>
+      <p>Alongside it I was a teaching assistant for <strong>Advanced MATLAB</strong> in NC
+      State's CS department: over <strong>1,000 questions</strong> answered on the course forum,
+      and an assignment set rebuilt around where students were actually getting stuck rather than
+      where the syllabus assumed they would.</p>
+      <p>It shows up in how I build. The write-ups on this site are the same instinct — explain
+      the decision, name the thing that nearly went wrong, say what I would do differently. A
+      system nobody else can reason about has one point of failure, and it is usually me.</p>
+    </div>
+  </details>
 
   <div class="facts reveal">
     <div class="fact"><b>8 years</b><span>InspireNC — programmer to Chairman</span></div>
@@ -91,6 +86,7 @@
   </div>
 
   </section>
+
   <section id="work" data-label="Work">
   <h2 class="reveal">Work</h2>
 
@@ -140,49 +136,49 @@
   <div class="stack-group reveal">
     <p class="stack-label">Languages</p>
     <div class="stack">
-      <span class="tool"><img src="https://cdn.simpleicons.org/go" alt="" loading="lazy">Go</span>
-      <span class="tool"><img src="https://cdn.simpleicons.org/python" alt="" loading="lazy">Python</span>
-      <span class="tool"><img src="https://cdn.simpleicons.org/openjdk" alt="" loading="lazy">Java</span>
-      <span class="tool"><img src="https://cdn.simpleicons.org/typescript" alt="" loading="lazy">TypeScript</span>
-      <span class="tool"><img src="https://cdn.simpleicons.org/gnubash" alt="" loading="lazy">Bash</span>
+      <span class="tool" style="--i:0"><img src="https://cdn.simpleicons.org/go" alt="" loading="lazy">Go</span>
+      <span class="tool" style="--i:1"><img src="https://cdn.simpleicons.org/python" alt="" loading="lazy">Python</span>
+      <span class="tool" style="--i:2"><img src="https://cdn.simpleicons.org/openjdk" alt="" loading="lazy">Java</span>
+      <span class="tool" style="--i:3"><img src="https://cdn.simpleicons.org/typescript" alt="" loading="lazy">TypeScript</span>
+      <span class="tool" style="--i:4"><img src="https://cdn.simpleicons.org/gnubash" alt="" loading="lazy">Bash</span>
     </div>
   </div>
 
   <div class="stack-group reveal">
     <p class="stack-label">Infrastructure</p>
     <div class="stack">
-      <span class="tool"><span class="txt">AWS</span>AWS</span>
-      <span class="tool"><img src="https://cdn.simpleicons.org/kubernetes" alt="" loading="lazy">Kubernetes</span>
-      <span class="tool"><img src="https://cdn.simpleicons.org/temporal" alt="" loading="lazy">Temporal</span>
-      <span class="tool"><img src="https://cdn.simpleicons.org/docker" alt="" loading="lazy">Docker</span>
-      <span class="tool"><img src="https://cdn.simpleicons.org/terraform" alt="" loading="lazy">Terraform</span>
-      <span class="tool"><img src="https://cdn.simpleicons.org/argo" alt="" loading="lazy">Argo</span>
-      <span class="tool"><img src="https://cdn.simpleicons.org/helm" alt="" loading="lazy">Helm</span>
-      <span class="tool"><img src="https://cdn.simpleicons.org/jenkins" alt="" loading="lazy">Jenkins</span>
+      <span class="tool" style="--i:0"><span class="txt">AWS</span>AWS</span>
+      <span class="tool" style="--i:1"><img src="https://cdn.simpleicons.org/kubernetes" alt="" loading="lazy">Kubernetes</span>
+      <span class="tool" style="--i:2"><img src="https://cdn.simpleicons.org/temporal" alt="" loading="lazy">Temporal</span>
+      <span class="tool" style="--i:3"><img src="https://cdn.simpleicons.org/docker" alt="" loading="lazy">Docker</span>
+      <span class="tool" style="--i:4"><img src="https://cdn.simpleicons.org/terraform" alt="" loading="lazy">Terraform</span>
+      <span class="tool" style="--i:5"><img src="https://cdn.simpleicons.org/argo" alt="" loading="lazy">Argo</span>
+      <span class="tool" style="--i:6"><img src="https://cdn.simpleicons.org/helm" alt="" loading="lazy">Helm</span>
+      <span class="tool" style="--i:7"><img src="https://cdn.simpleicons.org/jenkins" alt="" loading="lazy">Jenkins</span>
     </div>
   </div>
 
   <div class="stack-group reveal">
     <p class="stack-label">Data &amp; backend</p>
     <div class="stack">
-      <span class="tool"><img src="https://cdn.simpleicons.org/apachehive" alt="" loading="lazy">Hive</span>
-      <span class="tool"><img src="https://cdn.simpleicons.org/postgresql" alt="" loading="lazy">Postgres</span>
-      <span class="tool"><img src="https://cdn.simpleicons.org/neo4j" alt="" loading="lazy">Neo4j</span>
-      <span class="tool"><img src="https://cdn.simpleicons.org/springboot" alt="" loading="lazy">Spring Boot</span>
-      <span class="tool"><img src="https://cdn.simpleicons.org/graphql" alt="" loading="lazy">GraphQL</span>
-      <span class="tool"><img src="https://cdn.simpleicons.org/nodedotjs" alt="" loading="lazy">Node.js</span>
+      <span class="tool" style="--i:0"><img src="https://cdn.simpleicons.org/apachehive" alt="" loading="lazy">Hive</span>
+      <span class="tool" style="--i:1"><img src="https://cdn.simpleicons.org/postgresql" alt="" loading="lazy">Postgres</span>
+      <span class="tool" style="--i:2"><img src="https://cdn.simpleicons.org/neo4j" alt="" loading="lazy">Neo4j</span>
+      <span class="tool" style="--i:3"><img src="https://cdn.simpleicons.org/springboot" alt="" loading="lazy">Spring Boot</span>
+      <span class="tool" style="--i:4"><img src="https://cdn.simpleicons.org/graphql" alt="" loading="lazy">GraphQL</span>
+      <span class="tool" style="--i:5"><img src="https://cdn.simpleicons.org/nodedotjs" alt="" loading="lazy">Node.js</span>
     </div>
   </div>
 
   <div class="stack-group reveal">
     <p class="stack-label">Frontend &amp; on-device AI</p>
     <div class="stack">
-      <span class="tool"><img src="https://cdn.simpleicons.org/react" alt="" loading="lazy">React</span>
-      <span class="tool"><img src="https://cdn.simpleicons.org/vuedotjs" alt="" loading="lazy">Vue</span>
-      <span class="tool"><img src="https://cdn.simpleicons.org/angular" alt="" loading="lazy">Angular</span>
-      <span class="tool"><img src="https://cdn.simpleicons.org/ollama" alt="" loading="lazy">Ollama</span>
-      <span class="tool"><img src="https://cdn.simpleicons.org/pytorch" alt="" loading="lazy">PyTorch</span>
-      <span class="tool"><img src="https://cdn.simpleicons.org/apple" alt="" loading="lazy">Vision</span>
+      <span class="tool" style="--i:0"><img src="https://cdn.simpleicons.org/react" alt="" loading="lazy">React</span>
+      <span class="tool" style="--i:1"><img src="https://cdn.simpleicons.org/vuedotjs" alt="" loading="lazy">Vue</span>
+      <span class="tool" style="--i:2"><img src="https://cdn.simpleicons.org/angular" alt="" loading="lazy">Angular</span>
+      <span class="tool" style="--i:3"><img src="https://cdn.simpleicons.org/ollama" alt="" loading="lazy">Ollama</span>
+      <span class="tool" style="--i:4"><img src="https://cdn.simpleicons.org/pytorch" alt="" loading="lazy">PyTorch</span>
+      <span class="tool" style="--i:5"><img src="https://cdn.simpleicons.org/apple" alt="" loading="lazy">Vision</span>
     </div>
   </div>
 
@@ -249,6 +245,12 @@
   </footer>
 
 </div>
+<span class="theme" role="group" aria-label="Colour theme">
+  <button type="button" data-theme-btn="system" aria-pressed="true">auto</button>
+  <button type="button" data-theme-btn="light"  aria-pressed="false">light</button>
+  <button type="button" data-theme-btn="dark"   aria-pressed="false">dark</button>
+</span>
+
 <nav id="spy" aria-label="Section navigation"></nav>
 
 <div id="palette" aria-hidden="true" role="dialog" aria-label="Command palette">
