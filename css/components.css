@@ -106,7 +106,22 @@ div.job-head { display: flex; flex-wrap: wrap; justify-content: space-between;
 div.job-head h3 { margin: 0; font: 600 var(--fs-lg)/var(--lh-snug) var(--sans);
                   letter-spacing: var(--ls-tight); }
 div.job-head .meta { white-space: nowrap; }
-.job-sub { color: var(--muted); font-size: var(--fs-md); margin: 2px 0 var(--s3); }
+.job-sub { display: flex; align-items: center; gap: var(--s2); flex-wrap: wrap;
+           color: var(--muted); font-size: var(--fs-md); margin: 3px 0 var(--s3); }
+/* What KIND of entry this is. The timeline runs work, teaching, research,
+   leadership and school together in one chronology, so each row has to say
+   which it is without the reader having to infer it from the title. */
+.kind { padding: 2px var(--s2); border-radius: var(--r-pill);
+        border: 1px solid color-mix(in srgb, var(--k, var(--accent)) 35%, transparent);
+        background: color-mix(in srgb, var(--k, var(--accent)) 12%, transparent);
+        color: var(--k, var(--accent));
+        font: 700 var(--fs-2xs)/1.6 var(--sans); letter-spacing: var(--ls-caps);
+        text-transform: uppercase; white-space: nowrap; }
+.kind-work       { --k: var(--accent); }
+.kind-teaching   { --k: var(--accent-2); }
+.kind-research   { --k: var(--accent-2); }
+.kind-leadership { --k: var(--hit); }
+.kind-school     { --k: var(--muted); }
 .job ul { margin-bottom: 0; }
 
 /* A role opens when you want to read it. The markup ships open, so a blocked
@@ -211,8 +226,6 @@ a.cred:hover { text-decoration: none; }
              font: 700 var(--fs-2xs)/1 var(--sans); letter-spacing: var(--ls-caps);
              text-transform: uppercase; color: var(--accent);
              transition: color .8s linear; }
-.cred-quiet { border-left-color: var(--line); }
-.cred-quiet .cred-mark { color: var(--muted); }
 
 .interests { margin-top: var(--s5); }
 
@@ -460,6 +473,26 @@ body.side-open { overflow: hidden; }
 
 /* the open role's bullets wait their turn rather than arriving before the line */
 .timeline:not(.drawn) .job-body li { opacity: 0; transform: translateX(-12px); }
+
+/* A safety floor. blocks.js marks the timeline settled once the sweep's wall
+   clock has run out, which clears the entrance animations and hands every
+   element back to its own styles. In a normal browser this changes nothing —
+   the animations have already finished. If one ever stalls, content cannot
+   stay stuck at opacity 0, which `backwards` fill would otherwise allow. */
+.timeline.settled .job-node,
+.timeline.settled .job-node::before,
+.timeline.settled .job-head,
+.timeline.settled .job-sub { animation: none; }
+
+/* Opening an entry replays its own pop and ring. blocks.js retriggers by
+   removing and re-adding .pop, so this has to out-specify the sweep rules
+   above and carry no delay of its own. */
+.timeline.drawn .job-node.pop {
+  animation: node-pop .5s cubic-bezier(.34,1.5,.64,1) 0s backwards;
+}
+.timeline.drawn .job-node.pop::before {
+  animation: node-ring .7s ease-out 0s backwards;
+}
 #work .job .rail { display: none; }   /* the timeline is this section's rail */
 
 .job-node {
@@ -502,8 +535,8 @@ body.side-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .job-node { transition: none; }
   .job:hover .job-node { transform: none; }
-  .timeline.drawn .job-node,
-  .timeline.drawn .job-node::before,
+  .timeline.drawn .job-node, .timeline.drawn .job-node.pop,
+  .timeline.drawn .job-node::before, .timeline.drawn .job-node.pop::before,
   .timeline.drawn .job-head,
   .timeline.drawn .job-sub { animation: none; }
   .timeline:not(.drawn) .job-body li { opacity: 1; transform: none; }

@@ -74,6 +74,15 @@
             (getSelection?.()?.toString() || "")) return;
         const open = job.classList.contains("shut");
         set(job, open);
+        /* Replay the node's pop and ring on every toggle, not only during the
+           first sweep. Removing the class, forcing a reflow and adding it back
+           is what restarts a CSS animation. */
+        if (!reduced) {
+          const node = job.querySelector(".job-node");
+          node.classList.remove("pop");
+          void node.offsetWidth;
+          node.classList.add("pop");
+        }
         /* an entry opened from far down the page should not push its own
            heading off the top */
         if (open && !reduced) {
@@ -94,14 +103,14 @@
        of that problem and reads better anyway. */
     const track = document.querySelector(".timeline");
     if (track) {
-      jobs.forEach((j, n) => j.style.setProperty("--d", 140 + n * 320));
-      const last = 140 + (jobs.length - 1) * 320;
+      jobs.forEach((j, n) => j.style.setProperty("--d", 120 + n * 150));
+      const last = 120 + (jobs.length - 1) * 150;
       const draw = () => {
         track.classList.add("drawn");
         /* The per-node stagger is a transition-delay, so it would otherwise
            apply to every later transition too — hovering the last node would
            take 780ms to respond. Drop it once the sweep has finished. */
-        setTimeout(() => track.classList.add("settled"), last + 400);
+        setTimeout(() => track.classList.add("settled"), last + 900);
       };
       if (reduced || !("IntersectionObserver" in window)) draw();
       else {
