@@ -396,9 +396,6 @@ body.side-open { overflow: hidden; }
 .side-scrim, #palette { overscroll-behavior: contain; }
 
 /* Card title and its metadata on one line, title left, meta right, baselines aligned. */
-.card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-.card-head h3 { margin: 0; }
-.card-head .meta { flex: 0 0 auto; }
 
 @media (prefers-reduced-motion: reduce) {
   .job-body, .job-body li, .job-toggle .chev { transition: none; }
@@ -409,16 +406,16 @@ body.side-open { overflow: hidden; }
    when the role is closed, a filled disc when it is open. That replaces a
    column of chevron buttons with one thing to look at. */
 #work .job { position: relative; padding-left: 40px; }
-/* .job::after is the pointer glow (motion.css) and .job::before is the divider
-   hairline, so the line hangs off the head — it still resolves against .job,
-   which is the positioned ancestor. */
-#work .job-head::before {
-  content: ""; position: absolute; left: 14px; top: 0; bottom: -3px; width: 2px;
-  background: var(--line); transition: background-color .4s;   /* -3px closes the gap at the divider */
-}
-#work .job:first-of-type .job-head::before { top: 27px; }
-#work .job:last-of-type  .job-head::before { bottom: auto; height: 27px; }
-#work .job:not(.shut) .job-head::before { background: var(--accent); }
+/* One line for the whole run, drawn as you scroll past it. The grey track spans
+   all three years; the gradient fill is how far down them you have read. */
+.timeline { position: relative; }
+.tl-line { position: absolute; left: 14px; top: 27px; bottom: 27px; width: 2px;
+           background: var(--line); border-radius: var(--r-pill); }
+.tl-line i { position: absolute; inset: 0; border-radius: inherit;
+             background: linear-gradient(var(--accent), var(--accent-2));
+             transform: scaleY(var(--p, 0)); transform-origin: top;
+             transition: transform .12s linear, background .8s linear; }
+.job.reached .job-node { border-color: var(--accent); }
 #work .job .rail { display: none; }   /* the timeline is this section's rail */
 
 .job-node {
@@ -441,10 +438,23 @@ body.side-open { overflow: hidden; }
 
 @media (max-width: 560px) {
   #work .job { padding-left: 30px; }
-  #work .job-head::before { left: 9px; }
+  .tl-line { left: 9px; }
   .job-node { left: 2px; }
 }
+/* The current role is still running, so its node keeps a pulse. */
+.job-now .job-node::after {
+  content: ""; position: absolute; inset: -2px; border-radius: inherit;
+  border: 2px solid var(--accent); animation: node-pulse 2.6s ease-out infinite;
+}
+@keyframes node-pulse {
+  0%   { transform: scale(1);   opacity: .65; }
+  70%  { transform: scale(2.2); opacity: 0;   }
+  100% { transform: scale(2.2); opacity: 0;   }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .job-node { transition: none; }
   .job:hover .job-node { transform: none; }
+  .tl-line i { transition: none; transform: scaleY(1); }
+  .job-now .job-node::after { animation: none; opacity: 0; }
 }
