@@ -122,6 +122,24 @@ def main() -> int:
     print(f"{'ok  ' if not bad_js else 'FAIL'} paths navigated from JS: {bad_js or 'all resolve'}")
     ok &= not bad_js
 
+    # The sheet broke because `body.side-collapsed .side` was declared at top
+    # level AFTER the mobile rules, so a stored collapse pinned the sheet
+    # off-screen at every width. Any state class that only means something at
+    # one breakpoint has to live inside that breakpoint.
+    scoped_only = ["side-collapsed"]
+    leaks = []
+    for name in scoped_only:
+        depth = 0
+        for line in css_src.split("\n"):
+            if line.strip().startswith("@media"):
+                depth += 1
+            depth += line.count("{") - line.count("}") if depth else 0
+            if f".{name}" in line and "{" in line and depth <= 0:
+                leaks.append(line.strip()[:64])
+    print(f"{'ok  ' if not leaks else 'FAIL'} breakpoint-only classes stay scoped: "
+          f"{leaks or 'yes'}")
+    ok &= not leaks
+
     return 0 if ok else 1
 
 

@@ -111,7 +111,10 @@
     collapseBtn?.setAttribute("title", on ? "Expand sidebar" : "Collapse sidebar");
     try { localStorage.setItem(COLLAPSE_KEY, on ? "1" : "0"); } catch {}
   };
-  try { if (localStorage.getItem(COLLAPSE_KEY) === "1") setCollapsed(true); } catch {}
+  // only restore it where collapsing means anything
+  try {
+    if (!isSheet() && localStorage.getItem(COLLAPSE_KEY) === "1") setCollapsed(true);
+  } catch {}
   collapseBtn?.addEventListener("click", () =>
     setCollapsed(!document.body.classList.contains("side-collapsed")));
 
@@ -130,10 +133,15 @@
   const syncInert = () => {
     // a sheet left open at phone width must not still be "open" at desktop width
     if (!isSheet()) closeSheet();
-    const hidden = isSheet()
-      ? !document.body.classList.contains("side-open")
-      : document.body.classList.contains("side-collapsed");
-    if (hidden) bar.setAttribute("inert", "");
+      // a desktop collapse must not follow you down to sheet widths
+      if (isSheet()) document.body.classList.remove("side-collapsed");
+      else { try { if (localStorage.getItem(COLLAPSE_KEY) === "1")
+                     document.body.classList.add("side-collapsed"); } catch {} }
+      // whichever way it is hidden, it must leave the tab order
+      const hidden = isSheet()
+        ? !document.body.classList.contains("side-open")
+        : document.body.classList.contains("side-collapsed");
+      if (hidden) bar.setAttribute("inert", "");
     else bar.removeAttribute("inert");
   };
   syncInert();
