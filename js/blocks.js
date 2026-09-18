@@ -198,7 +198,8 @@
     body.className = "tlc-body";
     const today = document.createElement("span");
     today.className = "tlc-today";
-    today.style.left = pct(Date.now()) + "%";
+    /* placed against the lane, not the row: the row starts at the name column */
+    today.style.left = "calc(var(--name) + (100% - var(--name)) * " + (pct(Date.now()) / 100).toFixed(5) + ")";
     body.appendChild(today);
 
     rows.forEach(r => {
@@ -229,18 +230,20 @@
         bar.title = r.name + " · " + r.el.querySelector(".meta").textContent.trim();
         bar.setAttribute("aria-label", "Open " + r.name);
         if (r.open) bar.classList.add("is-open-ended");
-        bar.addEventListener("click", () => {
-          setView("list");
-          r.el.querySelector(".job-toggle").click();
-          r.el.scrollIntoView({ block: "center",
-            behavior: reduced ? "auto" : "smooth" });
-        });
         lane.appendChild(bar);
         r.bar = bar;
       } else {
         lane.classList.add("undated");
       }
       line.appendChild(lane);
+      if (r.start) {
+        line.classList.add("is-live");
+        line.addEventListener("click", () => {
+          setView("list");
+          r.el.querySelector(".job-toggle").click();
+          r.el.scrollIntoView({ block: "center", behavior: reduced ? "auto" : "smooth" });
+        });
+      }
       body.appendChild(line);
     });
     chart.appendChild(body);
@@ -259,9 +262,13 @@
     };
     body.addEventListener("pointermove", e => {
       if (e.pointerType === "touch") return;
+      /* measure against a real lane, so the scale starts at the axis and not at
+         the left edge of the name column */
+      const lane = body.querySelector(".tlc-lane").getBoundingClientRect();
       const box = body.getBoundingClientRect();
-      const x = Math.min(Math.max(e.clientX - box.left, 0), box.width);
-      const at = t0 + (x / box.width) * (t1 - t0);
+      const f = Math.min(Math.max((e.clientX - lane.left) / lane.width, 0), 1);
+      const x = lane.left - box.left + f * lane.width;
+      const at = t0 + f * (t1 - t0);
       const d = new Date(at);
       let live = 0;
       dated.forEach(r => {
