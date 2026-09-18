@@ -1,66 +1,78 @@
 /* components — every discrete piece of UI on the page. */
 
 /* ---- sidebar navigation ----
-   A left rail of pages, the way Notion does it: it never covers the writing,
-   it holds more entries than a top bar can, and it is where anyone who has used
-   Notion already looks. Under 900px there is no room for a permanent rail, so it
-   becomes a sheet behind a button. */
+   A left rail of pages. Three things it got wrong before, all fixed here:
+   it was translucent over a moving canvas so the glyph field crawled behind the
+   text; it used full-colour emoji, which render at a different size and
+   baseline on every platform and fight a monochrome interface; and collapsing
+   animated `body { padding-left }`, which is a layout property and therefore
+   never smooth. Solid panel, one monochrome icon set, transform-only motion. */
 .side {
-  position: fixed; inset-block: 0; left: 0; z-index: 8; width: 218px;
-  display: flex; flex-direction: column; gap: 2px;
-  padding: clamp(16px, 4vh, 26px) 12px;
-  background: color-mix(in srgb, var(--panel) 62%, transparent);
-  backdrop-filter: blur(16px) saturate(1.2);
-  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  position: fixed; inset-block: 0; left: 0; z-index: 8; width: 232px;
+  display: flex; flex-direction: column; gap: 1px;
+  padding: clamp(18px, 4vh, 28px) 10px 14px;
+  background: var(--panel);
   border-right: 1px solid var(--line);
   overflow-y: auto; overscroll-behavior: contain;
 }
-a.side-head { color: inherit; border-radius: 9px; }
+
+.side-head { display: flex; align-items: center; padding: 2px 8px 18px; }
+a.side-head { color: inherit; border-radius: 9px; padding: 8px 8px 10px; margin-bottom: 8px; }
 a.side-head:hover { background: var(--code-bg); text-decoration: none; }
-/* The header is a link on sub-pages, and its hover fill used to run underneath
-   the collapse button sitting in the same corner. Reserve that corner. */
-.side-head { display: flex; align-items: center; gap: 9px;
-             padding: 6px 42px 14px 10px; }
-.side-avatar { width: 28px; height: 28px; border-radius: 9px; flex: 0 0 28px;
-               display: grid; place-items: center; color: #fff;
-               font: 700 12px/1 var(--sans); letter-spacing: -.02em;
-               background: linear-gradient(130deg, var(--accent), var(--accent-2)); }
-.side-name { font: 600 13px/1.25 var(--sans); min-width: 0; }
-.side-name span { display: block; margin-top: 2px;
-                  font: 10.5px/1.3 var(--mono); color: var(--muted);
+.side-name { font: 600 13.5px/1.3 var(--sans); min-width: 0; }
+.side-name span { display: block; margin-top: 3px;
+                  font: 11px/1.3 var(--sans); color: var(--muted); font-weight: 400;
                   overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-/* The toggle must sit UNDER the sheet it opens, or it floats over the sheet's
-   own header. Above the scrim (7), below the sheet (8). */
-/* The menu button mirrors the settings gear on the other side: same size, same
-   treatment, same idea. It appears whenever the rail is not on screen — which
-   is any phone, and any desktop where the rail has been collapsed away. */
+.side-label { padding: 16px 8px 6px; font: 11px/1 var(--sans); font-weight: 600;
+              letter-spacing: .01em; color: var(--muted); }
+.side-label:first-of-type { padding-top: 0; }
+
+.side a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 8px; border-radius: 7px;
+  font: 13.5px/1.35 var(--sans); color: var(--muted);
+  transition: background-color .13s, color .13s;
+}
+.side a svg { width: 16px; height: 16px; flex: 0 0 16px; fill: currentColor; opacity: .75; }
+.side a span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.side a:hover { background: var(--code-bg); color: var(--ink); text-decoration: none; }
+.side a:hover svg { opacity: 1; }
+.side a.on { color: var(--accent); font-weight: 600;
+             background: color-mix(in srgb, var(--accent) 10%, transparent); }
+.side a.on svg { opacity: 1; }
+
+.side-foot { margin-top: auto; padding: 16px 8px 0; }
+.side-foot a { padding: 0; font: 11px/1.4 var(--sans); color: var(--muted); display: block;
+               overflow: hidden; text-overflow: ellipsis; }
+.side-foot a:hover { color: var(--accent); background: none; }
+
+/* The collapse control sits in the rail, not in the header — the header is a
+   link on sub-pages, and a button inside an anchor is invalid markup. */
+.side-collapse {
+  position: absolute; top: 14px; right: 10px; width: 28px; height: 28px;
+  display: grid; place-items: center; border-radius: 7px; cursor: pointer;
+  line-height: 0; background: none; border: 0; color: var(--muted); opacity: .5;
+  transition: opacity .14s, color .14s, background-color .14s;
+}
+.side:hover .side-collapse, .side-collapse:focus-visible { opacity: 1; }
+.side-collapse:hover { background: var(--code-bg); color: var(--accent); }
+.side-collapse svg { width: 16px; height: 16px; fill: currentColor; }
+
+/* The menu button mirrors the settings gear on the other side. It appears
+   whenever the rail is not on screen. Below the sheet (8), above the scrim (7). */
 .side-toggle { position: fixed; z-index: 6; display: none; place-items: center;
                line-height: 0;
                top: max(12px, env(safe-area-inset-top)); left: clamp(12px, 3vw, 18px);
                width: 38px; height: 38px; border-radius: 999px; cursor: pointer;
-               background: color-mix(in srgb, var(--panel) 84%, transparent);
+               background: var(--panel);
                border: 1px solid var(--line); color: var(--muted);
-               backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+               box-shadow: 0 6px 20px -10px rgba(0,0,0,.4); }
 .side-toggle:hover { color: var(--accent); border-color: var(--accent); }
 .side-toggle svg { width: 16px; height: 16px; fill: currentColor; }
-.side-scrim { position: fixed; inset: 0; z-index: 7; display: none;
-              background: rgba(8,9,12,.45); backdrop-filter: blur(2px); }
-
-/* the page sits beside the rail rather than under it */
-@media (min-width: 900.02px) {
-  body:not(.bare) { padding-left: 218px; }
-}
-@media (max-width: 900px) {
-  .side-collapse { display: none; }
-  .side { transform: translateX(-102%); transition: transform .28s cubic-bezier(.2,.8,.3,1);
-          box-shadow: 0 0 60px rgba(0,0,0,.4); width: min(260px, 82vw); }
-  /* once the sheet is open the toggle is both redundant and in the way */
-  body.side-open .side-toggle { opacity: 0; pointer-events: none; }
-  body.side-open .side { transform: none; }
-  body.side-open .side-scrim { display: block; }
-}
-@media (prefers-reduced-motion: reduce) { .side { transition: none; } }
+.side-scrim { position: fixed; inset: 0; z-index: 7; background: rgba(8,9,12,.45);
+              opacity: 0; pointer-events: none; transition: opacity .26s ease; }
+body.side-open .side-scrim { opacity: 1; pointer-events: auto; }
 
 /* ---- actions ---- */
 .actions { display: flex; flex-wrap: wrap; gap: 9px; margin: 18px 0 4px; }
@@ -88,8 +100,8 @@ a.side-head:hover { background: var(--code-bg); text-decoration: none; }
 .job-head h3 { margin: 0; }
 .job-sub { color: var(--muted); font-size: .88rem; margin: 2px 0 10px; }
 .job ul { margin-bottom: 0; }
-.job .rail { position: absolute; left: 4px; top: 50%; width: 3px; height: 0;
-             border-radius: 3px; transform: translateY(-50%); pointer-events: none;
+.job .rail { position: absolute; left: 4px; top: 50%; width: 3px;
+             border-radius: 3px; pointer-events: none;
              background: linear-gradient(var(--accent), var(--accent-2)); }
 
 /* ---- cards ---- */
@@ -258,61 +270,12 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
 /* A sheet that is merely translated off-screen still holds its links in the tab
    order. Hide it from assistive tech and from tabbing until it is open. */
 @media (max-width: 900px) {
-  .side { visibility: hidden; }
-  body.side-open .side { visibility: visible; }
+  .side { transform: translateX(-101%); visibility: hidden;
+          transition: transform .26s cubic-bezier(.32,.72,0,1), visibility 0s .26s;
+          box-shadow: 0 0 48px -8px rgba(0,0,0,.45); width: min(272px, 84vw); }
+  body.side-open .side { transform: none; visibility: visible; transition-delay: 0s; }
 }
 @media (prefers-reduced-motion: reduce) { .skip { transition: none; } }
-
-/* ---- sidebar: icons, collapse ---- */
-.side a i.ic { display: grid; place-items: center; }
-.side a i.ic svg { width: 15px; height: 15px; fill: currentColor; }
-/* The collapse control sits in the rail itself, not inside the header — the
-   header is a link on sub-pages, and a button inside an anchor is invalid.
-   Visible at rest, because a control nobody can find is a control nobody uses. */
-.side { position: fixed; }
-.side-collapse {
-  position: absolute; top: 12px; right: 9px; width: 28px; height: 28px;
-  display: grid; place-items: center; border-radius: 8px; cursor: pointer;
-  line-height: 0;                       /* no stray text-line height to offset the glyph */
-  background: none; border: 0; color: var(--muted); opacity: .55;
-  transition: opacity .16s, color .16s, background-color .16s, transform .24s;
-}
-.side:hover .side-collapse, .side-collapse:focus-visible { opacity: 1; }
-.side-collapse:hover { background: var(--code-bg); color: var(--accent); }
-/* the same glyph the phone uses, so one icon means "menu" everywhere */
-.side-collapse svg { width: 15px; height: 15px; fill: currentColor; }
-
-@media (prefers-reduced-motion: reduce) { .side, body, .side-collapse { transition: none; } }
-
-
-/* ===== phone =====
-   A phone is not a narrow desktop. It has no keyboard shortcut, no hover, and
-   the thing a visitor most likely came for is the resume — so that leads, and
-   the ⌘K affordance goes away entirely rather than sitting there unusable. */
-@media (max-width: 900px) {
-  .btn.palette-btn { display: none; }
-  .actions { gap: 8px; }
-  .btn.primary { flex: 1 1 100%; justify-content: center; padding-block: 12px; font-size: 14px; }
-  .btn.icon { width: 44px; height: 44px; }          /* a real thumb target */
-  .side a { padding: 11px 12px; font-size: 14.5px; }
-  .side-label { padding-top: 16px; }
-  .gear, .side-toggle { width: 42px; height: 42px; }
-  .settings { width: min(260px, calc(100vw - 24px)); }
-  .wrap { padding-top: clamp(64px, 14vw, 88px); }
-}
-/* the palette is keyboard-driven, so it should not open on a touch-only device */
-@media (hover: none) and (pointer: coarse) {
-  .btn.palette-btn { display: none; }
-}
-
-
-/* ---- the rail explains its own shortcut ---- */
-.side-foot kbd, .side-hint kbd {
-  font: 10px var(--mono); border: 1px solid var(--line); border-bottom-width: 2px;
-  border-radius: 4px; padding: 1px 4px; color: var(--muted);
-}
-.side-hint { padding: 10px 10px 0; font: 11px/1.5 var(--mono); color: var(--muted); }
-
 
 /* ===== the rail is present, or it is gone =====
    Collapsing used to shrink it to a strip of icons, which still took width and
@@ -325,10 +288,12 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
    so a stored `side-collapsed` pinned the sheet off-screen at every width and
    the menu button silently did nothing. */
 @media (min-width: 900.02px) {
+  /* the page sits beside the rail rather than under it */
+  body:not(.bare) { padding-left: 232px; }
   body.side-collapsed .side {
-    transform: translateX(-102%);
+    transform: translateX(-101%);
     visibility: hidden;
-    transition: transform .26s cubic-bezier(.2,.8,.3,1), visibility 0s .26s;
+    transition: transform .26s cubic-bezier(.32,.72,0,1), visibility 0s .26s;
   }
   body.side-collapsed { padding-left: 0; }
   body.side-collapsed .side-toggle { display: grid; }

@@ -78,8 +78,10 @@ h2.reveal { transition-duration: .4s, .46s; }
   box-shadow: 0 14px 34px -16px color-mix(in srgb, var(--hit) 60%, transparent);
 }
 .tool.lit, .btn.lit { transform: translateY(-2px); }
-.job .rail { transition: height .34s cubic-bezier(.2,.8,.3,1); }
-.job.lit .rail { height: calc(100% - 24px); }
+/* scaleY rather than height: the same growing bar, off the layout path */
+.job .rail { height: calc(100% - 24px); transform: translateY(-50%) scaleY(0);
+             transform-origin: center; transition: transform .3s cubic-bezier(.2,.8,.3,1); }
+.job.lit .rail { transform: translateY(-50%) scaleY(1); }
 
 @supports not (background: color-mix(in srgb, red 10%, blue)) {
   .job::after, .card::after, .cred::after, .tool::after, .btn::after,
