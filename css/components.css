@@ -58,6 +58,7 @@ a.side-head:hover { background: var(--code-bg); text-decoration: none; }
   body { padding-left: 218px; }
 }
 @media (max-width: 900px) {
+  .side-collapse { display: none; }
   .side { transform: translateX(-102%); transition: transform .28s cubic-bezier(.2,.8,.3,1);
           box-shadow: 0 0 60px rgba(0,0,0,.4); width: min(260px, 82vw); }
   .side-toggle { display: grid; }
@@ -259,11 +260,16 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
 /* ---- sidebar: icons, collapse ---- */
 .side a i.ic { display: grid; place-items: center; }
 .side a i.ic svg { width: 15px; height: 15px; fill: currentColor; }
-.side-head { position: relative; }
-.side-collapse { position: absolute; top: 4px; right: 0; width: 26px; height: 26px;
-                 display: grid; place-items: center; border-radius: 7px; cursor: pointer;
-                 background: none; border: 0; color: var(--muted); opacity: 0;
-                 transition: opacity .16s, color .16s, background-color .16s; }
+/* The collapse control sits in the rail itself, not inside the header — the
+   header is a link on sub-pages, and a button inside an anchor is invalid.
+   Visible at rest, because a control nobody can find is a control nobody uses. */
+.side { position: fixed; }
+.side-collapse {
+  position: absolute; top: 14px; right: 10px; width: 26px; height: 26px;
+  display: grid; place-items: center; border-radius: 7px; cursor: pointer;
+  background: none; border: 0; color: var(--muted); opacity: .55;
+  transition: opacity .16s, color .16s, background-color .16s, transform .24s;
+}
 .side:hover .side-collapse, .side-collapse:focus-visible { opacity: 1; }
 .side-collapse:hover { background: var(--code-bg); color: var(--accent); }
 .side-collapse svg { width: 17px; height: 17px; fill: currentColor; }
@@ -277,9 +283,10 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
   body.side-collapsed .side-foot,
   body.side-collapsed .side a > :not(i) { display: none; }
   body.side-collapsed .side a { justify-content: center; padding-inline: 0; }
-  body.side-collapsed .side-collapse { position: static; margin: 0 auto; opacity: 1; }
+  body.side-collapsed .side-collapse { position: static; margin: 10px auto 0; opacity: 1; }
   body.side-collapsed .side-collapse svg { transform: rotate(180deg); }
-  body.side-collapsed .side-head { flex-direction: column; gap: 10px; padding: 6px 0 12px; }
+  body.side-collapsed .side-head { justify-content: center; padding: 6px 0 4px; }
+  body.side-collapsed .side { display: flex; flex-direction: column; }
   .side, body { transition: width .24s cubic-bezier(.2,.8,.3,1), padding-left .24s cubic-bezier(.2,.8,.3,1); }
 }
 @media (prefers-reduced-motion: reduce) { .side, body, .side-collapse { transition: none; } }

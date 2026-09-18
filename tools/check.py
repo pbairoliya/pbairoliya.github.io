@@ -54,10 +54,12 @@ def main() -> int:
         src = page.read_text()
         doc = Doc()
         doc.feed(src)
-        missing = [
-            f for f in doc.files
-            if not (page.parent / urllib.parse.urlparse(f).path).resolve().exists()
-        ]
+        missing = []
+        for f in doc.files:
+            path = urllib.parse.urlparse(f).path
+            base = ROOT if path.startswith("/") else page.parent
+            if not (base / path.lstrip("/")).resolve().exists():
+                missing.append(f)
         ids = set(re.findall(r'id="([^"]+)"', src))
         dead = [a for a in doc.anchors if a[1:] and a[1:] not in ids]
         good = not (doc.stray or doc.stack or missing or dead)
