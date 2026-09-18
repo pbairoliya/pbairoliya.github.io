@@ -1,0 +1,62 @@
+/* tour — the first-visit walkthrough.
+   Three stacked pieces inside one fixed root: the root swallows stray clicks so
+   nobody navigates away mid-tour, the hole dims everything via one enormous
+   box-shadow (cheaper than four edge divs or an SVG mask, and box-shadow is not
+   hit-testable so it never steals a click), and the popover sits on top. */
+
+.tour {
+  position: fixed; inset: 0; z-index: 60;
+  opacity: 0; transition: opacity .28s ease;
+}
+.tour.on { opacity: 1; }
+
+/* The hole is positioned with a transform rather than left/top so that
+   following a scrolling target costs a paint, not a layout pass. */
+.tour-hole {
+  position: fixed; left: 0; top: 0; pointer-events: none;
+  border-radius: 14px;
+  box-shadow: 0 0 0 9999px rgba(8, 9, 12, .62),
+              0 0 0 1px color-mix(in srgb, var(--accent) 60%, transparent) inset;
+  transition: transform .3s var(--ease, cubic-bezier(.22,.7,.3,1)),
+              width .3s var(--ease, cubic-bezier(.22,.7,.3,1)),
+              height .3s var(--ease, cubic-bezier(.22,.7,.3,1));
+}
+
+.tour-pop {
+  position: fixed; left: 0; top: 0; width: 300px; max-width: calc(100vw - 24px);
+  background: color-mix(in srgb, var(--panel) 88%, transparent);
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  border: 1px solid var(--line); border-radius: 14px;
+  box-shadow: 0 18px 50px -18px rgba(0, 0, 0, .55);
+  padding: 16px 18px 14px;
+  transition: transform .3s var(--ease, cubic-bezier(.22,.7,.3,1));
+}
+
+.tour-pop h4 {
+  margin: 0 0 5px; font: 600 14px/1.35 var(--sans); color: var(--ink);
+}
+.tour-pop p {
+  margin: 0 0 14px; font: 13px/1.5 var(--sans); color: var(--muted);
+}
+
+.tour-foot { display: flex; align-items: center; gap: 10px; }
+.tour-count {
+  font: 10.5px var(--mono); letter-spacing: .06em; color: var(--muted);
+  margin-right: auto;
+}
+.tour-btn {
+  border: 1px solid var(--line); background: none; cursor: pointer;
+  border-radius: 999px; padding: 7px 14px;
+  font: 12.5px/1 var(--sans); color: var(--muted);
+  transition: color .18s, border-color .18s;
+}
+.tour-btn:hover { color: var(--ink); border-color: var(--accent); }
+.tour-btn.go {
+  border-color: transparent; color: #fff;
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tour, .tour-hole, .tour-pop { transition: none; }
+}

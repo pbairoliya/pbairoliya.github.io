@@ -18,12 +18,16 @@ js/pill.js                     floating section nav
 js/spotlight.js                pointer-following highlight
 js/reveal.js                   reveal-on-scroll
 js/blocks.js                   per-section copy-link anchors
+js/tour.js                     first-visit walkthrough
+css/tour.css                   its styles
 ```
 
 **Colour follows the reader.** Every section owns a hue pair — cyan/azure for
-the intro, indigo/violet for the background, teal/cyan for the stack, amber for
-credentials. Scrolling into a section eases the whole palette toward it, with a
-few degrees of wobble so it is never quite still. `js/field.js` writes
+the intro, indigo/violet for the background, teal/cyan for the stack. Cool hues
+only. Scrolling into a section eases the whole palette toward it, with a few
+degrees of wobble so it is never quite still. Lightness is pinned per theme so
+that accent text clears WCAG AA (4.5:1) at *every* hue in the palette, not just
+the flattering ones. `js/field.js` writes
 `--accent`, `--accent-2`, `--wash` and `--hit` onto `:root`; everything tinted
 reads those, so the page changes character as you read it.
 

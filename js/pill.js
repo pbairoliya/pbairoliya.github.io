@@ -26,10 +26,13 @@
     a.addEventListener("focus", () => moveTo(a));
     a.addEventListener("click", e => {
       e.preventDefault();
-      document.querySelector(a.getAttribute("href"))?.scrollIntoView({
-        behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
-        block: "start",
-      });
+      const href = a.getAttribute("href");
+      const smooth = matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+      // the first link means the top of the document, not the top of a section
+      // that already sits below the intro block
+      if (i === 0) scrollTo({ top: 0, behavior: smooth });
+      else document.querySelector(href)?.scrollIntoView({ behavior: smooth, block: "start" });
+      history.replaceState(null, "", href);
     });
   });
   pill.addEventListener("mouseleave", settle);
@@ -38,8 +41,10 @@
     if (i === activeIdx) return;
     activeIdx = i;
     links.forEach((a, j) => a.classList.toggle("on", j === i));
-    const slug = (links[i]?.getAttribute("href") || "#top").slice(1);
-    dispatchEvent(new CustomEvent("sectionchange", { detail: slug }));
+    const href = links[i]?.getAttribute("href") || "#intro";
+    dispatchEvent(new CustomEvent("sectionchange", { detail: href.slice(1) }));
+    // keep the address bar honest about where you are, without adding history
+    if (location.hash !== href) history.replaceState(null, "", href);
     if (!pill.matches(":hover")) settle();
   }
 

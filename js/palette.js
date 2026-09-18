@@ -29,7 +29,7 @@
 
   /* ---------- command palette ---------- */
   const ACTIONS = [
-    { g:"Open",       i:"↓", label:"Résumé (PDF)",       hint:"download",   run:() => location.assign("Pratik-Bairoliya-Resume.pdf") },
+    { g:"Open",       i:"↓", label:"Resume (PDF)",       hint:"download",   run:() => location.assign("Pratik-Bairoliya-Resume.pdf") },
     { g:"Open",       i:"◆", label:"On-device tools",    hint:"write-up",   run:() => location.assign("projects/on-device-tools.html") },
     { g:"Open",       i:"◆", label:"lc",                 hint:"write-up",   run:() => location.assign("projects/lc.html") },
     { g:"Open",       i:"↗", label:"GitHub",             hint:"pbairoliya", run:() => open("https://github.com/pbairoliya","_blank") },
@@ -37,19 +37,20 @@
     { g:"Open",       i:"↗", label:"InspireNC",          hint:"the non-profit", run:() => open("https://inspirenc.us/","_blank") },
     { g:"Open",       i:"↗", label:"Site source",        hint:"repo",       run:() => open("https://github.com/pbairoliya/pbairoliya.github.io","_blank") },
 
-    { g:"Jump to",    i:"§", label:"Intro",              hint:"#top",          run:() => go("top") },
-    { g:"Jump to",    i:"§", label:"Background",         hint:"#about",        run:() => go("about") },
+    { g:"Jump to",    i:"§", label:"Intro",              hint:"#intro",          run:() => go("intro") },
+    { g:"Jump to",    i:"§", label:"Background",         hint:"#background",        run:() => go("background") },
     { g:"Jump to",    i:"§", label:"Work",               hint:"#work",         run:() => go("work") },
     { g:"Jump to",    i:"§", label:"Stack",              hint:"#stack",        run:() => go("stack") },
     { g:"Jump to",    i:"§", label:"Projects",           hint:"#projects",     run:() => go("projects") },
     { g:"Jump to",    i:"§", label:"Credentials",        hint:"#credentials",  run:() => go("credentials") },
     { g:"Jump to",    i:"›", label:"The longer version", hint:"expand",        run:() => {
-        const d = document.querySelector(".fold"); if (d) { d.open = true; go("about"); } } },
+        const d = document.querySelector(".fold"); if (d) { d.open = true; go("background"); } } },
 
     { g:"Do",         i:"⧉", label:"Copy email address", hint:"pratik0520@gmail.com", run: copyEmail },
     { g:"Do",         i:"✉", label:"Email me",           hint:"mailto",     run:() => location.assign("mailto:pratik0520@gmail.com") },
     { g:"Do",         i:"⧉", label:"Copy link to this page", hint:"url",    run: copyUrl },
 
+    { g:"Do",         i:"◎", label:"Replay the tour",      hint:"onboarding", run:() => window.__startTour?.(true) },
     { g:"Appearance", i:"◑", label:"Theme: system",      hint:"follow the OS", run:() => setTheme("system") },
     { g:"Appearance", i:"☀", label:"Theme: light",       hint:"",           run:() => setTheme("light") },
     { g:"Appearance", i:"☾", label:"Theme: dark",        hint:"",           run:() => setTheme("dark") },
@@ -149,5 +150,4 @@
     render();
   }
 
-  document.getElementById("copy")?.addEventListener("click", copyEmail);
 })();

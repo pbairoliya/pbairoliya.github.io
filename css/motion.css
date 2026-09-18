@@ -3,52 +3,34 @@
 
 /* ---- entrance ---- */
 @keyframes riseIn {
-  0%   { opacity:0; transform: translateY(18px) rotate(-1.2deg); }
-  70%  { opacity:1; transform: translateY(-3px) rotate(.35deg); }
-  100% { opacity:1; transform:none; }
+  from { opacity:0; transform: translateY(12px); }
+  to   { opacity:1; transform:none; }
 }
-.boot > * { animation: riseIn .72s var(--swing) both; transform-origin: 0% 50%; }
+.boot > * { animation: riseIn .5s var(--ease) both; }
 .boot > *:nth-child(1){animation-delay:.02s} .boot > *:nth-child(2){animation-delay:.09s}
 .boot > *:nth-child(3){animation-delay:.16s} .boot > *:nth-child(4){animation-delay:.23s}
 .boot > *:nth-child(5){animation-delay:.30s} .boot > *:nth-child(6){animation-delay:.37s}
 
 /* ---- scroll reveal ----
-   Things swing in rather than fade: a small rotation about a corner, unwound
-   on a spring-ish curve. Alternating direction down the page keeps a long
-   scroll from feeling mechanical. */
-:root { --swing: cubic-bezier(.16,.9,.28,1.06); }
+   Calm, centred, no rotation. Things rise a little and settle. Notion does not
+   throw its blocks around and neither should this. */
+:root { --ease: cubic-bezier(.22,.7,.3,1); }
 
-.reveal { opacity: 0; transform: translateY(20px) rotate(-1.4deg); transform-origin: 0% 50%;
-          transition: opacity .55s ease, transform .78s var(--swing); }
+.reveal { opacity: 0; transform: translateY(12px);
+          transition: opacity .48s ease, transform .56s var(--ease); }
 .reveal.seen { opacity: 1; transform: none; }
-
-/* every other revealed block swings from the other side */
-.reveal:nth-of-type(even) { transform: translateY(20px) rotate(1.4deg); transform-origin: 100% 50%; }
-
-/* headings arrive flatter and faster — they set the beat for the section */
-h2.reveal { transform: translateY(14px) rotate(-.7deg); transition-duration: .5s, .58s; }
-
-/* cards and work rows get a touch more travel and a hint of depth */
-.card.reveal, .job.reveal, .cred.reveal {
-  transform: translateY(26px) rotate(-1.6deg) scale(.985);
-}
-.card.reveal:nth-of-type(even), .job.reveal:nth-of-type(even), .cred.reveal:nth-of-type(even) {
-  transform: translateY(26px) rotate(1.6deg) scale(.985); transform-origin: 100% 50%;
-}
-.card.seen, .job.seen, .cred.seen { transform: none; }
+h2.reveal { transition-duration: .4s, .46s; }
 
 /* ---- stack tiles deal themselves in ---- */
 @keyframes dealIn {
-  0%   { opacity:0; transform: translateY(16px) rotate(-6deg) scale(.9); }
-  62%  { opacity:1; transform: translateY(-2px) rotate(1.2deg) scale(1.02); }
-  100% { opacity:1; transform:none; }
+  from { opacity:0; transform: translateY(10px) scale(.97); }
+  to   { opacity:1; transform:none; }
 }
-.stack-group.seen .tool { animation: dealIn .58s var(--swing) both;
-                          animation-delay: calc(var(--i, 0) * 42ms); }
+.stack-group.seen .tool { animation: dealIn .4s var(--ease) both;
+                          animation-delay: calc(var(--i, 0) * 30ms); }
 
 /* ---- fold ---- */
-.fold[open] .fold-body > * { animation: riseIn .55s var(--swing) both;
-                             transform-origin: 0% 50%; }
+.fold[open] .fold-body > * { animation: riseIn .42s var(--ease) both; }
 .fold[open] .fold-body > *:nth-child(1){animation-delay:.02s}
 .fold[open] .fold-body > *:nth-child(2){animation-delay:.08s}
 .fold[open] .fold-body > *:nth-child(3){animation-delay:.14s}
@@ -110,7 +92,7 @@ h2.reveal { transform: translateY(14px) rotate(-.7deg); transition-duration: .5s
 @media (prefers-reduced-motion: reduce) {
   .boot > *, .stack-group.seen .tool, .fold[open] .fold-body > *,
   .btn.palette-btn.hint { animation: none; }
-  .reveal, .card.reveal, .job.reveal, .cred.reveal { opacity: 1; transform: none; transition: none; }
+  .reveal { opacity: 1; transform: none; transition: none; }
   .job, .card, .cred, .tool, .btn, .job .rail, .pill .glide, #toast { transition: none; }
   .job.lit, .card.lit, .cred.lit, .tool.lit, .btn.lit { transform: none; }
 }
