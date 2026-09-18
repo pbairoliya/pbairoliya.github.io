@@ -49,27 +49,48 @@
   let W = 0, H = 0, glyphs = [], colCentre = 0, colHalf = 400;
   const ptr = { x: -9999, y: -9999, on: false };
 
-  /* ---- slow colour drift ----------------------------------------------
-     One hue, wandering 186° → 288° (teal → blue → violet) and back over
-     about three minutes. It drives the CSS accent AND the canvas, so links,
-     borders, the tagline and the field all move together. Nothing jumps:
-     a full sweep takes longer than anyone stays on the page. */
-  const HUE_LO = 196, HUE_HI = 322, HUE_PERIOD = 52000;   // teal → blue → violet → magenta
-  const HIT_HUE = 282;                                     // the purple things light up in
-  let hue = HUE_LO;
+  /* ---- colour ---------------------------------------------------------
+     The page is coloured BY WHERE YOU ARE. Every section carries a slug and
+     a hue pair; scrolling into one eases the whole palette toward it, so the
+     site changes character as you read rather than cycling on a timer you
+     have no control over. Inside a section the hue wobbles a few degrees so
+     it is never quite still. */
+  const SECTION_HUES = {
+    top:         [198, 236],   // cyan → azure      · the opening
+    about:       [268, 302],   // indigo → violet   · background
+    work:        [214, 252],   // azure → indigo    · the day job
+    stack:       [168, 202],   // teal → cyan       · tools
+    projects:    [296, 330],   // violet → magenta  · the fun half
+    credentials: [ 34,  62],   // amber → gold      · certificates
+  };
+  const FALLBACK = SECTION_HUES.top;
+  const HIT_HUE = 282;              // the purple the crossing light uses
+  const WOBBLE = 7, WOBBLE_MS = 17000, CHASE = 0.022;
+
+  let want = FALLBACK.slice();
+  let hue = want[0], hue2 = want[1];
+
+  // shortest way round the wheel, so 348 → 20 goes forward through 0
+  const stepHue = (a, b, k) => (a + (((b - a) % 360 + 540) % 360 - 180) * k + 360) % 360;
+
+  addEventListener("sectionchange", e => {
+    want = SECTION_HUES[e.detail] || FALLBACK;
+  });
 
   function driftHue(now) {
-    const s = (Math.sin((now / HUE_PERIOD) * Math.PI * 2) + 1) / 2;   // 0..1
-    hue = HUE_LO + s * (HUE_HI - HUE_LO);
+    const w = Math.sin(now / WOBBLE_MS * Math.PI * 2) * WOBBLE;
+    hue  = stepHue(hue,  want[0] + w, CHASE);
+    hue2 = stepHue(hue2, want[1] - w, CHASE);
+
     const dark = isDark(), st = document.documentElement.style;
-    st.setProperty("--accent",  `hsl(${hue.toFixed(1)} ${dark ? "90% 74%" : "72% 42%"})`);
-    st.setProperty("--accent-2", `hsl(${(hue + 34).toFixed(1)} ${dark ? "82% 68%" : "66% 46%"})`);
-    st.setProperty("--hit",      `hsl(${HIT_HUE} ${dark ? "92% 72%" : "74% 48%"})`);
+    st.setProperty("--accent",   `hsl(${hue.toFixed(1)} ${dark ? 90 : 72}% ${dark ? 74 : 42}%)`);
+    st.setProperty("--accent-2", `hsl(${hue2.toFixed(1)} ${dark ? 84 : 68}% ${dark ? 70 : 47}%)`);
+    st.setProperty("--wash",     `hsl(${hue.toFixed(1)} ${dark ? 72 : 66}% ${dark ? 58 : 56}%)`);
+    st.setProperty("--hit",      `hsl(${HIT_HUE} ${dark ? 92 : 74}% ${dark ? 72 : 48}%)`);
   }
 
   function palette() {
-    const dark = isDark();
-    return dark
+    return isDark()
       ? { ink: "232,234,240", lift: 1 }
       : { ink: "22,23,26",    lift: 0.74 };
   }
@@ -166,7 +187,7 @@
 
   console.log(
     "%cyou opened the console. good instinct.",
-    `font:600 13px ui-monospace,Menlo,monospace;color:hsl(${HUE_LO} 80% 60%)`);
+    `font:600 13px ui-monospace,Menlo,monospace;color:hsl(268 80% 62%)`);
   console.log(
     "%cthe background is ~200 glyphs on a canvas with spring physics — no libraries." +
     "\nsource: github.com/pbairoliya/pbairoliya.github.io" +

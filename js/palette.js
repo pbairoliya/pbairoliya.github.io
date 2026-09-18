@@ -27,52 +27,32 @@
     if (b) setTheme(b.dataset.themeBtn);
   });
 
-  /* ---------- section spy: which part of the page you're in ---------- */
-  const spy = document.getElementById("spy");
-  if (spy) {
-    const targets = [...document.querySelectorAll("section[id]")];
-    targets.forEach(s => {
-      const a = document.createElement("a");
-      a.href = "#" + s.id;
-      a.className = "spy-dot";
-      a.innerHTML = `<span class="spy-label">${s.dataset.label || s.id}</span>`;
-      a.setAttribute("aria-label", s.dataset.label || s.id);
-      spy.appendChild(a);
-    });
-    const dots = [...spy.children];
-    if ("IntersectionObserver" in window) {
-      const io = new IntersectionObserver(rows => {
-        rows.forEach(r => {
-          const i = targets.indexOf(r.target);
-          if (i > -1 && r.isIntersecting) {
-            dots.forEach((d, j) => d.classList.toggle("on", j === i));
-          }
-        });
-      }, { rootMargin: "-45% 0px -50% 0px" });
-      targets.forEach(s => io.observe(s));
-    }
-  }
-
   /* ---------- command palette ---------- */
   const ACTIONS = [
-    { label: "Résumé (PDF)",        hint: "download",  run: () => location.assign("Pratik-Bairoliya-Resume.pdf") },
-    { label: "Copy email address",  hint: "pratik0520@gmail.com", run: copyEmail },
-    { label: "Email me",            hint: "mail",      run: () => location.assign("mailto:pratik0520@gmail.com") },
-    { label: "GitHub",              hint: "pbairoliya", run: () => open("https://github.com/pbairoliya", "_blank") },
-    { label: "LinkedIn",            hint: "pbairol",   run: () => open("https://linkedin.com/in/pbairol", "_blank") },
-    { label: "On-device tools",     hint: "write-up",  run: () => location.assign("projects/on-device-tools.html") },
-    { label: "lc",                  hint: "write-up",  run: () => location.assign("projects/lc.html") },
-    { label: "Site source",         hint: "repo",      run: () => open("https://github.com/pbairoliya/pbairoliya.github.io", "_blank") },
-    { label: "Jump to Background",  hint: "section",   run: () => go("about") },
-    { label: "Expand the long version", hint: "background", run: () => {
+    { g:"Open",       i:"↓", label:"Résumé (PDF)",       hint:"download",   run:() => location.assign("Pratik-Bairoliya-Resume.pdf") },
+    { g:"Open",       i:"◆", label:"On-device tools",    hint:"write-up",   run:() => location.assign("projects/on-device-tools.html") },
+    { g:"Open",       i:"◆", label:"lc",                 hint:"write-up",   run:() => location.assign("projects/lc.html") },
+    { g:"Open",       i:"↗", label:"GitHub",             hint:"pbairoliya", run:() => open("https://github.com/pbairoliya","_blank") },
+    { g:"Open",       i:"↗", label:"LinkedIn",           hint:"pbairol",    run:() => open("https://linkedin.com/in/pbairol","_blank") },
+    { g:"Open",       i:"↗", label:"InspireNC",          hint:"the non-profit", run:() => open("https://inspirenc.us/","_blank") },
+    { g:"Open",       i:"↗", label:"Site source",        hint:"repo",       run:() => open("https://github.com/pbairoliya/pbairoliya.github.io","_blank") },
+
+    { g:"Jump to",    i:"§", label:"Intro",              hint:"#top",          run:() => go("top") },
+    { g:"Jump to",    i:"§", label:"Background",         hint:"#about",        run:() => go("about") },
+    { g:"Jump to",    i:"§", label:"Work",               hint:"#work",         run:() => go("work") },
+    { g:"Jump to",    i:"§", label:"Stack",              hint:"#stack",        run:() => go("stack") },
+    { g:"Jump to",    i:"§", label:"Projects",           hint:"#projects",     run:() => go("projects") },
+    { g:"Jump to",    i:"§", label:"Credentials",        hint:"#credentials",  run:() => go("credentials") },
+    { g:"Jump to",    i:"›", label:"The longer version", hint:"expand",        run:() => {
         const d = document.querySelector(".fold"); if (d) { d.open = true; go("about"); } } },
-    { label: "Jump to Work",        hint: "section",   run: () => go("work") },
-    { label: "Jump to Stack",       hint: "section",   run: () => go("stack") },
-    { label: "Jump to Projects",    hint: "section",   run: () => go("projects") },
-    { label: "Jump to Credentials", hint: "section",   run: () => go("credentials") },
-    { label: "Theme: system",       hint: "appearance", run: () => setTheme("system") },
-    { label: "Theme: light",        hint: "appearance", run: () => setTheme("light") },
-    { label: "Theme: dark",         hint: "appearance", run: () => setTheme("dark") },
+
+    { g:"Do",         i:"⧉", label:"Copy email address", hint:"pratik0520@gmail.com", run: copyEmail },
+    { g:"Do",         i:"✉", label:"Email me",           hint:"mailto",     run:() => location.assign("mailto:pratik0520@gmail.com") },
+    { g:"Do",         i:"⧉", label:"Copy link to this page", hint:"url",    run: copyUrl },
+
+    { g:"Appearance", i:"◑", label:"Theme: system",      hint:"follow the OS", run:() => setTheme("system") },
+    { g:"Appearance", i:"☀", label:"Theme: light",       hint:"",           run:() => setTheme("light") },
+    { g:"Appearance", i:"☾", label:"Theme: dark",        hint:"",           run:() => setTheme("dark") },
   ];
 
   function go(id) {
@@ -80,6 +60,10 @@
       behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
       block: "start",
     });
+  }
+  async function copyUrl() {
+    try { await navigator.clipboard.writeText(location.href.split("#")[0]); toast("Link copied"); }
+    catch { toast(location.href); }
   }
   async function copyEmail() {
     try { await navigator.clipboard.writeText("pratik0520@gmail.com"); toast("Email copied"); }
@@ -109,19 +93,30 @@
 
     function render() {
       list.innerHTML = "";
+      if (!matches.length) { list.innerHTML = '<p class="pal-empty">nothing matches</p>'; return; }
+      let group = null;
       matches.forEach((a, i) => {
+        if (a.g !== group) {
+          group = a.g;
+          const h = document.createElement("p");
+          h.className = "pal-group";
+          h.textContent = group;
+          list.appendChild(h);
+        }
         const row = document.createElement("button");
         row.type = "button";
         row.className = "pal-row" + (i === cursor ? " on" : "");
-        row.innerHTML = `<span>${a.label}</span><span class="pal-hint">${a.hint}</span>`;
+        row.innerHTML = `<span class="pal-i" aria-hidden="true">${a.i}</span>` +
+                        `<span class="pal-t">${a.label}</span>` +
+                        `<span class="pal-hint">${a.hint}</span>`;
         row.addEventListener("click", () => { close(); a.run(); });
         list.appendChild(row);
       });
-      if (!matches.length) list.innerHTML = '<p class="pal-empty">nothing matches</p>';
+      list.querySelector(".pal-row.on")?.scrollIntoView({ block: "nearest" });
     }
     function filter(q) {
       q = q.trim().toLowerCase();
-      matches = q ? ACTIONS.filter(a => (a.label + " " + a.hint).toLowerCase().includes(q)) : ACTIONS;
+      matches = q ? ACTIONS.filter(a => (a.label + " " + a.hint + " " + a.g).toLowerCase().includes(q)) : ACTIONS;
       cursor = 0; render();
     }
     function openPal() {

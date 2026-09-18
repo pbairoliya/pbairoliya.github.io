@@ -1,0 +1,75 @@
+/* base — tokens, reset, typography, layout skeleton.
+   Colour tokens are seeded here and then driven live by js/field.js, which
+   walks a palette and rewrites --accent, --accent-2, --hit and --wash. */
+:root {
+  --bg:#fbfbfa; --panel:#fff; --ink:#16171a; --muted:#62646b;
+  --line:#e6e5e2; --code-bg:#f3f3f1;
+  --accent:#1f5fd6; --accent-2:#6d4bd8; --hit:#8b5cf6; --wash:#1f5fd6;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#0e0f12; --panel:#16171b; --ink:#e9e9ea; --muted:#9a9ca3;
+    --line:#26282d; --code-bg:#1d1f23;
+    --accent:#7fb2ff; --accent-2:#b18cff; --hit:#a97bff;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#0e0f12; --panel:#16171b; --ink:#e9e9ea; --muted:#9a9ca3;
+  --line:#26282d; --code-bg:#1d1f23;
+  --accent:#7fb2ff; --accent-2:#b18cff; --hit:#a97bff;
+}
+:root[data-theme="light"] {
+  --bg:#fbfbfa; --panel:#fff; --ink:#16171a; --muted:#62646b;
+  --line:#e6e5e2; --code-bg:#f3f3f1;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 16px/1.65 var(--sans); -webkit-font-smoothing: antialiased;
+}
+/* an ambient wash behind everything, drifting with the palette */
+body::before {
+  content: ""; position: fixed; inset: -20vh -10vw auto; height: 70vh; z-index: -2;
+  pointer-events: none; opacity: .5;
+  background: radial-gradient(45vw 38vh at 22% 0%,
+                color-mix(in srgb, var(--wash) 16%, transparent), transparent 70%),
+              radial-gradient(40vw 34vh at 82% 12%,
+                color-mix(in srgb, var(--accent-2) 13%, transparent), transparent 72%);
+  transition: background 1.2s linear;
+}
+
+.wrap { max-width: 720px; margin: 0 auto; padding: 96px 24px 96px; position: relative; z-index: 1; }
+a { color: var(--accent); text-decoration: none; transition: color .8s linear; }
+a:hover { text-decoration: underline; }
+
+h1 { font-size: 2rem; letter-spacing: -.02em; margin: 0 0 6px; }
+h2 { font-size: 1.15rem; letter-spacing: -.01em; margin: 46px 0 14px;
+     padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+h3 { font-size: 1rem; margin: 28px 0 8px; }
+p  { margin: 0 0 14px; }
+ul { padding-left: 20px; margin: 0 0 14px; }
+li { margin-bottom: 7px; }
+
+.lede { color: var(--muted); font-size: 1.05rem; margin-bottom: 16px; }
+.meta { color: var(--muted); font-size: .9rem; }
+.tagline { font: 13px/1 var(--mono); letter-spacing: .05em; text-transform: uppercase;
+           color: var(--accent); margin: 0 0 14px; transition: color .8s linear; }
+
+code { font: .88em var(--mono); background: var(--code-bg); padding: 2px 5px; border-radius: 4px; }
+pre  { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px;
+       padding: 14px 16px; overflow-x: auto; font: 13px/1.6 var(--mono); }
+pre code { background: none; padding: 0; }
+
+#field { position: fixed; inset: 0; z-index: -1; display: block; pointer-events: none; }
+
+footer { margin-top: 64px; padding-top: 18px; border-top: 1px solid var(--line);
+         color: var(--muted); font-size: .88rem; }
+.back { display: inline-block; margin-bottom: 26px; font-size: .9rem; color: var(--muted); }
+.callout { border-left: 3px solid var(--accent); padding: 2px 0 2px 16px; margin: 18px 0;
+           color: var(--muted); }
+.row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.row .meta { white-space: nowrap; }
