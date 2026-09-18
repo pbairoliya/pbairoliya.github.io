@@ -17,21 +17,21 @@
 }
 
 .side-head { display: flex; align-items: center; padding: 2px 8px 18px; }
-a.side-head { color: inherit; border-radius: 9px; padding: 8px 8px 10px; margin-bottom: 8px; }
+a.side-head { color: inherit; border-radius: var(--r-sm); padding: 8px 8px 10px; margin-bottom: 8px; }
 a.side-head:hover { background: var(--code-bg); text-decoration: none; }
-.side-name { font: 600 13.5px/1.3 var(--sans); min-width: 0; }
+.side-name { font: 600 var(--fs-sm)/var(--lh-snug) var(--sans); min-width: 0; }
 .side-name span { display: block; margin-top: 3px;
-                  font: 11px/1.3 var(--sans); color: var(--muted); font-weight: 400;
+                  font: var(--fs-2xs)/var(--lh-snug) var(--sans); color: var(--muted); font-weight: 400;
                   overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-.side-label { padding: 16px 8px 6px; font: 11px/1 var(--sans); font-weight: 600;
-              letter-spacing: .01em; color: var(--muted); }
+.side-label { padding: var(--s4) var(--s2) var(--s1); font: 600 var(--fs-2xs)/1 var(--sans);
+              text-transform: uppercase; letter-spacing: var(--ls-caps); color: var(--muted); }
 .side-label:first-of-type { padding-top: 0; }
 
 .side a {
   display: flex; align-items: center; gap: 10px;
-  padding: 7px 8px; border-radius: 7px;
-  font: 13.5px/1.35 var(--sans); color: var(--muted);
+  padding: 7px 8px; border-radius: var(--r-sm);
+  font: var(--fs-sm)/var(--lh-snug) var(--sans); color: var(--muted);
   transition: background-color .13s, color .13s;
 }
 .side a svg { width: 16px; height: 16px; flex: 0 0 16px; fill: currentColor; opacity: .75; }
@@ -42,8 +42,12 @@ a.side-head:hover { background: var(--code-bg); text-decoration: none; }
              background: color-mix(in srgb, var(--accent) 10%, transparent); }
 .side a.on svg { opacity: 1; }
 
-.side-foot { margin-top: auto; padding: 16px 8px 0; }
-.side-foot a { padding: 0; font: 11px/1.4 var(--sans); color: var(--muted); display: block;
+/* "Elsewhere" is reference, not navigation: it sinks to the bottom of the rail so
+   the page's own links stay at the top where the eye lands first. */
+.side-end { margin-top: auto; padding-top: var(--s3); }
+.side-end .side-label { padding-top: 0; }
+.side-foot { padding: var(--s4) var(--s2) 0; }
+.side-foot a { padding: 0; font: var(--fs-2xs)/var(--lh-snug) var(--sans); color: var(--muted); display: block;
                overflow: hidden; text-overflow: ellipsis; }
 .side-foot a:hover { color: var(--accent); background: none; }
 
@@ -51,7 +55,7 @@ a.side-head:hover { background: var(--code-bg); text-decoration: none; }
    link on sub-pages, and a button inside an anchor is invalid markup. */
 .side-collapse {
   position: absolute; top: 14px; right: 10px; width: 28px; height: 28px;
-  display: grid; place-items: center; border-radius: 7px; cursor: pointer;
+  display: grid; place-items: center; border-radius: var(--r-sm); cursor: pointer;
   line-height: 0; background: none; border: 0; color: var(--muted); opacity: .5;
   transition: opacity .14s, color .14s, background-color .14s;
 }
@@ -64,7 +68,7 @@ a.side-head:hover { background: var(--code-bg); text-decoration: none; }
 .side-toggle { position: fixed; z-index: 6; display: none; place-items: center;
                line-height: 0;
                top: max(12px, env(safe-area-inset-top)); left: clamp(12px, 3vw, 18px);
-               width: 38px; height: 38px; border-radius: 999px; cursor: pointer;
+               width: 38px; height: 38px; border-radius: var(--r-pill); cursor: pointer;
                background: var(--panel);
                border: 1px solid var(--line); color: var(--muted);
                box-shadow: 0 6px 20px -10px rgba(0,0,0,.4); }
@@ -77,18 +81,18 @@ body.side-open .side-scrim { opacity: 1; pointer-events: auto; }
 /* ---- actions ---- */
 .actions { display: flex; flex-wrap: wrap; gap: 9px; margin: 18px 0 4px; }
 .btn { display: inline-flex; align-items: center; gap: 7px;
-       background: var(--panel); border: 1px solid var(--line); border-radius: 999px;
-       padding: 9px 16px; font: 13px/1 var(--sans); color: var(--ink); cursor: pointer; }
+       background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-pill);
+       padding: 9px 16px; font: var(--fs-sm)/1 var(--sans); color: var(--ink); cursor: pointer; }
 .btn:hover { text-decoration: none; }
-.btn .k { font: 10.5px var(--mono); color: var(--muted); }
+.btn .k { font: var(--fs-2xs) var(--mono); color: var(--muted); }
 .btn.primary { border-color: var(--accent); color: var(--accent); }
 .btn.palette-btn { border-color: var(--accent); color: var(--accent); }
-.btn.palette-btn .k { border: 1px solid currentColor; border-radius: 999px;
+.btn.palette-btn .k { border: 1px solid currentColor; border-radius: var(--r-pill);
                       padding: 2px 6px; opacity: .85; }
 
 /* ---- work rows ---- */
 .job { padding: 16px clamp(12px, 4vw, 18px); margin-inline: clamp(-18px, -4vw, -12px);
-       border: 1px solid transparent; border-radius: 13px; }
+       border: 1px solid transparent; border-radius: var(--r-md); }
 .job + .job { margin-top: 2px; }
 .job:not(:last-of-type)::before {
   content: ""; position: absolute; inset-inline: clamp(12px, 4vw, 18px); bottom: -1px; height: 1px;
@@ -98,22 +102,22 @@ body.side-open .side-scrim { opacity: 1; pointer-events: auto; }
 .job-head { display: flex; flex-wrap: wrap; justify-content: space-between;
             align-items: baseline; gap: 4px 14px; }
 .job-head h3 { margin: 0; }
-.job-sub { color: var(--muted); font-size: .88rem; margin: 2px 0 10px; }
+.job-sub { color: var(--muted); font-size: var(--fs-md); margin: 2px 0 10px; }
 .job ul { margin-bottom: 0; }
 .job .rail { position: absolute; left: 4px; top: 50%; width: 3px;
-             border-radius: 3px; pointer-events: none;
+             border-radius: var(--r-xs); pointer-events: none;
              background: linear-gradient(var(--accent), var(--accent-2)); }
 
 /* ---- cards ---- */
 .card { display: block; background: var(--panel); border: 1px solid var(--line);
-        border-radius: 13px; padding: 18px 20px; margin-bottom: 14px; color: inherit; }
+        border-radius: var(--r-md); padding: 18px 20px; margin-bottom: 14px; color: inherit; }
 .card:hover { text-decoration: none; }
 .card h3 { margin: 0 0 6px; }
-.card p  { margin: 0 0 10px; color: var(--muted); font-size: .95rem; }
+.card p  { margin: 0 0 10px; color: var(--muted); font-size: var(--fs-base); }
 
 /* ---- stack ---- */
 .stack-group { margin-bottom: 20px; }
-.stack-label { font: 11px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase;
+.stack-label { font: 600 var(--fs-2xs)/1 var(--sans); letter-spacing: var(--ls-caps); text-transform: uppercase;
                color: var(--muted); margin-bottom: 10px; }
 /* auto-fit, not auto-fill: the tracks share the leftover width instead of
    leaving empty columns, so a long label like "OpenTelemetry" has somewhere to
@@ -122,8 +126,8 @@ body.side-open .side-scrim { opacity: 1; pointer-events: auto; }
 .stack { display: grid; gap: 8px; align-items: stretch;
          grid-template-columns: repeat(auto-fit, minmax(clamp(104px, 28vw, 124px), 1fr)); }
 .tool { display: flex; align-items: center; gap: 8px; background: var(--panel);
-        border: 1px solid var(--line); border-radius: 11px; padding: 9px 11px;
-        font-size: .84rem; line-height: 1.25; color: var(--ink);
+        border: 1px solid var(--line); border-radius: var(--r-md); padding: 9px 11px;
+        font-size: var(--fs-sm); line-height: var(--lh-snug); color: var(--ink);
         min-width: 0;                    /* a flex item will not shrink without this */
         overflow-wrap: anywhere;         /* a long word breaks rather than overflowing */
         hyphens: auto; }
@@ -132,18 +136,19 @@ body.side-open .side-scrim { opacity: 1; pointer-events: auto; }
 :root[data-theme="dark"] .tool img,
 :root:not([data-theme="light"]) .tool img { filter: brightness(1.7) saturate(.85); }
 @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .tool img { filter: none; } }
-.tool .txt { font: 11px/1 var(--mono); font-weight: 600; width: 17px; flex: 0 0 17px;
+.tool .txt { font: var(--fs-2xs)/1 var(--mono); font-weight: 600; width: 17px; flex: 0 0 17px;
              color: var(--accent); transition: color .8s linear; }
 
 /* ---- credentials ---- */
 .cred { display: flex; align-items: flex-start; gap: 14px; background: var(--panel);
         border: 1px solid var(--line); border-left: 3px solid var(--accent);
-        border-radius: 11px; padding: 16px 18px; margin-bottom: 12px; color: inherit;
+        border-radius: var(--r-md); padding: 16px 18px; margin-bottom: 12px; color: inherit;
         transition: border-left-color .8s linear; }
 a.cred:hover { text-decoration: none; }
-.cred-body h3 { margin: 0 0 3px; font-size: .98rem; }
-.cred-body p  { margin: 0; color: var(--muted); font-size: .89rem; }
-.cred-mark { font: 11px/1.3 var(--mono); text-align: center; color: var(--accent);
+.cred-body h3 { margin: 0 0 3px; font-size: var(--fs-base); }
+.cred-body p  { margin: 0; color: var(--muted); font-size: var(--fs-md); }
+.cred-mark { font: 600 var(--fs-2xs)/var(--lh-snug) var(--sans); letter-spacing: var(--ls-caps);
+             text-align: center; color: var(--accent);
              padding-top: 3px; flex: 0 0 34px; transition: color .8s linear; }
 
 /* ---- background section ---- */
@@ -154,29 +159,29 @@ a.cred:hover { text-decoration: none; }
            background: rgba(8,9,12,.5); backdrop-filter: blur(4px); padding: 14vh 18px 18px; }
 #palette.on { display: block; }
 .pal-box { max-width: 520px; margin: 0 auto; background: var(--panel);
-           border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
+           border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden;
            box-shadow: 0 30px 80px rgba(0,0,0,.45); }
 .pal-box input:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 .pal-box input { width: 100%; border: 0; border-bottom: 1px solid var(--line);
-                 background: none; color: var(--ink); font: 15px var(--sans);
+                 background: none; color: var(--ink); font: var(--fs-base) var(--sans);
                  padding: 15px 18px; }
 .pal-list { max-height: 330px; overflow-y: auto; padding: 6px; }
 .pal-row { display: flex; justify-content: space-between; align-items: baseline; gap: 14px;
            width: 100%; text-align: left; background: none; border: 0; cursor: pointer;
-           color: var(--ink); font: 13.5px var(--sans); padding: 9px 12px; border-radius: 9px; }
+           color: var(--ink); font: var(--fs-sm) var(--sans); padding: 9px 12px; border-radius: var(--r-sm); }
 .pal-row:hover, .pal-row.on { background: var(--code-bg); }
 .pal-row.on { color: var(--accent); }
-.pal-hint { font: 10.5px var(--mono); color: var(--muted); }
-.pal-empty { color: var(--muted); font-size: 13px; padding: 14px 12px; margin: 0; }
+.pal-hint { font: var(--fs-2xs) var(--mono); color: var(--muted); }
+.pal-empty { color: var(--muted); font-size: var(--fs-sm); padding: 14px 12px; margin: 0; }
 .pal-foot { border-top: 1px solid var(--line); padding: 8px 16px;
-            font: 10.5px var(--mono); color: var(--muted); display: flex; gap: 14px; }
-.kbd { font: 10.5px var(--mono); border: 1px solid var(--line); border-bottom-width: 2px;
-       border-radius: 5px; padding: 2px 5px; color: var(--muted); }
+            font: var(--fs-2xs) var(--mono); color: var(--muted); display: flex; gap: 14px; }
+.kbd { font: var(--fs-2xs) var(--mono); border: 1px solid var(--line); border-bottom-width: 2px;
+       border-radius: var(--r-xs); padding: 2px 5px; color: var(--muted); }
 
 /* ---- toast ---- */
 #toast { position: fixed; left: 50%; bottom: 26px; transform: translate(-50%, 14px);
          background: var(--panel); border: 1px solid var(--accent); color: var(--ink);
-         padding: 10px 17px; border-radius: 999px; font: 13px var(--sans);
+         padding: 10px 17px; border-radius: var(--r-pill); font: var(--fs-sm) var(--sans);
          opacity: 0; pointer-events: none; z-index: 50;
          transition: opacity .2s, transform .2s; }
 #toast.on { opacity: 1; transform: translate(-50%, 0); }
@@ -185,7 +190,7 @@ a.cred:hover { text-decoration: none; }
 section[id] > h2, h2[id] { position: relative; }
 .anchor {
   background: none; border: 0; cursor: pointer; padding: 0 0 0 9px;
-  font: 15px var(--mono); color: var(--muted); opacity: 0;
+  font: var(--fs-base) var(--mono); color: var(--muted); opacity: 0;
   transition: opacity .18s, color .18s;
 }
 section[id] > h2:hover .anchor, h2[id]:hover .anchor,
@@ -193,13 +198,13 @@ section[id] > h2:hover .anchor, h2[id]:hover .anchor,
 .anchor:hover { color: var(--accent); }
 
 /* ---- palette, grouped like a quick-find ---- */
-.pal-group { margin: 8px 0 3px; padding: 0 12px;
-             font: 10px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase;
+.pal-group { margin: var(--s2) 0 var(--s1); padding: 0 var(--s3);
+             font: 600 var(--fs-2xs)/1 var(--sans); letter-spacing: var(--ls-caps); text-transform: uppercase;
              color: var(--muted); opacity: .75; }
 .pal-list .pal-group:first-child { margin-top: 2px; }
 .pal-row { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto;
            align-items: baseline; gap: 10px; }
-.pal-i { font: 12px var(--mono); color: var(--muted); text-align: center; }
+.pal-i { font: var(--fs-xs) var(--mono); color: var(--muted); text-align: center; }
 .pal-row.on .pal-i { color: var(--accent); }
 .pal-t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
@@ -219,18 +224,15 @@ section[id] > h2:hover .anchor, h2[id]:hover .anchor,
    Long-form prose still reads at a comfortable measure, set in ch on the
    paragraphs rather than by shrinking the whole page. */
 .post p, .post ul, .post ol { max-width: 68ch; }
-.post p { font-size: clamp(15px, 3.6vw, 16.5px); line-height: 1.75; }
-.post .lede { font-size: clamp(16px, 4vw, 18px); color: var(--ink); }
-.post h2 { margin-top: 42px; }
-.post .byline { margin: -2px 0 26px; }
-.post pre { font-size: clamp(10px, 2.6vw, 12.5px); line-height: 1.5; }
-.post .callout { font: 400 clamp(15px, 3.8vw, 17px)/1.6 var(--serif); color: var(--ink); }
+.post .lede { font-size: var(--fs-lg); color: var(--ink); }
+.post h2 { margin-top: var(--s8); }
+.post .byline { margin: 0 0 var(--s6); }
 
 /* ---- settings ---- */
 .gear { position: fixed; z-index: 6; display: grid; place-items: center;
        line-height: 0;
         top: max(12px, env(safe-area-inset-top)); right: clamp(12px, 3vw, 18px);
-        width: 38px; height: 38px; border-radius: 999px; cursor: pointer;
+        width: 38px; height: 38px; border-radius: var(--r-pill); cursor: pointer;
         background: color-mix(in srgb, var(--panel) 80%, transparent);
         border: 1px solid var(--line); color: var(--muted);
         backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
@@ -244,24 +246,24 @@ section[id] > h2:hover .anchor, h2[id]:hover .anchor,
             right: clamp(12px, 3vw, 18px); width: 226px; padding: 6px;
             background: color-mix(in srgb, var(--panel) 94%, transparent);
             backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--line); border-radius: 14px;
+            border: 1px solid var(--line); border-radius: var(--r-lg);
             box-shadow: 0 18px 46px -18px rgba(0,0,0,.55); }
 .settings.on { display: block; animation: riseIn .18s ease both; }
 .set-label { margin: 8px 0 4px; padding: 0 10px;
-             font: 10px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase;
+             font: 600 var(--fs-2xs)/1 var(--sans); letter-spacing: var(--ls-caps); text-transform: uppercase;
              color: var(--muted); }
 .set-row { display: flex; gap: 4px; padding: 0 6px 6px; }
 .set-row button { flex: 1; background: none; border: 1px solid var(--line);
-                  border-radius: 9px; padding: 7px 0; cursor: pointer;
-                  font: 11.5px var(--sans); color: var(--muted); }
+                  border-radius: var(--r-sm); padding: 7px 0; cursor: pointer;
+                  font: var(--fs-xs) var(--sans); color: var(--muted); }
 .set-row button[aria-pressed="true"] { color: var(--on-accent); border-color: transparent;
   background: linear-gradient(120deg, var(--accent), var(--accent-2)); }
 .set-item { display: flex; justify-content: space-between; align-items: center; gap: 10px;
             min-width: 0; text-align: left;
-            width: 100%; background: none; border: 0; cursor: pointer; border-radius: 9px;
-            padding: 9px 10px; font: 13px var(--sans); color: var(--ink); text-align: left; }
+            width: 100%; background: none; border: 0; cursor: pointer; border-radius: var(--r-sm);
+            padding: 9px 10px; font: var(--fs-sm) var(--sans); color: var(--ink); text-align: left; }
 .set-item:hover { background: var(--code-bg); text-decoration: none; }
-.set-item span { font: 10.5px var(--mono); color: var(--muted); }
+.set-item span { font: 600 var(--fs-2xs) var(--sans); letter-spacing: var(--ls-caps); color: var(--muted); }
 .set-sep { height: 1px; background: var(--line); margin: 5px 8px; }
 
 /* Two skip links now: the conventional "to content" first, then the rail. Offset
@@ -275,7 +277,7 @@ section[id] > h2:hover .anchor, h2[id]:hover .anchor,
 .skip { position: fixed; top: 8px; left: 8px; z-index: 60;
         transform: translateY(-160%); transition: transform .18s;
         background: var(--panel); border: 1px solid var(--accent); color: var(--accent);
-        border-radius: 9px; padding: 9px 15px; font: 13px var(--sans); }
+        border-radius: var(--r-sm); padding: 9px 15px; font: var(--fs-sm) var(--sans); }
 .skip:focus { transform: none; text-decoration: none; }
 
 /* A sheet that is merely translated off-screen still holds its links in the tab
@@ -320,7 +322,7 @@ section[id] > h2:hover .anchor, h2[id]:hover .anchor,
 .side a:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--accent); }
 
 /* The closing ask. A reader who got this far should not be handed only a link to the CSS. */
-footer .cta { color: var(--ink); font-size: 1rem; max-width: 60ch; margin: 0 0 12px; }
+footer .cta { color: var(--ink); font-size: var(--fs-base); max-width: 60ch; margin: 0 0 var(--s3); }
 footer .cta-actions { margin-bottom: 18px; }
 
 
