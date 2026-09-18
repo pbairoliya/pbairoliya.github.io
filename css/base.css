@@ -9,6 +9,41 @@
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+
+  /* ---- type scale ----
+     The stylesheet had 26 distinct font sizes, 12 line-heights and 8 trackings.
+     Several were the same visual tier written three ways — .89rem, .9rem and
+     14px all meaning "muted caption". Seven steps, one unit. */
+  --fs-2xs: .6875rem;   /* 11 — uppercase micro-labels */
+  --fs-xs:  .75rem;     /* 12 — keyboard hints, badges  */
+  --fs-sm:  .8125rem;   /* 13 — controls, nav, buttons  */
+  --fs-md:  .875rem;    /* 14 — secondary text, captions */
+  --fs-base: 1rem;      /* 16 — body                     */
+  --fs-lg:  1.125rem;   /* 18 — lede                     */
+  --fs-xl:  1.25rem;    /* 20 — h2                       */
+
+  --lh-tight: 1.15;     /* display */
+  --lh-snug:  1.3;      /* headings and UI rows */
+  --lh-body:  1.6;      /* all prose */
+
+  --ls-tight: -.02em;   /* large display type */
+  --ls-caps:   .1em;    /* every uppercase label */
+
+  /* ---- radii ---- four "card" radii collapse to one */
+  --r-xs: 4px;          /* code, kbd, the job rail */
+  --r-sm: 8px;          /* nav rows, small buttons */
+  --r-md: 12px;         /* every card-like surface */
+  --r-lg: 16px;         /* floating surfaces */
+  --r-pill: 999px;
+
+  /* ---- spacing ---- a 4px scale; 7/9/11/14/17/26/42/52 all rounded into it */
+  --s1: 4px;  --s2: 8px;  --s3: 12px; --s4: 16px;
+  --s5: 20px; --s6: 24px; --s7: 32px; --s8: 48px; --s9: 64px;
+
+  /* ---- depth ---- three scrim opacities and four shadow alphas become two */
+  --scrim: rgba(8, 9, 12, .55);
+  --shadow-float: 0 6px 20px -10px rgba(0, 0, 0, .4);
+  --shadow-pop: 0 18px 46px -18px rgba(0, 0, 0, .5);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -30,7 +65,7 @@
 * { box-sizing: border-box; }
 body {
   margin: 0; background: var(--bg); color: var(--ink);
-  font: 16px/1.65 var(--sans); -webkit-font-smoothing: antialiased;
+  font: var(--fs-base)/var(--lh-body) var(--sans); -webkit-font-smoothing: antialiased;
 }
 /* an ambient wash behind everything, drifting with the palette */
 body::before {
@@ -49,31 +84,31 @@ body::before {
 a { color: var(--accent); text-decoration: none; transition: color .8s linear; }
 a:hover { text-decoration: underline; }
 
-h1 { font-size: clamp(1.9rem, 6vw, 2.4rem); line-height: 1.1; letter-spacing: -.025em; margin: 0 0 6px; }
-h2 { font-size: 1.25rem; line-height: 1.25; letter-spacing: -.015em; margin: 52px 0 16px;
-     padding-bottom: 8px; border-bottom: 1px solid var(--line); }
-h3 { font-size: 1.0625rem; line-height: 1.35; letter-spacing: -.005em; margin: 28px 0 8px; }
-p  { margin: 0 0 14px; }
-ul { padding-left: 20px; margin: 0 0 14px; }
-li { margin-bottom: 7px; }
+h1 { font-size: clamp(1.9rem, 6vw, 2.4rem); line-height: var(--lh-tight); letter-spacing: var(--ls-tight); margin: 0 0 var(--s1); }
+h2 { font-size: var(--fs-xl); line-height: var(--lh-snug); letter-spacing: var(--ls-tight); margin: var(--s8) 0 var(--s4);
+     padding-bottom: var(--s2); border-bottom: 1px solid var(--line); }
+h3 { font-size: var(--fs-lg); line-height: var(--lh-snug); margin: var(--s7) 0 var(--s2); }
+p  { margin: 0 0 var(--s3); }
+ul { padding-left: var(--s5); margin: 0 0 var(--s3); }
+li { margin-bottom: var(--s1); }
 
-.lede { color: var(--ink); font-size: clamp(1.05rem, 3.4vw, 1.18rem);
-        line-height: 1.55; margin-bottom: 18px; max-width: 34em; }
-.meta { color: var(--muted); font-size: .9rem; }
-.tagline { font: 13px/1 var(--mono); letter-spacing: .05em; text-transform: uppercase;
-           color: var(--accent); margin: 0 0 14px; transition: color .8s linear; }
+.lede { color: var(--ink); font-size: var(--fs-lg);
+        line-height: var(--lh-body); margin-bottom: var(--s5); max-width: 34em; }
+.meta { color: var(--muted); font-size: var(--fs-md); }
+.tagline { font: 600 var(--fs-xs)/1 var(--sans); letter-spacing: var(--ls-caps); text-transform: uppercase;
+           color: var(--accent); margin: 0 0 var(--s3); transition: color .8s linear; }
 
-code { font: .88em var(--mono); background: var(--code-bg); padding: 2px 5px; border-radius: 4px; }
-pre  { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px;
-       padding: 14px 16px; overflow-x: auto; font: 13px/1.6 var(--mono); }
+code { font: .88em var(--mono); background: var(--code-bg); padding: 2px 5px; border-radius: var(--r-xs); }
+pre  { background: var(--code-bg); border: 1px solid var(--line); border-radius: var(--r-sm);
+       padding: var(--s3) var(--s4); overflow-x: auto; font: var(--fs-sm)/var(--lh-body) var(--mono); }
 pre code { background: none; padding: 0; }
 
 #field { position: fixed; inset: 0; z-index: -1; display: block; pointer-events: none; }
 
-footer { margin-top: 64px; padding-top: 18px; border-top: 1px solid var(--line);
-         color: var(--muted); font-size: .88rem; }
-.callout { border-left: 3px solid var(--accent); padding: 2px 0 2px 16px; margin: 18px 0;
-           color: var(--muted); }
+footer { margin-top: var(--s9); padding-top: var(--s5); border-top: 1px solid var(--line);
+         color: var(--muted); font-size: var(--fs-md); }
+.callout { border-left: 3px solid var(--accent); padding: 2px 0 2px var(--s4); margin: var(--s5) 0;
+           font: 400 var(--fs-lg)/var(--lh-body) var(--serif); color: var(--ink); }
 .row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
 .row .meta { white-space: nowrap; }
 
