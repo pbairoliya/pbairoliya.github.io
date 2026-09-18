@@ -115,8 +115,14 @@
   try {
     if (!isSheet() && localStorage.getItem(COLLAPSE_KEY) === "1") setCollapsed(true);
   } catch {}
-  collapseBtn?.addEventListener("click", () =>
-    setCollapsed(!document.body.classList.contains("side-collapsed")));
+  collapseBtn?.addEventListener("click", () => {
+    /* At sheet widths "collapse" means nothing — the rail is already a sheet.
+       The button used to flip a class with no mobile rules AND persist it to
+       localStorage, so it silently did nothing now and collapsed the rail later
+       on a desktop. Here it closes the sheet, which is what it looks like. */
+    if (isSheet()) { closeSheet(); return; }
+    setCollapsed(!document.body.classList.contains("side-collapsed"));
+  });
 
   // [ toggles it, the way an editor would
   addEventListener("keydown", e => {

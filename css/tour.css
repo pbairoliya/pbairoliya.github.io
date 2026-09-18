@@ -9,6 +9,8 @@
   opacity: 0; transition: opacity .28s ease;
 }
 .tour.on { opacity: 1; }
+/* it lingers 300ms to fade out; without this it eats every click meanwhile */
+.tour:not(.on) { pointer-events: none; }
 
 /* The hole is positioned with a transform rather than left/top so that
    following a scrolling target costs a paint, not a layout pass. */

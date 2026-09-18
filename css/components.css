@@ -182,13 +182,14 @@ a.cred:hover { text-decoration: none; }
 #toast.on { opacity: 1; transform: translate(-50%, 0); }
 
 /* ---- notion-ish block affordances ---- */
-section[id] > h2 { position: relative; }
+section[id] > h2, h2[id] { position: relative; }
 .anchor {
   background: none; border: 0; cursor: pointer; padding: 0 0 0 9px;
   font: 15px var(--mono); color: var(--muted); opacity: 0;
   transition: opacity .18s, color .18s;
 }
-section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
+section[id] > h2:hover .anchor, h2[id]:hover .anchor,
+.anchor:focus-visible { opacity: 1; }
 .anchor:hover { color: var(--accent); }
 
 /* ---- palette, grouped like a quick-find ---- */
@@ -321,3 +322,12 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
 /* The closing ask. A reader who got this far should not be handed only a link to the CSS. */
 footer .cta { color: var(--ink); font-size: 1rem; max-width: 60ch; margin: 0 0 12px; }
 footer .cta-actions { margin-bottom: 18px; }
+
+
+/* ===== overlays ===== */
+/* Nothing locked the page behind the palette or the sheet, so scrolling over
+   the dimmed area scrolled the content underneath — and on iOS the scrim
+   rubber-banded the document. */
+body.no-scroll { overflow: hidden; }
+body.side-open { overflow: hidden; }
+.side-scrim, #palette { overscroll-behavior: contain; }

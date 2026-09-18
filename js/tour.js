@@ -17,14 +17,18 @@
   /* A phone has no ⌘K, no hover and no permanent rail, so it gets its own
      script. Pointing a touch visitor at a keyboard shortcut is the fastest way
      to make an onboarding feel like it was written for somebody else. */
-  const PHONE = matchMedia("(max-width: 900px)").matches;
 
   /* The rail can be collapsed away, in which case .side-head is hidden and the
      only thing to point at is the button that brings it back. Resolved when the
      tour starts, not when the file loads. */
   const railVisible = () => {
+    /* getClientRects() still returns a box for a visibility:hidden element —
+       only display:none gives zero — so geometry cannot answer this. Ask the
+       state that actually hides the rail. */
+    if (document.body.classList.contains("side-collapsed")) return false;
+    if (matchMedia("(max-width: 900px)").matches) return false;
     const el = document.querySelector(".side-head");
-    return !!el && el.getClientRects().length > 0;
+    return !!el && getComputedStyle(el).visibility !== "hidden";
   };
 
   const DESKTOP_STEPS = [
@@ -79,7 +83,6 @@
     },
   ];
 
-  const STEPS = PHONE ? PHONE_STEPS : DESKTOP_STEPS;
 
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -92,9 +95,10 @@
 
   function start() {
     // Resolve targets up front so a missing element costs nothing later.
-    const steps = STEPS
+    const steps = (matchMedia("(max-width: 900px)").matches ? PHONE_STEPS : DESKTOP_STEPS)
       .map(s => ({ ...s, el: document.querySelector(s.sel) }))
-      .filter(s => s.el && s.el.getClientRects().length);
+      .filter(s => s.el && s.el.getClientRects().length &&
+                   getComputedStyle(s.el).visibility !== "hidden");
     if (!steps.length) return;
 
     let i = 0;

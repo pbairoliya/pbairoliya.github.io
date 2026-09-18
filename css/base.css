@@ -80,7 +80,7 @@ footer { margin-top: 64px; padding-top: 18px; border-top: 1px solid var(--line);
 /* A designed focus state, everywhere. The rail clips outlines (overflow-y:auto),
    so links inside it get an inset ring instead. */
 :where(a, button, [tabindex]):focus-visible {
-  outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px;
+  outline: 2px solid var(--accent); outline-offset: 2px;
 }
 
 /* Cap prose at ~72 characters; the stack grid and cards keep the full width. */
