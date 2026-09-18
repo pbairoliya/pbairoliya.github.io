@@ -15,9 +15,10 @@
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <!-- /social -->
-<link rel="stylesheet" href="../css/base.css?v=23">
-<link rel="stylesheet" href="../css/components.css?v=23">
-<link rel="stylesheet" href="../css/motion.css?v=23">
+<link rel="stylesheet" href="../css/base.css?v=24">
+<link rel="stylesheet" href="../css/components.css?v=24">
+<link rel="stylesheet" href="../css/motion.css?v=24">
+<link rel="stylesheet" href="../css/tour.css?v=24">
 </head>
 <body>
 <a class="skip" href="#side" data-skip>Skip to navigation</a>
@@ -92,7 +93,7 @@
     and scaffolds the code; another publishes everything to a Git repo and schedules the review.
   </p>
 
-  <h2>Why it exists</h2>
+  <h2 id="why-it-exists">Why it exists</h2>
   <p>
     Practising algorithm problems produces two artefacts that want to live in different places.
     The <em>thinking</em> — why this pattern, what the invariant is, what you got wrong — belongs
@@ -100,7 +101,7 @@
     hand means you stop doing one of them within a week.
   </p>
 
-  <h2>The design decision everything hangs off</h2>
+  <h2 id="the-design-decision-everything-hangs-off">The design decision everything hangs off</h2>
   <p>
     <strong>The note is the source of truth.</strong> You write in Obsidian; the repo is
     generated. That's the only way the notes stay current, but taken naively it's dangerous: a
@@ -116,7 +117,7 @@ neither has code     →  skip the problem entirely</code></pre>
     94 tests point.
   </p>
 
-  <h2>Things that turned out to matter</h2>
+  <h2 id="things-that-turned-out-to-matter">Things that turned out to matter</h2>
   <ul>
     <li><strong>Rendering lives in exactly one place.</strong> The Obsidian templates are thin
       wrappers that shell out to <code>lc new --print</code>, so note formatting can't drift
@@ -135,7 +136,7 @@ neither has code     →  skip the problem entirely</code></pre>
       one argument there. Found the hard way.</li>
   </ul>
 
-  <h2>Shape</h2>
+  <h2 id="shape">Shape</h2>
   <pre><code>lc new &lt;url|slug|id&gt;     import, scaffold, start the clock
 lc done [problem]        stop, mark solved, schedule the next review
 lc session [--minutes N] a guided study block built from your own notes
@@ -147,12 +148,13 @@ lc sync / lc push        generate the repo, commit, push (nightly via launchd)</
 
   <footer><a href="../">← back</a></footer>
 </div>
-<script src="../js/field.js?v=23" defer></script>
-<script src="../js/palette.js?v=23" defer></script>
-<script src="../js/spotlight.js?v=23" defer></script>
-<script src="../js/sidebar.js?v=23" defer></script>
-<script src="../js/reveal.js?v=23" defer></script>
-<script src="../js/a11y.js?v=23" defer></script>
-<script src="../js/settings.js?v=23" defer></script>
+<script src="../js/field.js?v=24" defer></script>
+<script src="../js/palette.js?v=24" defer></script>
+<script src="../js/spotlight.js?v=24" defer></script>
+<script src="../js/sidebar.js?v=24" defer></script>
+<script src="../js/reveal.js?v=24" defer></script>
+<script src="../js/blocks.js?v=24" defer></script>
+<script src="../js/a11y.js?v=24" defer></script>
+<script src="../js/settings.js?v=24" defer></script>
 </body>
 </html>

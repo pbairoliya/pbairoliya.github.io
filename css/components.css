@@ -71,7 +71,7 @@ a.side-head:hover { background: var(--code-bg); text-decoration: none; }
 .side-toggle:hover { color: var(--accent); border-color: var(--accent); }
 .side-toggle svg { width: 16px; height: 16px; fill: currentColor; }
 .side-scrim { position: fixed; inset: 0; z-index: 7; background: rgba(8,9,12,.45);
-              opacity: 0; pointer-events: none; transition: opacity .26s ease; }
+              opacity: 0; pointer-events: none; transition: opacity .28s ease; }
 body.side-open .side-scrim { opacity: 1; pointer-events: auto; }
 
 /* ---- actions ---- */
@@ -211,7 +211,11 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
    table: a narrow label column, values that wrap, and nothing decorative. */
 
 /* ---- long-form reading ---- */
-.post { max-width: 660px; }
+/* The frame is the same 720px on every page — a width jump when you move
+   between them is the most visible way a site stops feeling like one site.
+   Long-form prose still reads at a comfortable measure, set in ch on the
+   paragraphs rather than by shrinking the whole page. */
+.post p, .post ul, .post ol { max-width: 68ch; }
 .post p { font-size: clamp(15px, 3.6vw, 16.5px); line-height: 1.75; }
 .post .lede { font-size: clamp(16px, 4vw, 18px); color: var(--ink); }
 .post h2 { margin-top: 42px; }
@@ -270,8 +274,8 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
 /* A sheet that is merely translated off-screen still holds its links in the tab
    order. Hide it from assistive tech and from tabbing until it is open. */
 @media (max-width: 900px) {
-  .side { transform: translateX(-101%); visibility: hidden;
-          transition: transform .26s cubic-bezier(.32,.72,0,1), visibility 0s .26s;
+  .side { transform: translateX(-102%); visibility: hidden;
+          transition: transform .28s cubic-bezier(.2,.8,.3,1), visibility 0s .28s;
           box-shadow: 0 0 48px -8px rgba(0,0,0,.45); width: min(272px, 84vw); }
   body.side-open .side { transform: none; visibility: visible; transition-delay: 0s; }
 }
@@ -291,9 +295,9 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
   /* the page sits beside the rail rather than under it */
   body:not(.bare) { padding-left: 232px; }
   body.side-collapsed .side {
-    transform: translateX(-101%);
+    transform: translateX(-102%);
     visibility: hidden;
-    transition: transform .26s cubic-bezier(.32,.72,0,1), visibility 0s .26s;
+    transition: transform .28s cubic-bezier(.2,.8,.3,1), visibility 0s .28s;
   }
   body.side-collapsed { padding-left: 0; }
   body.side-collapsed .side-toggle { display: grid; }

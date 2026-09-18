@@ -15,9 +15,10 @@
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <!-- /social -->
-<link rel="stylesheet" href="../css/base.css?v=23">
-<link rel="stylesheet" href="../css/components.css?v=23">
-<link rel="stylesheet" href="../css/motion.css?v=23">
+<link rel="stylesheet" href="../css/base.css?v=24">
+<link rel="stylesheet" href="../css/components.css?v=24">
+<link rel="stylesheet" href="../css/motion.css?v=24">
+<link rel="stylesheet" href="../css/tour.css?v=24">
 </head>
 <body>
 <a class="skip" href="#side" data-skip>Skip to navigation</a>
@@ -100,7 +101,7 @@
     of truth so the whole thing is rebuildable.
   </p>
 
-  <h2>The problem</h2>
+  <h2 id="the-problem">The problem</h2>
   <p>
     Receipts are a small, constant friction. They pile up in a pocket or a junk drawer, and the
     things I actually want from them — <em>what's in the pantry, what I need to buy, how much I
@@ -114,7 +115,7 @@
     into useful state without me touching a spreadsheet.
   </p>
 
-  <h2>The pipeline</h2>
+  <h2 id="the-pipeline">The pipeline</h2>
 <pre><code>iPhone scan ──iCloud──▶ Receipts/Inbox/*.pdf|png|jpg   (launchd watches the folder)
         │
    ocr.py (Apple Vision) ──▶ extract.py (gemma3 → store/date/time/type/total/items)
@@ -133,7 +134,7 @@
     check, it's done.
   </p>
 
-  <h2>Design call #1: on-device everything</h2>
+  <h2 id="design-call-1-on-device-everything">Design call #1: on-device everything</h2>
   <p>
     OCR runs on <strong>Apple Vision</strong>, which ships with macOS — I call it straight from
     Python, and it reads PDFs, PNGs and JPEGs with no cloud service and no API key. The iOS
@@ -148,7 +149,7 @@
     smarter cloud model.
   </p>
 
-  <h2>Design call #2: an open taxonomy</h2>
+  <h2 id="design-call-2-an-open-taxonomy">Design call #2: an open taxonomy</h2>
   <p>
     The model does two jobs at once: it reads the receipt <em>and</em> decides what kind of
     expense it is. The easy version is a fixed list — groceries, dining, gas, rent — and a prompt
@@ -164,7 +165,7 @@
     I throw at it.
   </p>
 
-  <h2>Design call #3: the index is the source of truth</h2>
+  <h2 id="design-call-3-the-index-is-the-source-of">Design call #3: the index is the source of truth</h2>
   <p>
     This is the decision that made everything else safe. There is one canonical file —
     <code>.receipts.jsonl</code> — and <strong>everything else is derived from it on every
@@ -183,7 +184,7 @@
     Anything I edit by hand is something the next run can fight with.
   </p>
 
-  <h2>Keeping a human in the loop</h2>
+  <h2 id="keeping-a-human-in-the-loop">Keeping a human in the loop</h2>
   <p>
     OCR on a faded receipt is not perfect, and I'd rather have a gap than a wrong number in my
     finances. So the pipeline checks itself: if the line items don't sum to within 10% of the
@@ -198,7 +199,7 @@
     anything that needs to stick, use the real markdown checkbox.
   </p>
 
-  <h2>Making it invisible</h2>
+  <h2 id="making-it-invisible">Making it invisible</h2>
   <p>
     A tool I have to remember to run is a tool I'll stop running. So a <code>launchd</code> agent
     watches the Inbox folder and also fires once a day at 8am, which means a scanned receipt is
@@ -211,7 +212,7 @@
     <code>fcntl</code> lock: Apple Vision does not enjoy being driven by two processes at once.
   </p>
 
-  <h2>What I'd reuse</h2>
+  <h2 id="what-i-d-reuse">What I'd reuse</h2>
   <p>
     Strip away the receipts and the bones are the same loop I keep coming back to: <strong>gather
     some context, prompt a model, write the result back somewhere useful.</strong> The OCR is just
@@ -231,12 +232,13 @@
     <br><a href="./">← more writing</a>
   </footer>
 </div>
-<script src="../js/field.js?v=23" defer></script>
-<script src="../js/palette.js?v=23" defer></script>
-<script src="../js/spotlight.js?v=23" defer></script>
-<script src="../js/sidebar.js?v=23" defer></script>
-<script src="../js/reveal.js?v=23" defer></script>
-<script src="../js/a11y.js?v=23" defer></script>
-<script src="../js/settings.js?v=23" defer></script>
+<script src="../js/field.js?v=24" defer></script>
+<script src="../js/palette.js?v=24" defer></script>
+<script src="../js/spotlight.js?v=24" defer></script>
+<script src="../js/sidebar.js?v=24" defer></script>
+<script src="../js/reveal.js?v=24" defer></script>
+<script src="../js/blocks.js?v=24" defer></script>
+<script src="../js/a11y.js?v=24" defer></script>
+<script src="../js/settings.js?v=24" defer></script>
 </body>
 </html>
