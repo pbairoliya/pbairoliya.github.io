@@ -29,6 +29,7 @@
   let readerMoved = false;
 
   const isSheet = () => matchMedia("(max-width: 900px)").matches;
+  let releaseSheet = null;
   const openSheet = () => {
     document.body.classList.add("side-open");
     toggle?.setAttribute("aria-expanded", "true");
@@ -36,8 +37,11 @@
     // focus has to follow the sheet, or a keyboard user opens something they
     // then cannot reach
     bar.querySelector("a")?.focus({ preventScroll: true });
+    // the sheet is modal — there is a scrim — so Tab must stay inside it
+    releaseSheet = window.__trap?.(bar) || null;
   };
   const closeSheet = () => {
+    releaseSheet?.(); releaseSheet = null;
     const wasOpen = document.body.classList.contains("side-open");
     document.body.classList.remove("side-open");
     toggle?.setAttribute("aria-expanded", "false");
@@ -92,13 +96,21 @@
     const visible = new Set();
     const io = new IntersectionObserver(rows => {
       rows.forEach(r => r.isIntersecting ? visible.add(r.target) : visible.delete(r.target));
+      /* At the very top of the page the answer is always the first entry; the
+         observer's first callback used to run after setActive(0) and overwrite
+         it, so a tall window opened on "Work" wearing Work's colour. */
+      if (scrollY < 80) return setActive(0);
       let best = -1;
       visible.forEach(el => {
         const i = sections.indexOf(el);
         if (i >= 0 && (best < 0 || i < best)) best = i;
       });
       if (best >= 0) setActive(best);
-    }, { rootMargin: "-40% 0px -45% 0px", threshold: 0 });
+    /* The band is anchored in PIXELS at the top, not in percent. It used to
+       start 40% down the viewport — 480px on a tall window — so #writing, which
+       is 215px tall, could never reach it: clicking "Writing" in the rail
+       scrolled it to the top and lit "Stack" instead. */
+    }, { rootMargin: "-88px 0px -55% 0px", threshold: 0 });
     sections.forEach(s => io.observe(s));
 
     // The intro is only the actions row, small enough to skip straight past the

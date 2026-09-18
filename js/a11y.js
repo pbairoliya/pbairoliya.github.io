@@ -20,4 +20,23 @@
   if (matchMedia("(hover: none) and (pointer: coarse)").matches) {
     document.querySelectorAll("[data-open-palette]").forEach(b => b.remove());
   }
+
+  /* A focus trap, shared by every layer that opens over the page.
+     Rather than enumerating focusable children — which goes stale the moment
+     the palette re-renders its list — this watches focusin and pulls focus
+     back the moment it leaves. Tab and Shift+Tab both wrap, and so does
+     anything else that moves focus. */
+  window.__trap = (root) => {
+    const inside = (n) => root.contains(n);
+    const firstIn = () => root.querySelector(
+      'input, button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])');
+    let last = null;
+    const onFocus = (e) => {
+      if (inside(e.target)) { last = e.target; return; }
+      const back = (last && inside(last) && last.isConnected) ? last : firstIn() || root;
+      back.focus?.();
+    };
+    document.addEventListener("focusin", onFocus);
+    return () => document.removeEventListener("focusin", onFocus);
+  };
 })();

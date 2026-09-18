@@ -141,7 +141,12 @@ div.job-head .meta { white-space: nowrap; }
 .job-body { display: grid; grid-template-rows: 1fr;
             transition: grid-template-rows .34s cubic-bezier(.2,.8,.3,1); }
 .job-body > div { overflow: hidden; }
-.job.shut .job-body { grid-template-rows: 0fr; }
+/* Zero height with overflow:hidden still leaves the bullets in the
+   accessibility tree and findable by ctrl-F. visibility does remove them, and
+   delaying it by the duration keeps the collapse animating. */
+.job.shut .job-body { grid-template-rows: 0fr; visibility: hidden;
+                      transition: grid-template-rows .34s cubic-bezier(.2,.8,.3,1),
+                                  visibility 0s .34s; }
 
 /* The bullets arrive one after another rather than all at once. */
 .job-body li { transition: opacity .26s ease, transform .26s cubic-bezier(.2,.8,.3,1);
@@ -187,8 +192,7 @@ div.job-head .meta { white-space: nowrap; }
    they replace read as a placeholder. */
 .tool .gl { width: 20px; height: 20px; flex: 0 0 20px; fill: var(--accent);
             transition: fill .8s linear; }
-/* AWS only publishes a wordmark, so let that one tile be wider than tall. */
-.tool .wordmark { width: auto; height: 15px; flex: 0 0 auto; }
+
 
 /* ---- credentials ---- */
 .cred { display: flex; align-items: flex-start; gap: 14px; background: var(--panel);
@@ -329,7 +333,7 @@ section[id] > h2:hover .anchor, h2[id]:hover .anchor,
 
 /* Two skip links now: the conventional "to content" first, then the rail. Offset
    the second so they don't stack on top of each other when both are focused. */
-.skip-2 { left: 152px; }
+.skip.skip-2 { left: 152px; }
 
 /* ---- skip link ----
    The sidebar sits at the end of the DOM so the page reads first for a screen
@@ -377,7 +381,7 @@ section[id] > h2:hover .anchor, h2[id]:hover .anchor,
   .side-toggle { display: grid; }
   body.side-open .side-toggle { opacity: 0; pointer-events: none; }
 }
-@media (prefers-reduced-motion: reduce) and (not all and (max-width: 900px)) {
+@media (prefers-reduced-motion: reduce) and (min-width: 900.02px) {
   body.side-collapsed .side { transition: none; }
 }
 .side a:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--accent); }
@@ -419,6 +423,9 @@ body.side-open { overflow: hidden; }
 /* each node lights as the fill reaches it; --d is its place in the sweep */
 .timeline.drawn .job-node { border-color: var(--accent);
                             transition-delay: calc(var(--d, 0) * 1ms); }
+/* blocks.js adds this once the sweep has finished. Without it the stagger is a
+   permanent transition-delay and the last node takes 780ms to answer a hover. */
+.timeline.settled .job-node { transition-delay: 0s; }
 #work .job .rail { display: none; }   /* the timeline is this section's rail */
 
 .job-node {
@@ -462,7 +469,7 @@ body.side-open { overflow: hidden; }
   .job:hover .job-node { transform: none; }
   .tl-line i { transition: none; }
   .timeline.drawn .job-node { transition-delay: 0s; }
-  .job-now .job-node::after { animation: none; opacity: 0; }
+  .timeline.drawn .job-now .job-node::after { animation: none; opacity: 0; }
 }
 
 /* ---- coursework, linked straight at the repositories ---- */

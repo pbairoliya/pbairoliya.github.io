@@ -194,9 +194,17 @@
     clearTimeout(reseed);
     reseed = setTimeout(() => { lastW = innerWidth; seed(); }, 180);
   }, { passive: true });
+  /* One layout read per frame, not one per scroll event. The column only moves
+     horizontally when the rail collapses, so this is cheap either way. */
+  let centreQueued = false;
   addEventListener("scroll", () => {
-    const wrap = document.querySelector(".wrap");
-    if (wrap) colCentre = wrap.getBoundingClientRect().left + wrap.offsetWidth / 2;
+    if (centreQueued) return;
+    centreQueued = true;
+    requestAnimationFrame(() => {
+      centreQueued = false;
+      const wrap = document.querySelector(".wrap");
+      if (wrap) colCentre = wrap.getBoundingClientRect().left + wrap.offsetWidth / 2;
+    });
   }, { passive: true });
 
   addEventListener("pointermove", e => {

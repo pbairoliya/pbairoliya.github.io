@@ -45,6 +45,20 @@
     const set = (job, open) => {
       job.classList.toggle("shut", !open);
       job.querySelector(".job-toggle").setAttribute("aria-expanded", String(open));
+      /* A zero-height box with overflow:hidden is still in the accessibility
+         tree, so a screen reader read every bullet of a role that presents as
+         collapsed. inert is definitive. Applied after the close finishes so the
+         collapse still animates, and lifted immediately on open. */
+      const body = job.querySelector(".job-body");
+      if (!body) return;
+      clearTimeout(body._t);
+      if (open) { body.inert = false; body.removeAttribute("aria-hidden"); }
+      else body._t = setTimeout(() => {
+        if (job.classList.contains("shut")) {
+          body.inert = true;
+          body.setAttribute("aria-hidden", "true");
+        }
+      }, 360);
     };
 
     jobs.forEach((job, i) => {
@@ -81,7 +95,14 @@
     const track = document.querySelector(".timeline");
     if (track) {
       jobs.forEach((j, n) => j.style.setProperty("--d", 140 + n * 320));
-      const draw = () => track.classList.add("drawn");
+      const last = 140 + (jobs.length - 1) * 320;
+      const draw = () => {
+        track.classList.add("drawn");
+        /* The per-node stagger is a transition-delay, so it would otherwise
+           apply to every later transition too — hovering the last node would
+           take 780ms to respond. Drop it once the sweep has finished. */
+        setTimeout(() => track.classList.add("settled"), last + 400);
+      };
       if (reduced || !("IntersectionObserver" in window)) draw();
       else {
         const io = new IntersectionObserver(rows => {

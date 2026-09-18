@@ -78,9 +78,16 @@
   addEventListener("blur", () => setActive(null));
   /* Scrolling moves the page under a stationary cursor, so re-test what is
      under it rather than only re-easing whatever was lit before. */
+  /* elementFromPoint forces layout, so coalesce to one read per frame rather
+     than one per scroll event. */
+  let hitQueued = false;
   addEventListener("scroll", () => {
-    if (!want.x && !want.y) return;
-    setActive(document.elementFromPoint(want.x, want.y)?.closest(SELECTOR) || null);
-    schedule();
+    if ((!want.x && !want.y) || hitQueued) return;
+    hitQueued = true;
+    requestAnimationFrame(() => {
+      hitQueued = false;
+      setActive(document.elementFromPoint(want.x, want.y)?.closest(SELECTOR) || null);
+      schedule();
+    });
   }, { passive: true });
 })();
