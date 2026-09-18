@@ -91,7 +91,7 @@ body.side-open .side-scrim { opacity: 1; pointer-events: auto; }
                       padding: 2px 6px; opacity: .85; }
 
 /* ---- work rows ---- */
-.job { padding: 16px clamp(12px, 4vw, 18px); margin-inline: clamp(-18px, -4vw, -12px);
+.job { padding: 12px clamp(12px, 4vw, 18px); margin-inline: clamp(-18px, -4vw, -12px);
        border: 1px solid transparent; border-radius: var(--r-md); }
 .job + .job { margin-top: 2px; }
 .job:not(:last-of-type)::before {
@@ -577,26 +577,11 @@ body.side-open { overflow: hidden; }
    One shared scale across every row, so overlap is something you see rather
    than something you work out. The lane is a fixed column between the title
    and the dates; below 900px there is no room for it and it goes. */
-/* The lane is a fixed column and the date column is fixed too, so the axis can
-   be placed with a margin and land exactly on top of it. Sizing the lane with
-   1fr would have made its offset depend on the longest title. */
-.timeline { --lane: 160px; --dates: 126px; --chev: 18px;
-             --gutter: calc(var(--dates) + var(--chev) + var(--s3) * 2); }
-.tl-axis { position: relative; height: 15px; width: var(--lane);
-           margin: 0 var(--gutter) var(--s2) auto;
-           display: none; }
-.timeline.has-axis .tl-axis { display: block; }
-.tl-axis i { position: absolute; top: 0; bottom: -8px; width: 1px;
-             background: var(--line); font-style: normal; }
-.tl-axis i::after { content: "’" attr(data-year); position: absolute; top: -2px; left: 4px;
-                    font: 600 var(--fs-2xs)/1 var(--sans); letter-spacing: .04em;
-                    color: var(--muted); }
 
 /* the lane, and the faint year gridlines behind every row */
 /* No track behind the bar. A pill on a grey pill reads as a progress meter;
    the year rules behind it are what give the bar its position. */
 .job-toggle .span { position: relative; display: none; height: 7px; align-self: center; }
-.timeline.has-axis .job-toggle .span { display: block; }
 .job-toggle .span > i { position: absolute; top: 0; bottom: 0; border-radius: inherit;
                         background: var(--pin, var(--accent)); opacity: .85;
                         transform-origin: left center;
@@ -608,40 +593,58 @@ body.side-open { overflow: hidden; }
 @keyframes bar-grow { from { transform: scaleX(0); opacity: 0; } }
 .timeline.settled .span > i { animation: none; }
 
-@media (min-width: 900.02px) {
-  .timeline.has-axis .job-toggle {
-    grid-template-columns: minmax(0, 1fr) var(--lane) var(--dates) var(--chev);
-  }
-  .timeline.has-axis .job-toggle .meta { text-align: right; }
+
+
+
+/* ===== a vertical timeline =====
+   Time runs down the page, which is the direction a page is read anyway. The
+   years punctuate the list instead of being ruled across it — the horizontal
+   chart needed six vertical lines through everything to place its bars, and
+   they were the noisiest thing on the page. */
+.timeline { --lane: 72px; }
+#work { position: relative; }
+#work::before {                       /* the spine */
+  content: ""; position: absolute; left: 28px; top: 10px; bottom: 18px; width: 2px;
+  border-radius: var(--r-pill);
+  background: linear-gradient(var(--line) 0 85%, transparent);
 }
-@media (max-width: 900px) {
-  .timeline.has-axis .tl-axis,
-  .timeline.has-axis .job-toggle .span { display: none; }
+
+.tl-year { position: relative; padding-left: var(--lane); margin: var(--s5) 0 var(--s2);
+           display: flex; align-items: center; gap: var(--s3); }
+.tl-year:first-of-type { margin-top: 0; }
+.tl-year span { position: absolute; left: 0; width: 40px; text-align: right;
+                font: 700 var(--fs-2xs)/1 var(--sans); letter-spacing: var(--ls-caps);
+                color: var(--muted); }
+.tl-year::after { content: ""; flex: 1; height: 1px; background: var(--line); opacity: .7; }
+
+.timeline .job { position: relative; padding-left: var(--lane); }
+.job-dot { position: absolute; left: 46px; top: 50%; width: 11px; height: 11px;
+           margin-top: -5.5px; border-radius: var(--r-pill); box-sizing: border-box;
+           border: 2px solid var(--pin, var(--accent)); background: var(--bg); z-index: 1;
+           transition: transform .3s cubic-bezier(.34,1.4,.64,1), background-color .3s; }
+.job:hover .job-dot { transform: scale(1.25); }
+.job-dot.pop { animation: dot-pop .45s cubic-bezier(.34,1.5,.64,1); }
+@keyframes dot-pop { 0% { transform: scale(.4); } 55% { transform: scale(1.5); } }
+.job:not(.shut) .job-dot { background: var(--pin, var(--accent));
+                           box-shadow: 0 0 0 4px color-mix(in srgb, var(--pin, var(--accent)) 16%, transparent); }
+/* a run that has not ended keeps a light on it */
+.job-now .job-dot::after {
+  content: ""; position: absolute; inset: -2px; border-radius: inherit;
+  border: 2px solid var(--pin, var(--accent)); animation: dot-pulse 2.6s ease-out infinite;
+}
+@keyframes dot-pulse {
+  0%   { transform: scale(1);   opacity: .6; }
+  70%, 100% { transform: scale(2.2); opacity: 0; }
+}
+
+@media (max-width: 560px) {
+  .timeline { --lane: 52px; }
+  #work::before { left: 10px; }
+  .job-dot { left: 28px; }
+  .tl-year span { width: 26px; font-size: 10px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .timeline.drawn .span > i { animation: none; }
+  .job-dot { transition: none; }
+  .job:hover .job-dot { transform: none; }
+  .job-now .job-dot::after { animation: none; opacity: 0; }
 }
-
-/* Year rules, running the height of the entries behind the bars. With these in
-   place the left-hand spine and its pins were a second timeline saying the same
-   thing, so they are gone. */
-#work { position: relative; }
-.tl-grid { position: absolute; top: 0; bottom: 0; width: var(--lane);
-           right: var(--gutter); pointer-events: none; display: none; }
-.timeline.has-axis #work .tl-grid { display: block; }
-.tl-grid i { position: absolute; top: 0; bottom: 0; width: 1px;
-             background: var(--line); }
-.job-toggle .span > i.pop { animation: bar-grow .45s cubic-bezier(.2,.8,.3,1) 0s backwards; }
-@media (max-width: 900px) { .timeline.has-axis #work .tl-grid { display: none; } }
-
-/* A run that has not ended yet keeps a light on the end of its bar. */
-.job-now .span > i::after {
-  content: ""; position: absolute; right: -2px; top: 50%; width: 7px; height: 7px;
-  margin-top: -3.5px; border-radius: var(--r-pill); background: var(--pin, var(--accent));
-  animation: bar-tip 2.4s ease-in-out infinite;
-}
-@keyframes bar-tip {
-  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--pin, var(--accent)) 55%, transparent); }
-  50%      { box-shadow: 0 0 0 5px color-mix(in srgb, var(--pin, var(--accent)) 0%, transparent); }
-}
-@media (prefers-reduced-motion: reduce) { .job-now .span > i::after { animation: none; } }

@@ -78,8 +78,8 @@
            first sweep. Removing the class, forcing a reflow and adding it back
            is what restarts a CSS animation. */
         if (!reduced) {
-          const bar = job.querySelector(".span > i");
-          if (bar) { bar.classList.remove("pop"); void bar.offsetWidth; bar.classList.add("pop"); }
+          const dot = job.querySelector(".job-dot");
+          if (dot) { dot.classList.remove("pop"); void dot.offsetWidth; dot.classList.add("pop"); }
         }
         /* an entry opened from far down the page should not push its own
            heading off the top */
@@ -99,49 +99,7 @@
        changes the track's height, so every open re-scaled a fill that was
        measured against the old layout. Drawing once and staying drawn has none
        of that problem and reads better anyway. */
-    /* A real time axis. Every entry with dates gets a bar drawn on one shared
-       scale, so a reader sees at a glance that InspireNC and the degree ran
-       underneath four jobs. Brackets in a gutter were trying to say the same
-       thing and said it badly. Positions are percentages of the span, so the
-       lane can be any width and the whole thing survives a resize with no
-       measuring at all. */
     const track = document.querySelector(".timeline");
-    const axis = track?.querySelector(".tl-axis");
-    if (track && axis) {
-      const ms = (v) => v === "now" ? Date.now() : Date.parse(v + "-01T00:00:00");
-      const dated = jobs.filter(j => j.dataset.start);
-      if (dated.length) {
-        const starts = dated.map(j => ms(j.dataset.start));
-        const ends   = dated.map(j => ms(j.dataset.end || "now"));
-        const y0 = new Date(Math.min(...starts)).getFullYear();
-        const y1 = new Date(Math.max(...ends)).getFullYear() + 1;
-        const t0 = Date.parse(y0 + "-01-01"), t1 = Date.parse(y1 + "-01-01");
-        const pct = (v) => ((v - t0) / (t1 - t0)) * 100;
-
-        const grid = document.querySelector("#work .tl-grid");
-        for (let y = y0; y < y1; y++) {
-          const at = pct(Date.parse(y + "-01-01")) + "%";
-          const tick = document.createElement("i");
-          tick.style.left = at;
-          tick.dataset.year = String(y).slice(2);
-          axis.appendChild(tick);
-          if (grid) {
-            const rule = document.createElement("i");
-            rule.style.left = at;
-            grid.appendChild(rule);
-          }
-        }
-        dated.forEach(j => {
-          const bar = j.querySelector(".span > i");
-          if (!bar) return;
-          const a = pct(ms(j.dataset.start)), b = pct(ms(j.dataset.end || "now"));
-          bar.style.left = a + "%";
-          bar.style.width = Math.max(b - a, 1.6) + "%";
-          bar.style.setProperty("--e", (1 + [...dated].indexOf(j)));
-        });
-        track.classList.add("has-axis");
-      }
-    }
 
     if (track) {
       jobs.forEach((j, n) => j.style.setProperty("--d", 120 + n * 150));
