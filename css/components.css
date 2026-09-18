@@ -609,3 +609,35 @@ body.side-open { overflow: hidden; }
 .card:hover .chips span { border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
                           color: var(--ink); }
 @media (prefers-reduced-motion: reduce) { .chips span { transition: none; } }
+
+/* ===== chapters =====
+   Experience and School are one timeline; Things I built and Writing are one
+   shelf. They stay separate <section id>s so the rail, the palette and every
+   deep link keep working — what changes is that their headings stop looking
+   like the top of a new page and start looking like a label on the thing they
+   are part of. */
+.chapter { margin: var(--s8) 0 var(--s5); padding: 0; border: 0;
+           font: 700 var(--fs-2xs)/1 var(--sans); letter-spacing: var(--ls-caps);
+           text-transform: uppercase; color: var(--muted); }
+.timeline > section:first-of-type > .chapter,
+.shelf > section:first-of-type > .chapter { margin-top: var(--s6); }
+
+/* a chapter sits ON the line, with its own marker */
+.timeline .chapter { position: relative; padding-left: 40px; }
+.timeline .chapter::before {
+  content: ""; position: absolute; left: 11px; top: 50%; width: 8px; height: 8px;
+  margin-top: -4px; border-radius: var(--r-pill); background: var(--line);
+  box-shadow: 0 0 0 4px var(--bg);
+}
+.timeline.drawn .chapter::before { background: var(--accent); }
+
+/* School's contents line up with the entries above them */
+#education > .reveal { padding-left: 40px; }
+#education .interests { padding-left: 40px; }
+.shelf { display: block; }
+
+@media (max-width: 560px) {
+  .timeline .chapter { padding-left: 30px; }
+  .timeline .chapter::before { left: 6px; }
+  #education > .reveal, #education .interests { padding-left: 30px; }
+}

@@ -23,10 +23,10 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <!-- /social -->
 <script>try{var t=localStorage.getItem("theme");if(t&&t!=="system")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
-<link rel="stylesheet" href="css/base.css?v=41">
-<link rel="stylesheet" href="css/components.css?v=41">
-<link rel="stylesheet" href="css/motion.css?v=41">
-<link rel="stylesheet" href="css/tour.css?v=41">
+<link rel="stylesheet" href="css/base.css?v=42">
+<link rel="stylesheet" href="css/components.css?v=42">
+<link rel="stylesheet" href="css/motion.css?v=42">
+<link rel="stylesheet" href="css/tour.css?v=42">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -67,11 +67,11 @@
 
   </section>
 
-  <section id="work">
-  <h2 class="reveal">Experience</h2>
-
   <div class="timeline">
     <span class="tl-line" aria-hidden="true"><i></i></span>
+
+  <section id="work">
+  <h2 class="chapter reveal">Experience</h2>
 
     <div class="job reveal job-now">
       <span class="job-node" aria-hidden="true"></span>
@@ -220,12 +220,40 @@
       </div>
     </div>
 
-  </div>
   </section>
 
+  <section id="education">
+  <h2 class="chapter reveal">School</h2>
 
+  <div class="reveal">
+    <div class="row course-head">
+      <p class="stack-label">Coursework, published</p>
+      <a class="meta" href="projects/coursework.html">What each one was for →</a>
+    </div>
+    <ul class="courses">
+      <li><a href="https://github.com/pbairoliya/csc230-c-software-tools">
+        <b>CSC 230</b><span><strong>C and Software Tools</strong>a generic hash map on a hand-written vtable</span></a></li>
+      <li><a href="https://github.com/pbairoliya/csc246-operating-systems">
+        <b>CSC 246</b><span><strong>Operating Systems</strong>max-subarray five ways, down to CUDA</span></a></li>
+      <li><a href="https://github.com/pbairoliya/csc474-network-security">
+        <b>CSC 474</b><span><strong>Network Security</strong>a repeating-key XOR break, and the detector that catches it</span></a></li>
+      <li><a href="https://github.com/pbairoliya/csc484-game-ai">
+        <b>CSC 484</b><span><strong>Building Game AI</strong>steering, A*, and a decision tree over both</span></a></li>
+    </ul>
+  </div>
+
+  <p class="meta interests reveal">
+    Away from a keyboard: underwater robotics, running the Krispy Kreme Challenge, and home-lab
+    automation.
+  </p>
+
+  </section>
+  </div>
+
+
+  <div class="shelf">
   <section id="projects">
-  <h2 class="reveal">Projects</h2>
+  <h2 class="chapter reveal">Things I built</h2>
 
   <a class="card reveal" style="--n:1" href="projects/on-device-tools.html">
     <div class="row">
@@ -272,12 +300,13 @@
   </a>
 
   </section>
-  <section id="writing">
-  <h2 class="reveal">Writing</h2>
 
-  <a class="card reveal" href="writing/receipts-local-llm.html">
+  <section id="writing">
+  <h2 class="chapter reveal">Writing</h2>
+
+  <a class="card reveal" style="--n:5" href="writing/receipts-local-llm.html">
     <div class="row">
-      <h3>Scanning receipts into Obsidian with a local LLM →</h3>
+      <h3><b class="card-no" aria-hidden="true">05</b>Scanning receipts into Obsidian with a local LLM →</h3>
       <span class="meta">Jun 2026</span>
     </div>
     <p>A scan on my phone updates my pantry, shopping list and expense report seconds later.
@@ -287,6 +316,7 @@
   <p class="meta"><a href="writing/">All writing →</a></p>
 
   </section>
+  </div>
 
   <section id="stack">
   <h2 class="reveal">Stack</h2>
@@ -369,32 +399,6 @@
 
   </section>
 
-  <section id="education">
-  <h2 class="reveal">School</h2>
-
-  <div class="reveal">
-    <div class="row course-head">
-      <p class="stack-label">Coursework, published</p>
-      <a class="meta" href="projects/coursework.html">What each one was for →</a>
-    </div>
-    <ul class="courses">
-      <li><a href="https://github.com/pbairoliya/csc230-c-software-tools">
-        <b>CSC 230</b><span><strong>C and Software Tools</strong>a generic hash map on a hand-written vtable</span></a></li>
-      <li><a href="https://github.com/pbairoliya/csc246-operating-systems">
-        <b>CSC 246</b><span><strong>Operating Systems</strong>max-subarray five ways, down to CUDA</span></a></li>
-      <li><a href="https://github.com/pbairoliya/csc474-network-security">
-        <b>CSC 474</b><span><strong>Network Security</strong>a repeating-key XOR break, and the detector that catches it</span></a></li>
-      <li><a href="https://github.com/pbairoliya/csc484-game-ai">
-        <b>CSC 484</b><span><strong>Building Game AI</strong>steering, A*, and a decision tree over both</span></a></li>
-    </ul>
-  </div>
-
-  <p class="meta interests reveal">
-    Away from a keyboard: underwater robotics, running the Krispy Kreme Challenge, and home-lab
-    automation.
-  </p>
-
-  </section>
 
   <section id="credentials">
   <h2 class="reveal">Credentials</h2>
@@ -415,21 +419,21 @@
     </span>
   </a>
 
-  <div class="cred reveal">
+  <a class="cred reveal" href="credentials/pratik-bairoliya-bs-computer-science.jpg">
     <span class="cred-mark">B.S.</span>
     <span class="cred-body">
-      <h3>B.S. Computer Science — summa cum laude</h3>
-      <p>North Carolina State University · conferred 3 May 2025 · 4.0 GPA</p>
+      <h3>B.S. Computer Science — summa cum laude →</h3>
+      <p>North Carolina State University · conferred 3 May 2025 · 4.0 GPA · view diploma</p>
     </span>
-  </div>
+  </a>
 
-  <div class="cred reveal">
+  <a class="cred reveal" href="credentials/pratik-bairoliya-bs-applied-mathematics.jpg">
     <span class="cred-mark">B.S.</span>
     <span class="cred-body">
-      <h3>B.S. Applied Mathematics — summa cum laude</h3>
-      <p>North Carolina State University · conferred 3 May 2025 · 4.0 GPA</p>
+      <h3>B.S. Applied Mathematics — summa cum laude →</h3>
+      <p>North Carolina State University · conferred 3 May 2025 · 4.0 GPA · view diploma</p>
     </span>
-  </div>
+  </a>
 
   </section>
 
@@ -467,10 +471,10 @@
   <p class="side-label">On this page</p>
   <a href="#intro"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 11h3v9h5v-6h4v6h5v-9h3L12 3Z"/></svg><span>Home</span></a>
   <a href="#work"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4h6a2 2 0 0 1 2 2v1h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h3V6a2 2 0 0 1 2-2Zm0 3h6V6H9v1Zm-5 2v9h16V9H4Z"/></svg><span>Experience</span></a>
+  <a href="#education"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 1 9l11 6 9-4.9V17h2V9L12 3ZM5 13.2V17c0 1.7 3.1 3 7 3s7-1.3 7-3v-3.8l-7 3.8-7-3.8Z"/></svg><span>School</span></a>
   <a href="#projects"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 1 5.4 5.2l-1.6-1.6-1.9.5-.5 1.9 1.6 1.6a4 4 0 0 1-5.2-5.4L4.4 2 2 4.4l6.5 8.1a4 4 0 0 0 5.4 5.4l4.3 4.3 2.4-2.4-4.3-4.3"/></svg><span>Things I built</span></a>
   <a href="#writing"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17.3V21h3.7L17.8 9.9l-3.7-3.7L3 17.3ZM20.7 7a1 1 0 0 0 0-1.4l-2.3-2.3a1 1 0 0 0-1.4 0l-1.8 1.8 3.7 3.7L20.7 7Z"/></svg><span>Writing</span></a>
   <a href="#stack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 2 7l10 5 10-5-10-5Zm-7.8 8.6L2 12l10 5 10-5-2.2-1.4L12 14.2 4.2 10.6Zm0 4.5L2 16.5l10 5 10-5-2.2-1.4L12 18.7l-7.8-3.6Z"/></svg><span>Stack</span></a>
-  <a href="#education"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 1 9l11 6 9-4.9V17h2V9L12 3ZM5 13.2V17c0 1.7 3.1 3 7 3s7-1.3 7-3v-3.8l-7 3.8-7-3.8Z"/></svg><span>School</span></a>
   <a href="#credentials"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6.1c0 5 3.4 9.7 8 10.9 4.6-1.2 8-5.9 8-10.9V5l-8-3Zm-1.2 13.4-3.2-3.2 1.4-1.4 1.8 1.8 4.3-4.3 1.4 1.4-5.7 5.7Z"/></svg><span>Credentials</span></a>
 
   <div class="side-end">
@@ -517,15 +521,15 @@
   </div>
 </div>
 
-<script src="js/theme.js?v=41" defer></script>
-<script src="js/field.js?v=41" defer></script>
-<script src="js/palette.js?v=41" defer></script>
-<script src="js/spotlight.js?v=41" defer></script>
-<script src="js/sidebar.js?v=41" defer></script>
-<script src="js/reveal.js?v=41" defer></script>
-<script src="js/a11y.js?v=41" defer></script>
-<script src="js/blocks.js?v=41" defer></script>
-<script src="js/tour.js?v=41" defer></script>
-<script src="js/settings.js?v=41" defer></script>
+<script src="js/theme.js?v=42" defer></script>
+<script src="js/field.js?v=42" defer></script>
+<script src="js/palette.js?v=42" defer></script>
+<script src="js/spotlight.js?v=42" defer></script>
+<script src="js/sidebar.js?v=42" defer></script>
+<script src="js/reveal.js?v=42" defer></script>
+<script src="js/a11y.js?v=42" defer></script>
+<script src="js/blocks.js?v=42" defer></script>
+<script src="js/tour.js?v=42" defer></script>
+<script src="js/settings.js?v=42" defer></script>
 </body>
 </html>
