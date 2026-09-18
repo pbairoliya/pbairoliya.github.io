@@ -89,7 +89,10 @@
   window.__toast = toast;
 
   const pal = document.getElementById("palette");
-  if (pal) {
+  // A palette is a keyboard affordance. On a touch-only device there is no ⌘K
+  // and no "/" key to reach for, so the whole thing stays unbuilt.
+  const touchOnly = matchMedia("(hover: none) and (pointer: coarse)").matches;
+  if (pal && !touchOnly) {
     const input = pal.querySelector("input");
     const list  = pal.querySelector(".pal-list");
     let matches = ACTIONS, cursor = 0;

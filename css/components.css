@@ -281,3 +281,24 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
   .side, body { transition: width .24s cubic-bezier(.2,.8,.3,1), padding-left .24s cubic-bezier(.2,.8,.3,1); }
 }
 @media (prefers-reduced-motion: reduce) { .side, body, .side-collapse { transition: none; } }
+
+
+/* ===== phone =====
+   A phone is not a narrow desktop. It has no keyboard shortcut, no hover, and
+   the thing a visitor most likely came for is the resume — so that leads, and
+   the ⌘K affordance goes away entirely rather than sitting there unusable. */
+@media (max-width: 900px) {
+  .btn.palette-btn { display: none; }
+  .actions { gap: 8px; }
+  .btn.primary { flex: 1 1 100%; justify-content: center; padding-block: 12px; font-size: 14px; }
+  .btn.icon { width: 44px; height: 44px; }          /* a real thumb target */
+  .side a { padding: 11px 12px; font-size: 14.5px; }
+  .side-label { padding-top: 16px; }
+  .gear, .side-toggle { width: 40px; height: 40px; }
+  .settings { width: min(260px, calc(100vw - 24px)); }
+  .wrap { padding-top: clamp(64px, 14vw, 88px); }
+}
+/* the palette is keyboard-driven, so it should not open on a touch-only device */
+@media (hover: none) and (pointer: coarse) {
+  .btn.palette-btn { display: none; }
+}

@@ -14,33 +14,58 @@
   const GAP = 14;         // between the highlight and the popover
   const EDGE = 12;        // keep the popover this far off the viewport edge
 
-  const STEPS = [
+  /* A phone has no ⌘K, no hover and no permanent rail, so it gets its own
+     script. Pointing a touch visitor at a keyboard shortcut is the fastest way
+     to make an onboarding feel like it was written for somebody else. */
+  const PHONE = matchMedia("(max-width: 900px)").matches;
+
+  const DESKTOP_STEPS = [
     {
       sel: ".side",
       title: "Everything lives in the sidebar",
-      body: "Sections of this page up top, my resume and links underneath.",
-    },
-    {
-      sel: ".side-head",
-      title: "The sections live up here",
-      body: "It tracks where you are as you scroll, and the colour of the page shifts with it.",
+      body: "Sections of this page up top, my resume and links underneath. Press [ to collapse it.",
     },
     {
       sel: ".palette-btn",
       title: "Everything is one keystroke away",
-      body: "Press ⌘K (or /) for résumé, links, sections and theme in one place.",
+      body: "Press \u2318K, or /, for my resume, links, sections and theme in one place.",
     },
     {
       sel: ".gear",
       title: "Read it however you like",
-      body: "Auto follows your system. Light and dark override it, and it remembers.",
+      body: "Light, dark, or whatever your system is already set to.",
     },
     {
       sel: ".card",
       title: "The write-ups go deeper",
-      body: "Each project has its own page — what it does, and the decisions behind it.",
+      body: "Each project has its own page \u2014 the decisions, and what I would do differently.",
     },
   ];
+
+  const PHONE_STEPS = [
+    {
+      sel: ".side-toggle",
+      title: "Menu lives here",
+      body: "Every section of this page, plus my resume and links.",
+    },
+    {
+      sel: ".btn.primary",
+      title: "The resume, if that is what you came for",
+      body: "One page, opens straight in your browser.",
+    },
+    {
+      sel: ".gear",
+      title: "Light or dark",
+      body: "It follows your phone by default. Change it here if you would rather not.",
+    },
+    {
+      sel: ".card",
+      title: "Tap through for the detail",
+      body: "Each project has a write-up \u2014 the decisions, and what I would do differently.",
+    },
+  ];
+
+  const STEPS = PHONE ? PHONE_STEPS : DESKTOP_STEPS;
 
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 

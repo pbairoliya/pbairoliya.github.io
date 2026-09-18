@@ -41,6 +41,10 @@
   scrim?.addEventListener("click", closeSheet);
   addEventListener("keydown", e => { if (e.key === "Escape") closeSheet(); });
 
+  // links that leave the page (resume, GitHub) should also dismiss the sheet
+  bar.querySelectorAll("a:not([href^='#'])").forEach(a =>
+    a.addEventListener("click", () => { if (isSheet()) closeSheet(); }));
+
   links.forEach((a, i) => a.addEventListener("click", e => {
     e.preventDefault();
     const href = a.getAttribute("href");
