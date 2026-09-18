@@ -8,7 +8,6 @@
   --on-accent:#fbfbfa;
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
-  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
 
   /* ---- type scale ----
      The stylesheet had 26 distinct font sizes, 12 line-heights and 8 trackings.
@@ -108,7 +107,7 @@ pre code { background: none; padding: 0; }
 footer { margin-top: var(--s9); padding-top: var(--s5); border-top: 1px solid var(--line);
          color: var(--muted); font-size: var(--fs-md); }
 .callout { border-left: 3px solid var(--accent); padding: 2px 0 2px var(--s4); margin: var(--s5) 0;
-           font: 400 var(--fs-lg)/var(--lh-body) var(--serif); color: var(--ink); }
+           font: 400 var(--fs-base)/var(--lh-body) var(--sans); color: var(--ink); }
 .row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
 .row .meta { white-space: nowrap; }
 
