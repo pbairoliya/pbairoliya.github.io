@@ -146,7 +146,7 @@ def main() -> int:
              'id="settings"', 'class="side"', 'id="palette"', 'id="side-collapse"']
     SHEETS = ["base.css", "components.css", "motion.css", "tour.css"]
     SCRIPTS = ["field", "palette", "spotlight", "sidebar", "reveal", "settings",
-               "a11y", "blocks"]
+               "a11y", "blocks", "theme"]
     gaps = []
     for page in pages:
         if page.name == "404.html":

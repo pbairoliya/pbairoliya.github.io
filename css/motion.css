@@ -92,7 +92,8 @@ h2.reveal { transition-duration: .4s, .46s; }
 @media (prefers-reduced-motion: reduce) {
   .boot > *, .stack-group.seen .tool,
   .btn.palette-btn.hint { animation: none; }
-  .reveal { opacity: 1; transform: none; transition: none; }
+  /* must out-specify `.armed .reveal`, or the hidden state wins here too */
+  .armed .reveal, .reveal { opacity: 1; transform: none; transition: none; }
   .job, .card, .cred, .tool, .btn, .job .rail, .side a, #toast { transition: none; }
   .job.lit, .card.lit, .cred.lit, .tool.lit, .btn.lit { transform: none; }
 }

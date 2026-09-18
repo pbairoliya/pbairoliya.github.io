@@ -3,29 +3,9 @@
 (() => {
   "use strict";
 
-  /* ---------- theme: system by default, overridable, remembered ---------- */
-  const THEME_KEY = "theme";
-  const root = document.documentElement;
-
-  function applyTheme(mode) {
-    if (mode === "system") root.removeAttribute("data-theme");
-    else root.setAttribute("data-theme", mode);
-    document.querySelectorAll("[data-theme-btn]").forEach(b =>
-      b.setAttribute("aria-pressed", String(b.dataset.themeBtn === mode)));
-  }
-  function currentTheme() {
-    try { return localStorage.getItem(THEME_KEY) || "system"; } catch { return "system"; }
-  }
-  function setTheme(mode) {
-    try { localStorage.setItem(THEME_KEY, mode); } catch {}
-    applyTheme(mode);
-    window.dispatchEvent(new CustomEvent("themechange", { detail: mode }));
-  }
-  applyTheme(currentTheme());
-  document.addEventListener("click", e => {
-    const b = e.target.closest("[data-theme-btn]");
-    if (b) setTheme(b.dataset.themeBtn);
-  });
+  /* Theme lives in js/theme.js — every page needs it, including the 404, which
+     has no palette markup. These rows just call into it. */
+  const setTheme = (m) => window.__setTheme?.(m);
 
   /* ---------- command palette ---------- */
   /* Root-absolute, always. These used to be relative, so from /writing/ the
@@ -52,9 +32,17 @@
     { g:"Do",         i:"⧉", label:"Copy email address", hint:"pratik0520@gmail.com", run: copyEmail },
     { g:"Do",         i:"✉", label:"Email me",           hint:"mailto",     run:() => location.assign("mailto:pratik0520@gmail.com") },
     { g:"Do",         i:"⧉", label:"Copy link to this page", hint:"url",    run: copyUrl },
-    { g:"Do",         i:"◧", label:"Collapse the sidebar",   hint:"[",      run:() => document.getElementById("side-collapse")?.click() },
+    // "collapse" means nothing at sheet widths, where the rail is already hidden
+    ...(matchMedia("(min-width: 900.02px)").matches
+        ? [{ g:"Do", i:"◧", label:"Hide the sidebar", hint:"[",
+             run:() => document.getElementById("side-collapse")?.click() }]
+        : []),
 
-    { g:"Do",         i:"◎", label:"Replay the tour",      hint:"onboarding", run:() => window.__startTour?.(true) },
+    // the tour only exists on the landing page; offering it elsewhere is a no-op
+    ...(window.__startTour || document.querySelector('script[src*="tour.js"]')
+        ? [{ g:"Do", i:"◎", label:"Replay the tour", hint:"onboarding",
+             run:() => window.__startTour?.(true) }]
+        : []),
     { g:"Appearance", i:"◑", label:"Theme: system",      hint:"follow the OS", run:() => setTheme("system") },
     { g:"Appearance", i:"☀", label:"Theme: light",       hint:"",           run:() => setTheme("light") },
     { g:"Appearance", i:"☾", label:"Theme: dark",        hint:"",           run:() => setTheme("dark") },
@@ -129,13 +117,23 @@
       matches = q ? ACTIONS.filter(a => (a.label + " " + a.hint + " " + a.g).toLowerCase().includes(q)) : ACTIONS;
       cursor = 0; render();
     }
+    let opener = null;
     function openPal() {
+      opener = document.activeElement;
       const b = document.querySelector(".palette-btn");
       if (b) { b.classList.remove("hint"); try { localStorage.setItem("pal-seen", "1"); } catch {} }
       pal.classList.add("on"); pal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("no-scroll");
       input.value = ""; filter(""); input.focus();
     }
-    function close() { pal.classList.remove("on"); pal.setAttribute("aria-hidden", "true"); }
+    function close() {
+      pal.classList.remove("on");
+      pal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("no-scroll");
+      // hand focus back to whatever opened it, or it lands on <body>
+      if (opener && document.contains(opener)) opener.focus({ preventScroll: true });
+      opener = null;
+    }
 
     addEventListener("keydown", e => {
       const k = e.key.toLowerCase();

@@ -12,12 +12,18 @@
     pop.classList.add("on"); btn.setAttribute("aria-expanded", "true");
     pop.querySelector("button")?.focus({ preventScroll: true });
   };
-  const close = () => { pop.classList.remove("on"); btn.setAttribute("aria-expanded", "false"); };
+  const close = ({ refocus = true } = {}) => {
+    const wasOpen = pop.classList.contains("on");
+    pop.classList.remove("on");
+    btn.setAttribute("aria-expanded", "false");
+    // focus belongs back on the gear, not on <body>
+    if (wasOpen && refocus) btn.focus({ preventScroll: true });
+  };
   const toggle = () => (pop.classList.contains("on") ? close() : open());
 
   btn.addEventListener("click", e => { e.stopPropagation(); toggle(); });
   document.addEventListener("click", e => {
-    if (pop.classList.contains("on") && !pop.contains(e.target)) close();
+    if (pop.classList.contains("on") && !pop.contains(e.target)) close({ refocus: false });
   });
   addEventListener("keydown", e => {
     // one Escape should close ONE thing — the topmost open layer
