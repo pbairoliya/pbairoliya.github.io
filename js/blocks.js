@@ -121,4 +121,33 @@
       }
     }
   }
+
+  /* Filter the shelf. The markup ships unfiltered, so no JS means every card
+     is visible — the filter is an affordance, never a gate. */
+  const shelf = document.querySelector(".shelf");
+  const filters = shelf?.querySelector(".filters");
+  if (shelf && filters) {
+    const cards = [...shelf.querySelectorAll(".card[data-type]")];
+    const btns = [...filters.querySelectorAll("button[data-filter]")];
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let tidy = 0;
+
+    const apply = (want) => {
+      btns.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.filter === want)));
+      let shown = 0;
+      cards.forEach(c => {
+        const on = want === "all" || c.dataset.type === want;
+        c.hidden = !on;
+        if (on) c.style.setProperty("--p", shown++);
+      });
+      if (reduced) return;
+      /* restart the deal-in: drop the class, force a reflow, add it back */
+      shelf.classList.remove("filtering");
+      void shelf.offsetWidth;
+      shelf.classList.add("filtering");
+      clearTimeout(tidy);
+      tidy = setTimeout(() => shelf.classList.remove("filtering"), 900);
+    };
+    btns.forEach(b => b.addEventListener("click", () => apply(b.dataset.filter)));
+  }
 })();

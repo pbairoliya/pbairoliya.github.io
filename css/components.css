@@ -106,22 +106,6 @@ div.job-head { display: flex; flex-wrap: wrap; justify-content: space-between;
 div.job-head h3 { margin: 0; font: 600 var(--fs-lg)/var(--lh-snug) var(--sans);
                   letter-spacing: var(--ls-tight); }
 div.job-head .meta { white-space: nowrap; }
-.job-sub { display: flex; align-items: center; gap: var(--s2); flex-wrap: wrap;
-           color: var(--muted); font-size: var(--fs-md); margin: 3px 0 var(--s3); }
-/* What KIND of entry this is. The timeline runs work, teaching, research,
-   leadership and school together in one chronology, so each row has to say
-   which it is without the reader having to infer it from the title. */
-.kind { padding: 2px var(--s2); border-radius: var(--r-pill);
-        border: 1px solid color-mix(in srgb, var(--k, var(--accent)) 35%, transparent);
-        background: color-mix(in srgb, var(--k, var(--accent)) 12%, transparent);
-        color: var(--k, var(--accent));
-        font: 700 var(--fs-2xs)/1.6 var(--sans); letter-spacing: var(--ls-caps);
-        text-transform: uppercase; white-space: nowrap; }
-.kind-work       { --k: var(--accent); }
-.kind-teaching   { --k: var(--accent-2); }
-.kind-research   { --k: var(--accent-2); }
-.kind-leadership { --k: var(--hit); }
-.kind-school     { --k: var(--muted); }
 .job ul { margin-bottom: 0; }
 
 /* A role opens when you want to read it. The markup ships open, so a blocked
@@ -132,7 +116,9 @@ div.job-head .meta { white-space: nowrap; }
               align-items: baseline; gap: 2px var(--s3);
               width: 100%; padding: 0; background: none; border: 0; cursor: pointer;
               color: inherit; font: inherit; text-align: left; }
-.job-name { font: 600 var(--fs-lg)/var(--lh-snug) var(--sans); letter-spacing: var(--ls-tight); }
+.job-name { font: 600 var(--fs-md)/var(--lh-snug) var(--sans); letter-spacing: var(--ls-tight); }
+.job-name i { font-style: normal; font-weight: 400; color: var(--muted); }
+.job-name i::before { content: " · "; }
 @media (max-width: 620px) {
   .job-toggle { grid-template-columns: minmax(0, 1fr) auto; }
   .job-name { grid-column: 1 / -1; }
@@ -150,8 +136,7 @@ div.job-head .meta { white-space: nowrap; }
                             border-radius: var(--r-xs); }
 .job.shut .chev { transform: rotate(-90deg); }
 .job:not(.shut) .chev { stroke: var(--accent); }
-.job.shut .job-sub { margin-bottom: 0; }
-
+.job.shut 
 /* 0fr -> 1fr animates to the content's real height without measuring it. */
 .job-body { display: grid; grid-template-rows: 1fr;
             transition: grid-template-rows .34s cubic-bezier(.2,.8,.3,1); }
@@ -422,11 +407,18 @@ body.side-open { overflow: hidden; }
    A line down the left with a node per role. The node is the state: a ring
    when the role is closed, a filled disc when it is open. That replaces a
    column of chevron buttons with one thing to look at. */
-#work .job { position: relative; padding-left: 40px; }
+/* A ruler down the left: start year, then the line, then the row. Every entry
+   collapses to a single line, so seven of them read at a glance instead of
+   filling a screen. */
+.timeline .job { position: relative; padding-left: 84px; }
+.job-year { position: absolute; left: 0; top: 15px; width: 40px; text-align: right;
+            font: 700 var(--fs-2xs)/1 var(--sans); letter-spacing: var(--ls-caps);
+            color: var(--muted); transition: color .3s; }
+.job:hover .job-year, .job:not(.shut) .job-year { color: var(--accent); }
 /* One line for the whole run, drawn as you scroll past it. The grey track spans
    all three years; the gradient fill is how far down them you have read. */
-.timeline { position: relative; }
-.tl-line { position: absolute; left: 14px; top: 27px; bottom: 27px; width: 2px;
+.timeline { position: relative; margin: var(--s8) 0 var(--s7); }
+.tl-line { position: absolute; left: 58px; top: 27px; bottom: 27px; width: 2px;
            background: var(--line); border-radius: var(--r-pill); }
 .tl-line i { position: absolute; inset: 0; border-radius: inherit;
              background: linear-gradient(var(--accent), var(--accent-2));
@@ -466,10 +458,7 @@ body.side-open { overflow: hidden; }
   to   { transform: scale(2.6); opacity: 0; }
 }
 .timeline.drawn .job-head,
-.timeline.drawn .job-sub {
-  animation: role-in .5s cubic-bezier(.2,.8,.3,1) calc(var(--d, 0) * 1ms + 70ms) backwards;
-}
-@keyframes role-in { from { opacity: 0; transform: translateX(-12px); } }
+.timeline.drawn @keyframes role-in { from { opacity: 0; transform: translateX(-12px); } }
 
 /* the open role's bullets wait their turn rather than arriving before the line */
 .timeline:not(.drawn) .job-body li { opacity: 0; transform: translateX(-12px); }
@@ -482,8 +471,7 @@ body.side-open { overflow: hidden; }
 .timeline.settled .job-node,
 .timeline.settled .job-node::before,
 .timeline.settled .job-head,
-.timeline.settled .job-sub { animation: none; }
-
+.timeline.settled 
 /* Opening an entry replays its own pop and ring. blocks.js retriggers by
    removing and re-adding .pop, so this has to out-specify the sweep rules
    above and carry no delay of its own. */
@@ -496,18 +484,24 @@ body.side-open { overflow: hidden; }
 #work .job .rail { display: none; }   /* the timeline is this section's rail */
 
 .job-node {
-  position: absolute; left: 7px; top: 19px; z-index: 1;   /* over the line */ width: 16px; height: 16px;
+  position: absolute; left: 51px; top: 14px; z-index: 1;   /* over the line */ width: 16px; height: 16px;
   border-radius: var(--r-pill); box-sizing: border-box;
   border: 2px solid var(--line); background: var(--panel);
   transition: transform .34s cubic-bezier(.34,1.4,.64,1),
               border-color .3s, background-color .3s, box-shadow .3s;
 }
-.job:hover .job-node { border-color: var(--accent); transform: scale(1.18);
-                       box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 14%, transparent); }
-.job:not(.shut) .job-node {
-  border-color: var(--accent); background: var(--accent);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);
-}
+.job[data-kind="work"]       { --pin: var(--accent); }
+.job[data-kind="teaching"],
+.job[data-kind="research"]   { --pin: var(--accent-2); }
+.job[data-kind="leadership"] { --pin: var(--hit); }
+.job[data-kind="school"]     { --pin: var(--muted); }
+.timeline.drawn .job-node { border-color: var(--pin, var(--accent)); }
+.job:not(.shut) .job-node { background: var(--pin, var(--accent));
+                            box-shadow: 0 0 0 4px color-mix(in srgb, var(--pin, var(--accent)) 18%, transparent); }
+.job-node::before { border-color: var(--pin, var(--accent)); }
+.job:hover .job-node { border-color: var(--pin, var(--accent)); transform: scale(1.18);
+                       box-shadow: 0 0 0 5px color-mix(in srgb, var(--pin, var(--accent)) 16%, transparent); }
+
 /* the whole row is the target, so give it a hover surface of its own */
 #work .job-toggle { padding: var(--s1) var(--s2); margin: calc(var(--s1) * -1) calc(var(--s2) * -1);
                     border-radius: var(--r-sm); transition: background-color .2s; }
@@ -516,9 +510,11 @@ body.side-open { overflow: hidden; }
 
 
 @media (max-width: 560px) {
-  #work .job { padding-left: 30px; }
-  .tl-line { left: 9px; }
-  .job-node { left: 2px; }
+  .timeline .job { padding-left: 58px; }
+  .job-year { width: 28px; font-size: 10px; }
+  .tl-line { left: 38px; }
+  .job-node { left: 31px; }
+  #education > .reveal, #education .interests { padding-left: 58px; }
 }
 /* The current role is still running, so its node keeps a pulse. */
 .timeline.drawn .job-now .job-node::after {
@@ -538,8 +534,7 @@ body.side-open { overflow: hidden; }
   .timeline.drawn .job-node, .timeline.drawn .job-node.pop,
   .timeline.drawn .job-node::before, .timeline.drawn .job-node.pop::before,
   .timeline.drawn .job-head,
-  .timeline.drawn .job-sub { animation: none; }
-  .timeline:not(.drawn) .job-body li { opacity: 1; transform: none; }
+  .timeline.drawn   .timeline:not(.drawn) .job-body li { opacity: 1; transform: none; }
   .tl-line i { transition: none; }
   .timeline.drawn .job-node { transition-delay: 0s; }
   .timeline.drawn .job-now .job-node::after { animation: none; opacity: 0; }
@@ -616,28 +611,39 @@ body.side-open { overflow: hidden; }
    deep link keep working — what changes is that their headings stop looking
    like the top of a new page and start looking like a label on the thing they
    are part of. */
-.chapter { margin: var(--s8) 0 var(--s5); padding: 0; border: 0;
-           font: 700 var(--fs-2xs)/1 var(--sans); letter-spacing: var(--ls-caps);
-           text-transform: uppercase; color: var(--muted); }
-.timeline > section:first-of-type > .chapter,
-.shelf > section:first-of-type > .chapter { margin-top: var(--s6); }
 
-/* a chapter sits ON the line, with its own marker */
-.timeline .chapter { position: relative; padding-left: 40px; }
-.timeline .chapter::before {
-  content: ""; position: absolute; left: 11px; top: 50%; width: 8px; height: 8px;
-  margin-top: -4px; border-radius: var(--r-pill); background: var(--line);
-  box-shadow: 0 0 0 4px var(--bg);
-}
-.timeline.drawn .chapter::before { background: var(--accent); }
 
 /* School's contents line up with the entries above them */
-#education > .reveal { padding-left: 40px; }
-#education .interests { padding-left: 40px; }
+#education > .reveal { padding-left: 84px; }
+#education .interests { padding-left: 84px; }
 .shelf { display: block; }
 
 @media (max-width: 560px) {
-  .timeline .chapter { padding-left: 30px; }
-  .timeline .chapter::before { left: 6px; }
-  #education > .reveal, #education .interests { padding-left: 30px; }
+}
+
+/* ===== one shelf, filtered =====
+   Projects and Writing are the same kind of object — a thing that was made —
+   so they share one label and one sequence, and the chips narrow it rather
+   than the page splitting it. No JS means no filter and everything visible,
+   which is the right fallback. */
+.shelf-head { margin: var(--s6) 0 var(--s4); align-items: center; }
+.shelf-head .stack-label { margin: 0; }
+.filters { display: flex; gap: var(--s1); flex-wrap: wrap; }
+.filters button { padding: 4px var(--s3); border: 1px solid var(--line);
+                  border-radius: var(--r-pill); background: none; cursor: pointer;
+                  color: var(--muted); font: 600 var(--fs-2xs)/1.6 var(--sans);
+                  letter-spacing: var(--ls-caps); text-transform: uppercase;
+                  transition: color .2s, border-color .2s, background-color .2s; }
+.filters button:hover { color: var(--ink); border-color: var(--accent); }
+.filters button[aria-pressed="true"] { color: var(--on-accent, var(--bg));
+                                       background: var(--accent); border-color: var(--accent); }
+.shelf .card[hidden] { display: none; }
+/* the cards that survive a filter re-deal rather than snapping into place */
+.shelf.filtering .card { animation: card-in .34s cubic-bezier(.2,.8,.3,1) backwards;
+                         animation-delay: calc(var(--p, 0) * 45ms); }
+@keyframes card-in { from { opacity: 0; transform: translateY(10px) scale(.99); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .filters button { transition: none; }
+  .shelf.filtering .card { animation: none; }
 }
