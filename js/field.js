@@ -55,17 +55,21 @@
      pinned per theme so accent text keeps its contrast whatever the hue
      happens to be. The crossing highlight borrows the live accent, so
      hovering matches the background you are hovering over. */
+  /* Sections are spread right around the wheel rather than clustered in the
+     blues, so moving between them is a change you notice rather than a shade
+     you have to look for. Saturation and lightness are fixed per theme, so
+     every one of these still clears WCAG AA as accent text. */
   const SECTION_HUES = {
-    intro:       [200, 232],   // cyan → azure
-    education:   [264, 292],   // indigo → violet
-    work:        [216, 248],   // azure → indigo
-    stack:       [176, 206],   // teal → cyan
-    projects:    [292, 318],   // violet → magenta
-    writing:     [246, 276],   // blue → indigo
-    credentials: [238, 270],   // blue → indigo
+    intro:       [192, 214],   // cyan → azure
+    work:        [244, 266],   // indigo → violet
+    stack:       [156, 178],   // green → teal
+    projects:    [286, 312],   // violet → magenta
+    writing:     [ 18,  40],   // coral → amber
+    education:   [332, 356],   // magenta → rose
+    credentials: [208, 232],   // sky → blue
   };
   const FALLBACK = SECTION_HUES.intro;
-  const WOBBLE = 6, WOBBLE_MS = 19000, CHASE = 0.02;
+  const WOBBLE = 5, WOBBLE_MS = 21000, CHASE = 0.045;
 
   let want = FALLBACK.slice();
   let hue = want[0], hue2 = want[1];
