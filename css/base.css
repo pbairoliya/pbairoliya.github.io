@@ -42,11 +42,13 @@ body::before {
   transition: background 1.2s linear;
 }
 
-.wrap { max-width: 720px; margin: 0 auto; padding: 96px 24px 96px; position: relative; z-index: 1; }
+.wrap { max-width: 720px; margin-inline: auto; position: relative; z-index: 1;
+         padding-block: clamp(72px, 12vw, 104px) clamp(88px, 16vw, 120px);
+         padding-inline: clamp(16px, 5vw, 24px); }
 a { color: var(--accent); text-decoration: none; transition: color .8s linear; }
 a:hover { text-decoration: underline; }
 
-h1 { font-size: 2rem; letter-spacing: -.02em; margin: 0 0 6px; }
+h1 { font-size: clamp(1.6rem, 6vw, 2rem); letter-spacing: -.02em; margin: 0 0 6px; }
 h2 { font-size: 1.15rem; letter-spacing: -.01em; margin: 46px 0 14px;
      padding-bottom: 8px; border-bottom: 1px solid var(--line); }
 h3 { font-size: 1rem; margin: 28px 0 8px; }
@@ -54,7 +56,7 @@ p  { margin: 0 0 14px; }
 ul { padding-left: 20px; margin: 0 0 14px; }
 li { margin-bottom: 7px; }
 
-.lede { color: var(--muted); font-size: 1.05rem; margin-bottom: 16px; }
+.lede { color: var(--muted); font-size: clamp(.98rem, 3.4vw, 1.05rem); margin-bottom: 16px; }
 .meta { color: var(--muted); font-size: .9rem; }
 .tagline { font: 13px/1 var(--mono); letter-spacing: .05em; text-transform: uppercase;
            color: var(--accent); margin: 0 0 14px; transition: color .8s linear; }

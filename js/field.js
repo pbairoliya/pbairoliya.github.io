@@ -50,32 +50,29 @@
   const ptr = { x: -9999, y: -9999, on: false };
 
   /* ---- colour ---------------------------------------------------------
-     The page is coloured BY WHERE YOU ARE. Every section carries a slug and
-     a hue pair; scrolling into one eases the whole palette toward it, so the
-     site changes character as you read rather than cycling on a timer you
-     have no control over. Inside a section the hue wobbles a few degrees so
-     it is never quite still. */
+     The page is coloured by where you are. Every section owns a hue pair
+     keyed by its slug. Cool hues only — no amber, no orange. Lightness is
+     pinned per theme so accent text keeps its contrast whatever the hue
+     happens to be. The crossing highlight borrows the live accent, so
+     hovering matches the background you are hovering over. */
   const SECTION_HUES = {
-    top:         [198, 236],   // cyan → azure      · the opening
-    about:       [268, 302],   // indigo → violet   · background
-    work:        [214, 252],   // azure → indigo    · the day job
-    stack:       [168, 202],   // teal → cyan       · tools
-    projects:    [296, 330],   // violet → magenta  · the fun half
-    credentials: [ 34,  62],   // amber → gold      · certificates
+    intro:       [200, 232],   // cyan → azure
+    background:  [264, 292],   // indigo → violet
+    work:        [216, 248],   // azure → indigo
+    stack:       [176, 206],   // teal → cyan
+    projects:    [292, 318],   // violet → magenta
+    credentials: [238, 270],   // blue → indigo
   };
-  const FALLBACK = SECTION_HUES.top;
-  const HIT_HUE = 282;              // the purple the crossing light uses
-  const WOBBLE = 7, WOBBLE_MS = 17000, CHASE = 0.022;
+  const FALLBACK = SECTION_HUES.intro;
+  const WOBBLE = 6, WOBBLE_MS = 19000, CHASE = 0.02;
 
   let want = FALLBACK.slice();
   let hue = want[0], hue2 = want[1];
 
-  // shortest way round the wheel, so 348 → 20 goes forward through 0
+  // shortest way round the wheel
   const stepHue = (a, b, k) => (a + (((b - a) % 360 + 540) % 360 - 180) * k + 360) % 360;
 
-  addEventListener("sectionchange", e => {
-    want = SECTION_HUES[e.detail] || FALLBACK;
-  });
+  addEventListener("sectionchange", e => { want = SECTION_HUES[e.detail] || FALLBACK; });
 
   function driftHue(now) {
     const w = Math.sin(now / WOBBLE_MS * Math.PI * 2) * WOBBLE;
@@ -83,21 +80,24 @@
     hue2 = stepHue(hue2, want[1] - w, CHASE);
 
     const dark = isDark(), st = document.documentElement.style;
-    st.setProperty("--accent",   `hsl(${hue.toFixed(1)} ${dark ? 90 : 72}% ${dark ? 74 : 42}%)`);
-    st.setProperty("--accent-2", `hsl(${hue2.toFixed(1)} ${dark ? 84 : 68}% ${dark ? 70 : 47}%)`);
-    st.setProperty("--wash",     `hsl(${hue.toFixed(1)} ${dark ? 72 : 66}% ${dark ? 58 : 56}%)`);
-    st.setProperty("--hit",      `hsl(${HIT_HUE} ${dark ? 92 : 74}% ${dark ? 72 : 48}%)`);
+    // fixed lightness per theme = predictable contrast at every hue
+    // lightness chosen so the WORST hue in the palette still clears WCAG AA
+    // (4.5:1) against each theme's background — measured, not eyeballed.
+    const A  = dark ? `hsl(${hue.toFixed(1)} 76% 80%)`  : `hsl(${hue.toFixed(1)} 58% 30%)`;
+    const A2 = dark ? `hsl(${hue2.toFixed(1)} 70% 77%)` : `hsl(${hue2.toFixed(1)} 54% 34%)`;
+    st.setProperty("--accent", A);
+    st.setProperty("--accent-2", A2);
+    st.setProperty("--wash",  `hsl(${hue.toFixed(1)} ${dark ? 66 : 62}% ${dark ? 56 : 58}%)`);
+    st.setProperty("--hit",   A);          // hover matches the section colour
   }
 
   function palette() {
-    return isDark()
-      ? { ink: "232,234,240", lift: 1 }
-      : { ink: "22,23,26",    lift: 0.74 };
+    return isDark() ? { ink: "232,234,240", lift: 1 } : { ink: "22,23,26", lift: 0.74 };
   }
   let pal = palette();
   darkQ.addEventListener?.("change", () => { pal = palette(); });
   addEventListener("themechange", () => { pal = palette(); });
-  const hot = () => `hsl(${hue.toFixed(1)} ${isDark() ? "85% 72%" : "68% 44%"})`;
+  const hot = () => `hsl(${hue.toFixed(1)} ${isDark() ? "78% 72%" : "60% 42%"})`;
 
   function seed() {
     const dpr = Math.min(devicePixelRatio || 1, 2);
@@ -166,8 +166,11 @@
 
 
     ctx.globalAlpha = 1;
-    requestAnimationFrame(frame);
+    if (!document.hidden) requestAnimationFrame(frame);
   }
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) requestAnimationFrame(frame);
+  });
 
   addEventListener("resize", seed, { passive: true });
   addEventListener("scroll", () => {
@@ -181,13 +184,15 @@
   }, { passive: true });
   addEventListener("pointerleave", () => { ptr.on = false; ptr.x = ptr.y = -9999; });
 
-  seed();
-  driftHue(performance.now());
-  requestAnimationFrame(frame);
+  /* The field is decoration, so it must never be on the critical path: seed and
+     start it once the browser is idle, after first paint. */
+  driftHue(performance.now());          // colours are cheap and are needed immediately
+  const start = () => { seed(); requestAnimationFrame(frame); };
+  (window.requestIdleCallback || (f => setTimeout(f, 200)))(start, { timeout: 900 });
 
   console.log(
     "%cyou opened the console. good instinct.",
-    `font:600 13px ui-monospace,Menlo,monospace;color:hsl(268 80% 62%)`);
+    `font:600 13px ui-monospace,Menlo,monospace;color:hsl(264 78% 62%)`);
   console.log(
     "%cthe background is ~200 glyphs on a canvas with spring physics — no libraries." +
     "\nsource: github.com/pbairoliya/pbairoliya.github.io" +
