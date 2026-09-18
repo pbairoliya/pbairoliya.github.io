@@ -111,20 +111,30 @@ div.job-head .meta { white-space: nowrap; }
 
 /* A role opens when you want to read it. The markup ships open, so a blocked
    script leaves a plain readable page; blocks.js closes them on load. */
-.job-toggle { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px var(--s3);
+/* Grid, not wrap: a narrow viewport should wrap the job title, never drop the
+   chevron onto a line of its own. */
+.job-toggle { display: grid; grid-template-columns: minmax(0, 1fr) auto auto;
+              align-items: baseline; gap: 2px var(--s3);
               width: 100%; padding: 0; background: none; border: 0; cursor: pointer;
               color: inherit; font: inherit; text-align: left; }
-.job-name { font: 600 var(--fs-lg)/var(--lh-snug) var(--sans); letter-spacing: var(--ls-tight);
-            margin-right: auto; }
+.job-name { font: 600 var(--fs-lg)/var(--lh-snug) var(--sans); letter-spacing: var(--ls-tight); }
+@media (max-width: 620px) {
+  .job-toggle { grid-template-columns: minmax(0, 1fr) auto; }
+  .job-name { grid-column: 1 / -1; }
+}
 .job-toggle .meta { white-space: nowrap; }
 .job-toggle .chev { width: 18px; height: 18px; flex: 0 0 18px; align-self: center;
                     fill: none; stroke: var(--muted); stroke-width: 2;
-                    stroke-linecap: round; stroke-linejoin: round;
-                    transition: transform .3s cubic-bezier(.2,.8,.3,1), stroke .2s; }
+                    stroke-linecap: round; stroke-linejoin: round; opacity: 0;
+                    transition: transform .34s cubic-bezier(.34,1.3,.64,1),
+                                opacity .2s, stroke .2s; }
+.job:hover .chev, .job-toggle:focus-visible .chev, .job:not(.shut) .chev { opacity: 1; }
+@media (hover: none) { .job-toggle .chev { opacity: 1; } }
 .job-toggle:hover .job-name, .job-toggle:hover .chev { color: var(--accent); stroke: var(--accent); }
 .job-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px;
                             border-radius: var(--r-xs); }
 .job.shut .chev { transform: rotate(-90deg); }
+.job:not(.shut) .chev { stroke: var(--accent); }
 .job.shut .job-sub { margin-bottom: 0; }
 
 /* 0fr -> 1fr animates to the content's real height without measuring it. */
@@ -136,13 +146,8 @@ div.job-head .meta { white-space: nowrap; }
 /* The bullets arrive one after another rather than all at once. */
 .job-body li { transition: opacity .26s ease, transform .26s cubic-bezier(.2,.8,.3,1);
                transition-delay: calc(var(--i, 0) * 45ms); }
-.job.shut .job-body li { opacity: 0; transform: translateY(-6px); transition-delay: 0s; }
+.job.shut .job-body li { opacity: 0; transform: translateX(-12px); transition-delay: 0s; }
 
-.job-all { margin: calc(var(--s5) * -1) 0 var(--s4); padding: var(--s1) var(--s2);
-           background: none; border: 0; cursor: pointer;
-           font: 600 var(--fs-2xs)/1 var(--sans); letter-spacing: var(--ls-caps);
-           text-transform: uppercase; color: var(--muted); border-radius: var(--r-xs); }
-.job-all:hover { color: var(--accent); background: var(--code-bg); }
 .job .rail { position: absolute; left: 4px; top: 50%; width: 3px;
              border-radius: var(--r-xs); pointer-events: none;
              background: linear-gradient(var(--accent), var(--accent-2)); }
@@ -397,4 +402,49 @@ body.side-open { overflow: hidden; }
 
 @media (prefers-reduced-motion: reduce) {
   .job-body, .job-body li, .job-toggle .chev { transition: none; }
+}
+
+/* ===== Work reads as a timeline =====
+   A line down the left with a node per role. The node is the state: a ring
+   when the role is closed, a filled disc when it is open. That replaces a
+   column of chevron buttons with one thing to look at. */
+#work .job { position: relative; padding-left: 40px; }
+/* .job::after is the pointer glow (motion.css) and .job::before is the divider
+   hairline, so the line hangs off the head — it still resolves against .job,
+   which is the positioned ancestor. */
+#work .job-head::before {
+  content: ""; position: absolute; left: 14px; top: 0; bottom: -3px; width: 2px;
+  background: var(--line); transition: background-color .4s;   /* -3px closes the gap at the divider */
+}
+#work .job:first-of-type .job-head::before { top: 27px; }
+#work .job:last-of-type  .job-head::before { bottom: auto; height: 27px; }
+#work .job:not(.shut) .job-head::before { background: var(--accent); }
+#work .job .rail { display: none; }   /* the timeline is this section's rail */
+
+.job-node {
+  position: absolute; left: 7px; top: 19px; z-index: 1;   /* over the line */ width: 16px; height: 16px;
+  border-radius: var(--r-pill); box-sizing: border-box;
+  border: 2px solid var(--line); background: var(--panel);
+  transition: transform .34s cubic-bezier(.34,1.4,.64,1),
+              border-color .3s, background-color .3s, box-shadow .3s;
+}
+.job:hover .job-node { border-color: var(--accent); transform: scale(1.18); }
+.job:not(.shut) .job-node {
+  border-color: var(--accent); background: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+/* the whole row is the target, so give it a hover surface of its own */
+#work .job-toggle { padding: var(--s1) var(--s2); margin: calc(var(--s1) * -1) calc(var(--s2) * -1);
+                    border-radius: var(--r-sm); transition: background-color .2s; }
+#work .job-toggle:hover { background: var(--code-bg); }
+
+
+@media (max-width: 560px) {
+  #work .job { padding-left: 30px; }
+  #work .job-head::before { left: 9px; }
+  .job-node { left: 2px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .job-node { transition: none; }
+  .job:hover .job-node { transform: none; }
 }

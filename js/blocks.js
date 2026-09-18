@@ -55,7 +55,6 @@
       btn.addEventListener("click", () => {
         const open = job.classList.contains("shut");
         set(job, open);
-        sync();
         /* an entry opened from far down the page should not push its own
            heading off the top */
         if (open && !reduced) {
@@ -66,19 +65,5 @@
       if (i > 0) set(job, false);
     });
 
-    const all = document.createElement("button");
-    all.type = "button";
-    all.className = "job-all";
-    jobs[0].parentElement.insertBefore(all, jobs[0]);
-    all.addEventListener("click", () => {
-      const open = jobs.some(j => j.classList.contains("shut"));
-      jobs.forEach(j => set(j, open));
-      sync();
-    });
-    function sync() {
-      const shut = jobs.filter(j => j.classList.contains("shut")).length;
-      all.textContent = shut ? `Expand all ${jobs.length} roles` : "Collapse all";
-    }
-    sync();
   }
 })();
