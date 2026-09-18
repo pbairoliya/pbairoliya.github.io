@@ -117,7 +117,8 @@ div.job-head .meta { white-space: nowrap; }
               width: 100%; padding: 0; background: none; border: 0; cursor: pointer;
               color: inherit; font: inherit; text-align: left; }
 .job-name { font: 600 var(--fs-md)/var(--lh-snug) var(--sans); letter-spacing: var(--ls-tight); }
-.job-name i { font-style: normal; font-weight: 400; color: var(--muted); }
+.job-name i { font-style: normal; font-weight: 400; font-size: var(--fs-2xs);
+              color: var(--muted); white-space: nowrap; }
 .job-name i::before { content: " · "; }
 @media (max-width: 620px) {
   .job-toggle { grid-template-columns: minmax(0, 1fr) auto; }
@@ -410,47 +411,20 @@ body.side-open { overflow: hidden; }
 /* A ruler down the left: start year, then the line, then the row. Every entry
    collapses to a single line, so seven of them read at a glance instead of
    filling a screen. */
-.timeline .job { position: relative; padding-left: 40px; }
-/* One line for the whole run, drawn as you scroll past it. The grey track spans
-   all three years; the gradient fill is how far down them you have read. */
-.timeline { position: relative; margin: var(--s8) 0 var(--s7); }
-.tl-line { position: absolute; left: 14px; top: 27px; bottom: 27px; width: 2px;
-           background: var(--line); border-radius: var(--r-pill); }
-.tl-line i { position: absolute; inset: 0; border-radius: inherit;
-             background: linear-gradient(var(--accent), var(--accent-2));
-             transform: scaleY(0); transform-origin: top;
-             transition: transform .95s cubic-bezier(.22,.61,.36,1), background .8s linear; }
-.timeline.drawn .tl-line i { transform: scaleY(1); }
+.timeline .job { position: relative; }
 /* each node lights as the fill reaches it; --d is its place in the sweep */
-.timeline.drawn .job-node { border-color: var(--accent);
-                            transition-delay: calc(var(--d, 0) * 1ms); }
 /* blocks.js adds this once the sweep has finished. Without it the stagger is a
    permanent transition-delay and the last node takes 780ms to answer a hover. */
-.timeline.settled .job-node { transition-delay: 0s; }
 
 /* Each role assembles as the fill reaches it: the pin pops, a ring leaves it,
    and the row slides in off the line. Entrances are ANIMATIONS, not
    transitions — a transition-delay would stay on the element and make every
    later hover answer late. `backwards` fill holds the from-state during the
    delay and hands the element back to its own styles afterwards. */
-.timeline.drawn .job-node {
-  animation: node-pop .55s cubic-bezier(.34,1.5,.64,1) calc(var(--d, 0) * 1ms) backwards;
-}
-@keyframes node-pop {
-  0%   { transform: scale(.2); }
-  55%  { transform: scale(1.4); }
+.timeline.drawn   55%  { transform: scale(1.4); }
   100% { transform: scale(1); }
 }
-.job-node::before {
-  content: ""; position: absolute; inset: -2px; border-radius: inherit;
-  border: 2px solid var(--pin, var(--accent)); opacity: 0; pointer-events: none;
-}
-.timeline.drawn .job-node::before {
-  animation: node-ring .75s ease-out calc(var(--d, 0) * 1ms) backwards;
-}
-@keyframes node-ring {
-  from { transform: scale(1);   opacity: .75; }
-  to   { transform: scale(2.6); opacity: 0; }
+.timeline.drawn   to   { transform: scale(2.6); opacity: 0; }
 }
 .timeline.drawn .job-head {
   animation: role-in .45s cubic-bezier(.2,.8,.3,1) calc(var(--d, 0) * 1ms + 70ms) backwards;
@@ -465,41 +439,14 @@ body.side-open { overflow: hidden; }
    element back to its own styles. In a normal browser this changes nothing —
    the animations have already finished. If one ever stalls, content cannot
    stay stuck at opacity 0, which `backwards` fill would otherwise allow. */
-.timeline.settled .job-node,
-.timeline.settled .job-node::before,
-.timeline.settled .job-head { animation: none; }
+.timeline.settled .timeline.settled .job-head { animation: none; }
 
-/* Opening an entry replays its pin's pop and ring — and nothing else. An
-   earlier edit ran these two selector lists together, which left every ROW
-   animating node-pop: the text scaled up from 20% on each toggle. */
-.timeline.drawn .job-node.pop,
-.timeline.settled .job-node.pop {
-  animation: node-pop .5s cubic-bezier(.34,1.5,.64,1) 0s backwards;
-}
-.timeline.drawn .job-node.pop::before,
-.timeline.settled .job-node.pop::before {
-  animation: node-ring .7s ease-out 0s backwards;
-}
-#work .job .rail { display: none; }   /* the timeline is this section's rail */
 
-.job-node {
-  position: absolute; left: 7px; top: 14px; z-index: 1;   /* over the line */ width: 16px; height: 16px;
-  border-radius: var(--r-pill); box-sizing: border-box;
-  border: 2px solid var(--line); background: var(--panel);
-  transition: transform .34s cubic-bezier(.34,1.4,.64,1),
-              border-color .3s, background-color .3s, box-shadow .3s;
-}
 .job[data-kind="work"]       { --pin: var(--accent); }
 .job[data-kind="teaching"],
 .job[data-kind="research"]   { --pin: var(--accent-2); }
 .job[data-kind="leadership"] { --pin: var(--hit); }
 .job[data-kind="school"]     { --pin: var(--muted); }
-.timeline.drawn .job-node { border-color: var(--pin, var(--accent)); }
-.job:not(.shut) .job-node { background: var(--pin, var(--accent));
-                            box-shadow: 0 0 0 4px color-mix(in srgb, var(--pin, var(--accent)) 18%, transparent); }
-.job-node::before { border-color: var(--pin, var(--accent)); }
-.job:hover .job-node { border-color: var(--pin, var(--accent)); transform: scale(1.18);
-                       box-shadow: 0 0 0 5px color-mix(in srgb, var(--pin, var(--accent)) 16%, transparent); }
 
 /* the whole row is the target, so give it a hover surface of its own */
 #work .job-toggle { padding: var(--s1) 0; }
@@ -507,34 +454,15 @@ body.side-open { overflow: hidden; }
 
 
 @media (max-width: 560px) {
-  .timeline .job { padding-left: 30px; }
-  .tl-line { left: 9px; }
-  .job-node { left: 2px; }
-  #education > .reveal, #education .interests { padding-left: 30px; }
-}
-/* The current role is still running, so its node keeps a pulse. */
-.timeline.drawn .job-now .job-node::after {
-  content: ""; position: absolute; inset: -2px; border-radius: inherit;
-  border: 2px solid var(--accent);
-  animation: node-pulse 2.6s ease-out .9s infinite;   /* after the line arrives */
-}
-@keyframes node-pulse {
-  0%   { transform: scale(1);   opacity: .65; }
+  }
   70%  { transform: scale(2.2); opacity: 0;   }
   100% { transform: scale(2.2); opacity: 0;   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .job-node { transition: none; }
-  .job:hover .job-node { transform: none; }
-  .timeline.drawn .job-node, .timeline.drawn .job-node.pop,
-  .timeline.drawn .job-node::before, .timeline.drawn .job-node.pop::before,
-  .timeline.drawn .job-head,
+      .timeline.drawn .job-head,
   .timeline.drawn   .timeline:not(.drawn) .job-body li { opacity: 1; transform: none; }
-  .tl-line i { transition: none; }
-  .timeline.drawn .job-node { transition-delay: 0s; }
-  .timeline.drawn .job-now .job-node::after { animation: none; opacity: 0; }
-}
+  }
 
 /* ---- coursework, linked straight at the repositories ---- */
 .courses { list-style: none; padding: 0; margin: 0;
@@ -610,8 +538,8 @@ body.side-open { overflow: hidden; }
 
 
 /* School's contents line up with the entries above them */
-#education > .reveal { padding-left: 40px; }
-#education .interests { padding-left: 40px; }
+#education > .reveal { padding-left: 0; }
+
 .shelf { display: block; }
 
 @media (max-width: 560px) {
@@ -652,9 +580,10 @@ body.side-open { overflow: hidden; }
 /* The lane is a fixed column and the date column is fixed too, so the axis can
    be placed with a margin and land exactly on top of it. Sizing the lane with
    1fr would have made its offset depend on the longest title. */
-.timeline { --lane: 150px; --dates: 132px; --chev: 18px; }
+.timeline { --lane: 160px; --dates: 126px; --chev: 18px;
+             --gutter: calc(var(--dates) + var(--chev) + var(--s3) * 2); }
 .tl-axis { position: relative; height: 15px; width: var(--lane);
-           margin: 0 calc(var(--dates) + var(--chev) + var(--s3) * 2) var(--s2) auto;
+           margin: 0 var(--gutter) var(--s2) auto;
            display: none; }
 .timeline.has-axis .tl-axis { display: block; }
 .tl-axis i { position: absolute; top: 0; bottom: -8px; width: 1px;
@@ -664,9 +593,9 @@ body.side-open { overflow: hidden; }
                     color: var(--muted); }
 
 /* the lane, and the faint year gridlines behind every row */
-.job-toggle .span { position: relative; display: none; height: 7px;
-                    border-radius: var(--r-pill); background: var(--code-bg);
-                    align-self: center; }
+/* No track behind the bar. A pill on a grey pill reads as a progress meter;
+   the year rules behind it are what give the bar its position. */
+.job-toggle .span { position: relative; display: none; height: 7px; align-self: center; }
 .timeline.has-axis .job-toggle .span { display: block; }
 .job-toggle .span > i { position: absolute; top: 0; bottom: 0; border-radius: inherit;
                         background: var(--pin, var(--accent)); opacity: .85;
@@ -692,3 +621,27 @@ body.side-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .timeline.drawn .span > i { animation: none; }
 }
+
+/* Year rules, running the height of the entries behind the bars. With these in
+   place the left-hand spine and its pins were a second timeline saying the same
+   thing, so they are gone. */
+#work { position: relative; }
+.tl-grid { position: absolute; top: 0; bottom: 0; width: var(--lane);
+           right: var(--gutter); pointer-events: none; display: none; }
+.timeline.has-axis #work .tl-grid { display: block; }
+.tl-grid i { position: absolute; top: 0; bottom: 0; width: 1px;
+             background: var(--line); }
+.job-toggle .span > i.pop { animation: bar-grow .45s cubic-bezier(.2,.8,.3,1) 0s backwards; }
+@media (max-width: 900px) { .timeline.has-axis #work .tl-grid { display: none; } }
+
+/* A run that has not ended yet keeps a light on the end of its bar. */
+.job-now .span > i::after {
+  content: ""; position: absolute; right: -2px; top: 50%; width: 7px; height: 7px;
+  margin-top: -3.5px; border-radius: var(--r-pill); background: var(--pin, var(--accent));
+  animation: bar-tip 2.4s ease-in-out infinite;
+}
+@keyframes bar-tip {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--pin, var(--accent)) 55%, transparent); }
+  50%      { box-shadow: 0 0 0 5px color-mix(in srgb, var(--pin, var(--accent)) 0%, transparent); }
+}
+@media (prefers-reduced-motion: reduce) { .job-now .span > i::after { animation: none; } }
