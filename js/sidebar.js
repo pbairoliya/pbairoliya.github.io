@@ -13,6 +13,11 @@
 
   const sections = links.map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
   let active = -1;
+  /* The observer fires while the page is still settling, which used to rewrite
+     the URL to whatever happened to be mid-viewport — so the NEXT visit arrived
+     carrying #work and jumped there. Only reflect the URL once the reader has
+     actually moved. */
+  let readerMoved = false;
 
   const isSheet = () => matchMedia("(max-width: 900px)").matches;
   const openSheet = () => {
@@ -43,6 +48,7 @@
     // the first entry means the very top of the page, not a section below the intro
     if (i === 0) scrollTo({ top: 0, behavior: smooth });
     else document.querySelector(href)?.scrollIntoView({ behavior: smooth, block: "start" });
+    readerMoved = true;
     history.replaceState(null, "", href);
     if (isSheet()) closeSheet();
   }));
@@ -53,7 +59,7 @@
     links.forEach((a, j) => a.classList.toggle("on", j === i));
     const href = links[i]?.getAttribute("href") || "#intro";
     dispatchEvent(new CustomEvent("sectionchange", { detail: href.slice(1) }));
-    if (location.hash !== href) history.replaceState(null, "", href);
+    if (readerMoved && location.hash !== href) history.replaceState(null, "", href);
   }
 
   if ("IntersectionObserver" in window && sections.length) {
@@ -63,6 +69,31 @@
     sections.forEach(s => io.observe(s));
   }
   setActive(0);
+  addEventListener("scroll", () => { readerMoved = true; }, { passive: true, once: true });
+
+  /* Collapse, the way Notion has it: the rail shrinks to its icons and the page
+     takes the width back. Remembered, because it is a preference about how you
+     like to read rather than a transient state. */
+  const COLLAPSE_KEY = "side-collapsed";
+  const collapseBtn = document.getElementById("side-collapse");
+  const setCollapsed = (on) => {
+    document.body.classList.toggle("side-collapsed", on);
+    collapseBtn?.setAttribute("aria-label", on ? "Expand sidebar" : "Collapse sidebar");
+    collapseBtn?.setAttribute("title", on ? "Expand sidebar" : "Collapse sidebar");
+    try { localStorage.setItem(COLLAPSE_KEY, on ? "1" : "0"); } catch {}
+  };
+  try { if (localStorage.getItem(COLLAPSE_KEY) === "1") setCollapsed(true); } catch {}
+  collapseBtn?.addEventListener("click", () =>
+    setCollapsed(!document.body.classList.contains("side-collapsed")));
+
+  // [ toggles it, the way an editor would
+  addEventListener("keydown", e => {
+    if (e.key !== "[" || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (/^(input|textarea)$/i.test(document.activeElement?.tagName || "")) return;
+    if (isSheet()) return;
+    e.preventDefault();
+    setCollapsed(!document.body.classList.contains("side-collapsed"));
+  });
 
   /* A closed sheet is only translated off-screen, which leaves its links in the
      tab order. `inert` takes them out of it — applied only at sheet widths, and

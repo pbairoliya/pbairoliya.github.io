@@ -50,6 +50,7 @@
     { g:"Do",         i:"⧉", label:"Copy email address", hint:"pratik0520@gmail.com", run: copyEmail },
     { g:"Do",         i:"✉", label:"Email me",           hint:"mailto",     run:() => location.assign("mailto:pratik0520@gmail.com") },
     { g:"Do",         i:"⧉", label:"Copy link to this page", hint:"url",    run: copyUrl },
+    { g:"Do",         i:"◧", label:"Collapse the sidebar",   hint:"[",      run:() => document.getElementById("side-collapse")?.click() },
 
     { g:"Do",         i:"◎", label:"Replay the tour",      hint:"onboarding", run:() => window.__startTour?.(true) },
     { g:"Appearance", i:"◑", label:"Theme: system",      hint:"follow the OS", run:() => setTheme("system") },
