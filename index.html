@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pratik Bairoliya — SWE II @ Capital One</title>
 <meta name="description" content="Software Engineer II at Capital One on the End-of-Day team, building a custom batch ledger for the financial core. Builds local-first tools that run entirely on-device.">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="css/base.css?v=4">
+<link rel="stylesheet" href="css/components.css?v=4">
+<link rel="stylesheet" href="css/motion.css?v=4">
 </head>
 <body>
 <div class="wrap">
@@ -245,13 +247,21 @@
   </footer>
 
 </div>
+<nav class="pill" aria-label="Sections">
+  <span class="glide" aria-hidden="true"></span>
+  <a href="#top">Intro</a>
+  <a href="#about">Background</a>
+  <a href="#work">Work</a>
+  <a href="#stack">Stack</a>
+  <a href="#projects">Projects</a>
+  <a href="#credentials">Credentials</a>
+</nav>
+
 <span class="theme" role="group" aria-label="Colour theme">
   <button type="button" data-theme-btn="system" aria-pressed="true">auto</button>
   <button type="button" data-theme-btn="light"  aria-pressed="false">light</button>
   <button type="button" data-theme-btn="dark"   aria-pressed="false">dark</button>
 </span>
-
-<nav id="spy" aria-label="Section navigation"></nav>
 
 <div id="palette" aria-hidden="true" role="dialog" aria-label="Command palette">
   <div class="pal-box">
@@ -266,23 +276,10 @@
   </div>
 </div>
 
-<script src="field.js" defer></script>
-<script src="nav.js" defer></script>
-<script src="spotlight.js" defer></script>
-<script>
-(() => {
-  // reveal sections as they come into view
-  const items = document.querySelectorAll(".reveal");
-  if (!("IntersectionObserver" in window) ||
-      matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    items.forEach(n => n.classList.add("seen"));
-  } else {
-    const io = new IntersectionObserver((rows) => {
-      rows.forEach(r => { if (r.isIntersecting) { r.target.classList.add("seen"); io.unobserve(r.target); } });
-    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
-    items.forEach(n => io.observe(n));
-  }
-})();
-</script>
+<script src="js/field.js?v=4" defer></script>
+<script src="js/palette.js?v=4" defer></script>
+<script src="js/spotlight.js?v=4" defer></script>
+<script src="js/pill.js?v=4" defer></script>
+<script src="js/reveal.js?v=4" defer></script>
 </body>
 </html>

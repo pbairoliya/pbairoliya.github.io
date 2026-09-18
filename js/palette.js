@@ -27,32 +27,6 @@
     if (b) setTheme(b.dataset.themeBtn);
   });
 
-  /* ---------- section spy: which part of the page you're in ---------- */
-  const spy = document.getElementById("spy");
-  if (spy) {
-    const targets = [...document.querySelectorAll("section[id]")];
-    targets.forEach(s => {
-      const a = document.createElement("a");
-      a.href = "#" + s.id;
-      a.className = "spy-dot";
-      a.innerHTML = `<span class="spy-label">${s.dataset.label || s.id}</span>`;
-      a.setAttribute("aria-label", s.dataset.label || s.id);
-      spy.appendChild(a);
-    });
-    const dots = [...spy.children];
-    if ("IntersectionObserver" in window) {
-      const io = new IntersectionObserver(rows => {
-        rows.forEach(r => {
-          const i = targets.indexOf(r.target);
-          if (i > -1 && r.isIntersecting) {
-            dots.forEach((d, j) => d.classList.toggle("on", j === i));
-          }
-        });
-      }, { rootMargin: "-45% 0px -50% 0px" });
-      targets.forEach(s => io.observe(s));
-    }
-  }
-
   /* ---------- command palette ---------- */
   const ACTIONS = [
     { label: "Résumé (PDF)",        hint: "download",  run: () => location.assign("Pratik-Bairoliya-Resume.pdf") },

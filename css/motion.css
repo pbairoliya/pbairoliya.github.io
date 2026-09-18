@@ -1,0 +1,89 @@
+/* motion — entrances, reveals, and the crossing highlight.
+   Everything in this file is decoration; the page is complete without it. */
+
+/* ---- entrance ---- */
+@keyframes riseIn { from { opacity:0; transform: translateY(14px) } to { opacity:1; transform:none } }
+.boot > * { animation: riseIn .62s cubic-bezier(.2,.75,.3,1) both; }
+.boot > *:nth-child(1){animation-delay:.02s} .boot > *:nth-child(2){animation-delay:.09s}
+.boot > *:nth-child(3){animation-delay:.16s} .boot > *:nth-child(4){animation-delay:.23s}
+.boot > *:nth-child(5){animation-delay:.30s} .boot > *:nth-child(6){animation-delay:.37s}
+
+/* ---- scroll reveal: a wipe, not a fade ---- */
+.reveal { opacity:0; transform: translateY(14px); clip-path: inset(0 100% 0 0 round 12px);
+          transition: opacity .5s ease, transform .6s cubic-bezier(.2,.75,.3,1),
+                      clip-path .72s cubic-bezier(.2,.75,.3,1); }
+.reveal.seen { opacity:1; transform:none; clip-path: inset(0 0 0 0 round 12px); }
+
+/* ---- stack tiles deal themselves in ---- */
+@keyframes dealIn { from { opacity:0; transform: translateY(10px) scale(.94) }
+                    to   { opacity:1; transform:none } }
+.stack-group.seen .tool { animation: dealIn .46s cubic-bezier(.2,.8,.3,1) both;
+                          animation-delay: calc(var(--i, 0) * 38ms); }
+
+/* ---- fold ---- */
+.fold[open] .fold-body > * { animation: riseIn .5s cubic-bezier(.2,.75,.3,1) both; }
+.fold[open] .fold-body > *:nth-child(1){animation-delay:.02s}
+.fold[open] .fold-body > *:nth-child(2){animation-delay:.08s}
+.fold[open] .fold-body > *:nth-child(3){animation-delay:.14s}
+
+/* ---- palette button asks to be noticed, once ---- */
+@keyframes nudge {
+  0%,100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 40%, transparent); }
+  50%     { box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 0%, transparent); }
+}
+.btn.palette-btn.hint { animation: nudge 2.1s ease-out 3; }
+
+/* ---- crossing highlight ----
+   A soft glow under the content plus a 1px border lit from the side nearest
+   the pointer. js/spotlight.js eases --mx/--my toward the cursor instead of
+   snapping, which is most of why it feels good. */
+.job, .card, .cred, .tool, .btn {
+  position: relative; isolation: isolate;
+  transition: transform .22s cubic-bezier(.2,.8,.3,1), box-shadow .28s ease,
+              background-color .28s ease, border-color .28s ease;
+}
+.job::after, .card::after, .cred::after, .tool::after, .btn::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1;
+  opacity: 0; transition: opacity .3s ease;
+  background:
+    radial-gradient(270px circle at var(--mx,50%) var(--my,50%),
+      color-mix(in srgb, var(--hit) 20%, transparent), transparent 62%),
+    radial-gradient(74px circle at var(--mx,50%) var(--my,50%),
+      color-mix(in srgb, var(--hit) 26%, transparent), transparent 70%);
+}
+.lit::after { opacity: 1; }
+
+.lit-edge {
+  position: absolute; inset: 0; border-radius: inherit; padding: 1px;
+  pointer-events: none; opacity: 0; transition: opacity .3s ease;
+  background: radial-gradient(200px circle at var(--mx,50%) var(--my,50%),
+              var(--hit),
+              color-mix(in srgb, var(--hit) 18%, transparent) 44%, transparent 68%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+}
+.lit > .lit-edge { opacity: 1; }
+
+.lit { background-color: color-mix(in srgb, var(--hit) 5%, var(--panel)); }
+.job.lit, .card.lit, .cred.lit {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px -16px color-mix(in srgb, var(--hit) 60%, transparent);
+}
+.tool.lit, .btn.lit { transform: translateY(-2px); }
+.job .rail { transition: height .34s cubic-bezier(.2,.8,.3,1); }
+.job.lit .rail { height: calc(100% - 24px); }
+
+@supports not (background: color-mix(in srgb, red 10%, blue)) {
+  .job::after, .card::after, .cred::after, .tool::after, .btn::after,
+  .lit-edge, body::before { display: none; }
+  .lit { border-color: var(--hit); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boot > *, .stack-group.seen .tool, .fold[open] .fold-body > *,
+  .btn.palette-btn.hint { animation: none; }
+  .reveal { opacity: 1; transform: none; clip-path: none; transition: none; }
+  .job, .card, .cred, .tool, .btn, .job .rail, .pill .glide, #toast { transition: none; }
+  .job.lit, .card.lit, .cred.lit, .tool.lit, .btn.lit { transform: none; }
+}

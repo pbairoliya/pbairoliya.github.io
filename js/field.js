@@ -49,27 +49,51 @@
   let W = 0, H = 0, glyphs = [], colCentre = 0, colHalf = 400;
   const ptr = { x: -9999, y: -9999, on: false };
 
-  /* ---- slow colour drift ----------------------------------------------
-     One hue, wandering 186° → 288° (teal → blue → violet) and back over
-     about three minutes. It drives the CSS accent AND the canvas, so links,
-     borders, the tagline and the field all move together. Nothing jumps:
-     a full sweep takes longer than anyone stays on the page. */
-  const HUE_LO = 196, HUE_HI = 322, HUE_PERIOD = 52000;   // teal → blue → violet → magenta
-  const HIT_HUE = 282;                                     // the purple things light up in
-  let hue = HUE_LO;
+  /* ---- colour ---------------------------------------------------------
+     Rather than sweeping one hue, the page walks a small curated palette,
+     easing from each stop to the next. Every stop is a pair — an accent and
+     a complement — so gradients stay deliberate instead of landing on
+     whatever two hues happen to be adjacent. A full lap is about two and a
+     half minutes; consecutive stops are ~25s apart, which is slow enough to
+     be calm and fast enough that you notice it while reading. */
+  const STOPS = [
+    [198, 236],   // cyan      → azure
+    [222, 262],   // azure     → indigo
+    [258, 292],   // indigo    → violet
+    [288, 322],   // violet    → magenta
+    [316, 348],   // magenta   → rose
+    [340,  20],   // rose      → coral
+    [168, 200],   // teal      → cyan
+  ];
+  const STOP_MS = 24000;
+  const HIT_HUE = 282;               // the purple the crossing light uses
+  let hue = STOPS[0][0], hue2 = STOPS[0][1];
+
+  const lerp = (a, b, t) => a + (b - a) * t;
+  // shortest way round the wheel, so 348 → 20 goes forward through 0
+  const lerpHue = (a, b, t) => (a + (((b - a) % 360 + 540) % 360 - 180) * t + 360) % 360;
+  const easeInOut = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
 
   function driftHue(now) {
-    const s = (Math.sin((now / HUE_PERIOD) * Math.PI * 2) + 1) / 2;   // 0..1
-    hue = HUE_LO + s * (HUE_HI - HUE_LO);
+    const pos = now / STOP_MS;
+    const i = Math.floor(pos) % STOPS.length;
+    const j = (i + 1) % STOPS.length;
+    const k = easeInOut(pos - Math.floor(pos));
+
+    hue  = lerpHue(STOPS[i][0], STOPS[j][0], k);
+    hue2 = lerpHue(STOPS[i][1], STOPS[j][1], k);
+
     const dark = isDark(), st = document.documentElement.style;
-    st.setProperty("--accent",  `hsl(${hue.toFixed(1)} ${dark ? "90% 74%" : "72% 42%"})`);
-    st.setProperty("--accent-2", `hsl(${(hue + 34).toFixed(1)} ${dark ? "82% 68%" : "66% 46%"})`);
-    st.setProperty("--hit",      `hsl(${HIT_HUE} ${dark ? "92% 72%" : "74% 48%"})`);
+    const s1 = dark ? 90 : 72, l1 = dark ? 74 : 42;
+    const s2 = dark ? 84 : 68, l2 = dark ? 70 : 47;
+    st.setProperty("--accent",   `hsl(${hue.toFixed(1)} ${s1}% ${l1}%)`);
+    st.setProperty("--accent-2", `hsl(${hue2.toFixed(1)} ${s2}% ${l2}%)`);
+    st.setProperty("--wash",     `hsl(${hue.toFixed(1)} ${dark ? 72 : 66}% ${dark ? 58 : 56}%)`);
+    st.setProperty("--hit",      `hsl(${HIT_HUE} ${dark ? 92 : 74}% ${dark ? 72 : 48}%)`);
   }
 
   function palette() {
-    const dark = isDark();
-    return dark
+    return isDark()
       ? { ink: "232,234,240", lift: 1 }
       : { ink: "22,23,26",    lift: 0.74 };
   }
@@ -166,7 +190,7 @@
 
   console.log(
     "%cyou opened the console. good instinct.",
-    `font:600 13px ui-monospace,Menlo,monospace;color:hsl(${HUE_LO} 80% 60%)`);
+    `font:600 13px ui-monospace,Menlo,monospace;color:hsl(${STOPS[2][0]} 80% 62%)`);
   console.log(
     "%cthe background is ~200 glyphs on a canvas with spring physics — no libraries." +
     "\nsource: github.com/pbairoliya/pbairoliya.github.io" +
