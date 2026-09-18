@@ -15,34 +15,20 @@
   border-right: 1px solid var(--line);
   overflow-y: auto; overscroll-behavior: contain;
 }
-/* overflow-y:auto computes overflow-x to auto, which clipped the collapsed
-   tooltip that escapes the rail. Only the collapsed rail needs to spill. */
 a.side-head { color: inherit; border-radius: 9px; }
 a.side-head:hover { background: var(--code-bg); text-decoration: none; }
-.side-head { display: flex; align-items: center; gap: 9px; padding: 6px 10px 14px; }
-.side-avatar { width: 26px; height: 26px; border-radius: 8px; flex: 0 0 26px;
+/* The header is a link on sub-pages, and its hover fill used to run underneath
+   the collapse button sitting in the same corner. Reserve that corner. */
+.side-head { display: flex; align-items: center; gap: 9px;
+             padding: 6px 42px 14px 10px; }
+.side-avatar { width: 28px; height: 28px; border-radius: 9px; flex: 0 0 28px;
                display: grid; place-items: center; color: #fff;
                font: 700 12px/1 var(--sans); letter-spacing: -.02em;
                background: linear-gradient(130deg, var(--accent), var(--accent-2)); }
-.side-name { font: 600 13px/1.25 var(--sans); }
-.side-name span { display: block; font: 10.5px/1.3 var(--mono); color: var(--muted); }
-.side-label { padding: 12px 10px 5px; font: 10px/1 var(--mono);
-              letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
-.side a {
-  display: flex; align-items: center; gap: 9px; padding: 7px 10px; border-radius: 8px;
-  font: 13.5px/1.3 var(--sans); color: var(--muted); position: relative;
-  transition: background-color .16s, color .16s;
-}
-.side a i { font-style: normal; width: 17px; text-align: center; opacity: .85;
-            font-size: 13px; flex: 0 0 17px; }
-.side a:hover { background: var(--code-bg); color: var(--ink); text-decoration: none; }
-.side a.on { color: var(--accent); font-weight: 600;
-             background: color-mix(in srgb, var(--accent) 11%, transparent); }
-.side a.on::before { content: ""; position: absolute; left: 0; top: 7px; bottom: 7px;
-                     width: 2.5px; border-radius: 3px; background: var(--accent); }
-.side-foot { margin-top: auto; padding: 12px 10px 2px; border-top: 1px solid var(--line);
-             font: 11px/1.5 var(--mono); color: var(--muted); }
-.side-foot a { padding: 4px 0; font: 11px var(--mono); }
+.side-name { font: 600 13px/1.25 var(--sans); min-width: 0; }
+.side-name span { display: block; margin-top: 2px;
+                  font: 10.5px/1.3 var(--mono); color: var(--muted);
+                  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* The toggle must sit UNDER the sheet it opens, or it floats over the sheet's
    own header. Above the scrim (7), below the sheet (8). */
@@ -50,8 +36,9 @@ a.side-head:hover { background: var(--code-bg); text-decoration: none; }
    treatment, same idea. It appears whenever the rail is not on screen — which
    is any phone, and any desktop where the rail has been collapsed away. */
 .side-toggle { position: fixed; z-index: 6; display: none; place-items: center;
+               line-height: 0;
                top: max(12px, env(safe-area-inset-top)); left: clamp(12px, 3vw, 18px);
-               width: 36px; height: 36px; border-radius: 999px; cursor: pointer;
+               width: 38px; height: 38px; border-radius: 999px; cursor: pointer;
                background: color-mix(in srgb, var(--panel) 84%, transparent);
                border: 1px solid var(--line); color: var(--muted);
                backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
@@ -116,12 +103,20 @@ a.side-head:hover { background: var(--code-bg); text-decoration: none; }
 .stack-group { margin-bottom: 20px; }
 .stack-label { font: 11px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase;
                color: var(--muted); margin-bottom: 10px; }
-.stack { display: grid; gap: 8px;
-         grid-template-columns: repeat(auto-fill, minmax(clamp(92px, 26vw, 108px), 1fr)); }
+/* auto-fit, not auto-fill: the tracks share the leftover width instead of
+   leaving empty columns, so a long label like "OpenTelemetry" has somewhere to
+   go. Tiles stretch to the tallest in the row, so a wrapped label does not
+   leave a short tile floating. */
+.stack { display: grid; gap: 8px; align-items: stretch;
+         grid-template-columns: repeat(auto-fit, minmax(clamp(104px, 28vw, 124px), 1fr)); }
 .tool { display: flex; align-items: center; gap: 8px; background: var(--panel);
         border: 1px solid var(--line); border-radius: 11px; padding: 9px 11px;
-        font-size: .84rem; color: var(--ink); }
+        font-size: .84rem; line-height: 1.25; color: var(--ink);
+        min-width: 0;                    /* a flex item will not shrink without this */
+        overflow-wrap: anywhere;         /* a long word breaks rather than overflowing */
+        hyphens: auto; }
 .tool img { width: 17px; height: 17px; flex: 0 0 17px; }
+.tool .txt { flex: 0 0 auto; }
 :root[data-theme="dark"] .tool img,
 :root:not([data-theme="light"]) .tool img { filter: brightness(1.7) saturate(.85); }
 @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .tool img { filter: none; } }
@@ -188,7 +183,8 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
              font: 10px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase;
              color: var(--muted); opacity: .75; }
 .pal-list .pal-group:first-child { margin-top: 2px; }
-.pal-row { display: grid; grid-template-columns: 20px 1fr auto; align-items: baseline; gap: 10px; }
+.pal-row { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto;
+           align-items: baseline; gap: 10px; }
 .pal-i { font: 12px var(--mono); color: var(--muted); text-align: center; }
 .pal-row.on .pal-i { color: var(--accent); }
 .pal-t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -213,8 +209,9 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
 
 /* ---- settings ---- */
 .gear { position: fixed; z-index: 6; display: grid; place-items: center;
+       line-height: 0;
         top: max(12px, env(safe-area-inset-top)); right: clamp(12px, 3vw, 18px);
-        width: 36px; height: 36px; border-radius: 999px; cursor: pointer;
+        width: 38px; height: 38px; border-radius: 999px; cursor: pointer;
         background: color-mix(in srgb, var(--panel) 80%, transparent);
         border: 1px solid var(--line); color: var(--muted);
         backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
@@ -241,6 +238,7 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
 .set-row button[aria-pressed="true"] { color: #fff; border-color: transparent;
   background: linear-gradient(120deg, var(--accent), var(--accent-2)); }
 .set-item { display: flex; justify-content: space-between; align-items: center; gap: 10px;
+            min-width: 0; text-align: left;
             width: 100%; background: none; border: 0; cursor: pointer; border-radius: 9px;
             padding: 9px 10px; font: 13px var(--sans); color: var(--ink); text-align: left; }
 .set-item:hover { background: var(--code-bg); text-decoration: none; }
@@ -273,8 +271,9 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
    Visible at rest, because a control nobody can find is a control nobody uses. */
 .side { position: fixed; }
 .side-collapse {
-  position: absolute; top: 14px; right: 10px; width: 26px; height: 26px;
-  display: grid; place-items: center; border-radius: 7px; cursor: pointer;
+  position: absolute; top: 12px; right: 9px; width: 28px; height: 28px;
+  display: grid; place-items: center; border-radius: 8px; cursor: pointer;
+  line-height: 0;                       /* no stray text-line height to offset the glyph */
   background: none; border: 0; color: var(--muted); opacity: .55;
   transition: opacity .16s, color .16s, background-color .16s, transform .24s;
 }
@@ -297,7 +296,7 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
   .btn.icon { width: 44px; height: 44px; }          /* a real thumb target */
   .side a { padding: 11px 12px; font-size: 14.5px; }
   .side-label { padding-top: 16px; }
-  .gear, .side-toggle { width: 40px; height: 40px; }
+  .gear, .side-toggle { width: 42px; height: 42px; }
   .settings { width: min(260px, calc(100vw - 24px)); }
   .wrap { padding-top: clamp(64px, 14vw, 88px); }
 }
