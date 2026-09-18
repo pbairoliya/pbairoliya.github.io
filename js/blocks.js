@@ -33,4 +33,52 @@
     el ||= document.getElementById(decodeURIComponent(location.hash.slice(1)));
     if (el) requestAnimationFrame(() => el.scrollIntoView({ block: "start" }));
   }
+
+  /* Roles open on demand.
+     The HTML ships expanded so a blocked script leaves the page fully
+     readable; closing them is this script's job, not the stylesheet's. The
+     current role stays open, because that is the one a recruiter came for. */
+  const jobs = [...document.querySelectorAll(".job:has(.job-toggle)")];
+  if (jobs.length) {
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const set = (job, open) => {
+      job.classList.toggle("shut", !open);
+      job.querySelector(".job-toggle").setAttribute("aria-expanded", String(open));
+    };
+
+    jobs.forEach((job, i) => {
+      /* the stagger is per-bullet and lives in CSS; JS only supplies the index */
+      job.querySelectorAll(".job-body li")
+         .forEach((li, n) => li.style.setProperty("--i", n));
+      const btn = job.querySelector(".job-toggle");
+      btn.addEventListener("click", () => {
+        const open = job.classList.contains("shut");
+        set(job, open);
+        sync();
+        /* an entry opened from far down the page should not push its own
+           heading off the top */
+        if (open && !reduced) {
+          const top = job.getBoundingClientRect().top;
+          if (top < 0) job.scrollIntoView({ block: "start", behavior: "smooth" });
+        }
+      });
+      if (i > 0) set(job, false);
+    });
+
+    const all = document.createElement("button");
+    all.type = "button";
+    all.className = "job-all";
+    jobs[0].parentElement.insertBefore(all, jobs[0]);
+    all.addEventListener("click", () => {
+      const open = jobs.some(j => j.classList.contains("shut"));
+      jobs.forEach(j => set(j, open));
+      sync();
+    });
+    function sync() {
+      const shut = jobs.filter(j => j.classList.contains("shut")).length;
+      all.textContent = shut ? `Expand all ${jobs.length} roles` : "Collapse all";
+    }
+    sync();
+  }
 })();

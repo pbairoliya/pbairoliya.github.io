@@ -99,11 +99,50 @@ body.side-open .side-scrim { opacity: 1; pointer-events: auto; }
   background: var(--line); transition: opacity .25s;
 }
 .job.lit::before, .job.lit + .job::before { opacity: 0; }
-.job-head { display: flex; flex-wrap: wrap; justify-content: space-between;
-            align-items: baseline; gap: 4px 14px; }
-.job-head h3 { margin: 0; }
-.job-sub { color: var(--muted); font-size: var(--fs-md); margin: 2px 0 10px; }
+.job-head { margin: 0; }
+/* Education keeps the same head, minus the disclosure: it is four lines long. */
+div.job-head { display: flex; flex-wrap: wrap; justify-content: space-between;
+               align-items: baseline; gap: 4px var(--s3); }
+div.job-head h3 { margin: 0; font: 600 var(--fs-lg)/var(--lh-snug) var(--sans);
+                  letter-spacing: var(--ls-tight); }
+div.job-head .meta { white-space: nowrap; }
+.job-sub { color: var(--muted); font-size: var(--fs-md); margin: 2px 0 var(--s3); }
 .job ul { margin-bottom: 0; }
+
+/* A role opens when you want to read it. The markup ships open, so a blocked
+   script leaves a plain readable page; blocks.js closes them on load. */
+.job-toggle { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px var(--s3);
+              width: 100%; padding: 0; background: none; border: 0; cursor: pointer;
+              color: inherit; font: inherit; text-align: left; }
+.job-name { font: 600 var(--fs-lg)/var(--lh-snug) var(--sans); letter-spacing: var(--ls-tight);
+            margin-right: auto; }
+.job-toggle .meta { white-space: nowrap; }
+.job-toggle .chev { width: 18px; height: 18px; flex: 0 0 18px; align-self: center;
+                    fill: none; stroke: var(--muted); stroke-width: 2;
+                    stroke-linecap: round; stroke-linejoin: round;
+                    transition: transform .3s cubic-bezier(.2,.8,.3,1), stroke .2s; }
+.job-toggle:hover .job-name, .job-toggle:hover .chev { color: var(--accent); stroke: var(--accent); }
+.job-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px;
+                            border-radius: var(--r-xs); }
+.job.shut .chev { transform: rotate(-90deg); }
+.job.shut .job-sub { margin-bottom: 0; }
+
+/* 0fr -> 1fr animates to the content's real height without measuring it. */
+.job-body { display: grid; grid-template-rows: 1fr;
+            transition: grid-template-rows .34s cubic-bezier(.2,.8,.3,1); }
+.job-body > div { overflow: hidden; }
+.job.shut .job-body { grid-template-rows: 0fr; }
+
+/* The bullets arrive one after another rather than all at once. */
+.job-body li { transition: opacity .26s ease, transform .26s cubic-bezier(.2,.8,.3,1);
+               transition-delay: calc(var(--i, 0) * 45ms); }
+.job.shut .job-body li { opacity: 0; transform: translateY(-6px); transition-delay: 0s; }
+
+.job-all { margin: calc(var(--s5) * -1) 0 var(--s4); padding: var(--s1) var(--s2);
+           background: none; border: 0; cursor: pointer;
+           font: 600 var(--fs-2xs)/1 var(--sans); letter-spacing: var(--ls-caps);
+           text-transform: uppercase; color: var(--muted); border-radius: var(--r-xs); }
+.job-all:hover { color: var(--accent); background: var(--code-bg); }
 .job .rail { position: absolute; left: 4px; top: 50%; width: 3px;
              border-radius: var(--r-xs); pointer-events: none;
              background: linear-gradient(var(--accent), var(--accent-2)); }
@@ -165,20 +204,6 @@ a.cred:hover { text-decoration: none; }
              transition: color .8s linear; }
 .cred-quiet { border-left-color: var(--line); }
 .cred-quiet .cred-mark { color: var(--muted); }
-
-/* The numbers that used to clutter the opening paragraph. */
-/* Four across, or two-by-two on a phone. auto-fit left a lone fourth tile on a
-   row of its own at desktop widths. */
-.facts { display: grid; gap: var(--s2); padding: 0; margin: var(--s6) 0 0;
-         list-style: none; grid-template-columns: repeat(4, minmax(0, 1fr)); }
-@media (max-width: 760px) { .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.facts li { margin: 0; padding: var(--s3) var(--s4); background: var(--panel);
-            border: 1px solid var(--line); border-radius: var(--r-md); }
-.facts b { display: block; font: 600 var(--fs-xl)/var(--lh-tight) var(--sans);
-           letter-spacing: var(--ls-tight); color: var(--accent);
-           transition: color .8s linear; }
-.facts span { display: block; margin-top: var(--s1); color: var(--muted);
-              font-size: var(--fs-md); line-height: var(--lh-snug); }
 
 .interests { margin-top: var(--s5); }
 
@@ -369,3 +394,7 @@ body.side-open { overflow: hidden; }
 .card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .card-head h3 { margin: 0; }
 .card-head .meta { flex: 0 0 auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .job-body, .job-body li, .job-toggle .chev { transition: none; }
+}

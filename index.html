@@ -22,10 +22,10 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <!-- /social -->
 <script>try{var t=localStorage.getItem("theme");if(t&&t!=="system")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
-<link rel="stylesheet" href="css/base.css?v=31">
-<link rel="stylesheet" href="css/components.css?v=31">
-<link rel="stylesheet" href="css/motion.css?v=31">
-<link rel="stylesheet" href="css/tour.css?v=31">
+<link rel="stylesheet" href="css/base.css?v=32">
+<link rel="stylesheet" href="css/components.css?v=32">
+<link rel="stylesheet" href="css/motion.css?v=32">
+<link rel="stylesheet" href="css/tour.css?v=32">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -38,17 +38,14 @@
     Hey, I'm Pratik. I'm a full-stack engineer at Capital One, working on the system that closes
     the books every night — every card and bank transaction from that day counted, settled and
     written down before morning. It runs once, it runs at night, and there is no second attempt,
-    which turns out to be my favourite kind of problem. I live somewhere between the data and the
-    systems that move it, mostly in Go and Python, and the things I build on weekends run entirely
-    on my own laptop.
+    which turns out to be my favourite kind of problem.
   </p>
-
-  <ul class="facts">
-    <li><b>99M+</b><span>Card account records published every night</span></li>
-    <li><b>0</b><span>retries — the close gets one window a night</span></li>
-    <li><b>2.8&times;</b><span>faster rewards catalog after a rebuild</span></li>
-    <li><b>5,000+</b><span>duplicate records found in a graph of system metadata</span></li>
-  </ul>
+  <p>
+    I came out of NC State last year as a Park Scholar with degrees in computer science and
+    applied mathematics, most of which I finished while already working full time. I live
+    somewhere between the data and the systems that move it, mostly in Go and Python, and the
+    things I build on weekends run entirely on my own laptop.
+  </p>
   </div>
 
   <section id="intro" aria-label="Introduction and links">
@@ -74,61 +71,82 @@
   <h2 class="reveal">Work</h2>
 
   <div class="job reveal">
-    <div class="job-head">
-      <h3>Capital One — Software Engineer II</h3>
-      <span class="meta">Jul 2026 – Present</span>
-    </div>
+    <h3 class="job-head">
+      <button class="job-toggle" type="button" aria-expanded="true" aria-controls="job-1">
+        <span class="job-name">Capital One — Software Engineer II</span>
+        <span class="meta">Jul 2026 – Present</span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 10.5 12 15l4.5-4.5"/></svg>
+      </button>
+    </h3>
     <p class="job-sub">McLean, VA</p>
-    <ul>
-      <li>Own the nightly <strong>end-of-day close</strong> — posting, settlement and ledger
-          cutoff across Card and Bank, run on <strong>Temporal</strong>.</li>
-      <li>Lead the <strong>REST API</strong> replacing the vendor's close operator tooling,
-          bringing nightly controls in-house.</li>
-      <li>Monitoring and distributed tracing in <strong>OpenTelemetry</strong> and
-          <strong>Splunk</strong>: alerts page on-call mid-run, not at cutoff.</li>
-      <li>Ship end-of-day services on <strong>Kubernetes</strong> through <strong>Argo CD</strong>
-          and <strong>Helm</strong>, rollback one revision away.</li>
-    </ul>
+    <div class="job-body" id="job-1">
+      <div>
+      <ul>
+        <li>Own the nightly <strong>end-of-day close</strong> — posting, settlement and ledger
+            cutoff across Card and Bank, run on <strong>Temporal</strong>.</li>
+        <li>Lead the <strong>REST API</strong> replacing the vendor's close operator tooling,
+            bringing nightly controls in-house.</li>
+        <li>Monitoring and distributed tracing in <strong>OpenTelemetry</strong> and
+            <strong>Splunk</strong>: alerts page on-call mid-run, not at cutoff.</li>
+        <li>Ship end-of-day services on <strong>Kubernetes</strong> through <strong>Argo CD</strong>
+            and <strong>Helm</strong>, rollback one revision away.</li>
+      </ul>
+      </div>
+    </div>
   </div>
 
   <div class="job reveal">
-    <div class="job-head">
-      <h3>Capital One — Software Engineer I</h3>
-      <span class="meta">May 2024 – Jul 2026</span>
-    </div>
+    <h3 class="job-head">
+      <button class="job-toggle" type="button" aria-expanded="true" aria-controls="job-2">
+        <span class="job-name">Capital One — Software Engineer I</span>
+        <span class="meta">May 2024 – Jul 2026</span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 10.5 12 15l4.5-4.5"/></svg>
+      </button>
+    </h3>
     <p class="job-sub">McLean, VA</p>
-    <ul>
-      <li>Wrote the ledger's <strong>batch write path</strong> in <strong>Go</strong>, empty repo
+    <div class="job-body" id="job-2">
+      <div>
+      <ul>
+        <li>Wrote the ledger's <strong>batch write path</strong> in <strong>Go</strong>, empty repo
           to production; every nightly cycle runs through it.</li>
-      <li>Designed a <strong>block-allocation ID service</strong>: one call reserves a range,
+        <li>Designed a <strong>block-allocation ID service</strong>: one call reserves a range,
           taking per-ID contention off bulk opens.</li>
-      <li>Built the nightly <strong>PySpark</strong>/<strong>Databricks</strong> reconciliation —
+        <li>Built the nightly <strong>PySpark</strong>/<strong>Databricks</strong> reconciliation —
           day-over-day aggregate diffs alert before a bad cycle ships.</li>
-      <li>Cut data egress on the nightly <strong>99M+ Card account</strong> publish by
+        <li>Cut data egress on the nightly <strong>99M+ Card account</strong> publish by
           performance-tuning <strong>Hive</strong> sort on <strong>AWS EMR</strong>.</li>
-      <li>Rolled <strong>proof-of-possession tokens</strong> across Card and Bank endpoints,
+        <li>Rolled <strong>proof-of-possession tokens</strong> across Card and Bank endpoints,
           binding each call to a key a thief lacks.</li>
-      <li>Rebuilt the military rewards catalog in <strong>Vue.js</strong>/<strong>Spring
+        <li>Rebuilt the military rewards catalog in <strong>Vue.js</strong>/<strong>Spring
           Boot</strong>/<strong>DynamoDB</strong>: <strong>2.8×</strong> faster, $9M projected
           revenue.</li>
-    </ul>
+      </ul>
+      </div>
+    </div>
   </div>
 
   <div class="job reveal">
-    <div class="job-head">
-      <h3>Fidelity Investments — Software Engineer</h3>
-      <span class="meta">Jun 2023 – May 2024</span>
-    </div>
+    <h3 class="job-head">
+      <button class="job-toggle" type="button" aria-expanded="true" aria-controls="job-3">
+        <span class="job-name">Fidelity Investments — Software Engineer</span>
+        <span class="meta">Jun 2023 – May 2024</span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 10.5 12 15l4.5-4.5"/></svg>
+      </button>
+    </h3>
     <p class="job-sub">Durham, NC</p>
-    <ul>
-      <li>Moved mainframe stock and job workflows to <strong>AWS</strong> with
-          <strong>Terraform</strong> — <strong>45%</strong> of volume, <strong>400+</strong>
+    <div class="job-body" id="job-3">
+      <div>
+      <ul>
+        <li>Moved mainframe stock and job workflows to <strong>AWS</strong> with
+            <strong>Terraform</strong> — <strong>45%</strong> of volume, <strong>400+</strong>
           associates.</li>
-      <li>Modeled system metadata as a <strong>Neo4j</strong> graph; graph
+        <li>Modeled system metadata as a <strong>Neo4j</strong> graph; graph
           queries found and removed <strong>5,000+</strong> duplicate records.</li>
-      <li>Delivered the full stack on a 4-person team: <strong>Angular</strong> UI,
-          <strong>Java</strong> services, <strong>S3</strong> metadata sync.</li>
-    </ul>
+        <li>Delivered the full stack on a 4-person team: <strong>Angular</strong> UI,
+            <strong>Java</strong> services, <strong>S3</strong> metadata sync.</li>
+      </ul>
+      </div>
+    </div>
   </div>
 
   </section>
@@ -422,15 +440,15 @@
   </div>
 </div>
 
-<script src="js/theme.js?v=31" defer></script>
-<script src="js/field.js?v=31" defer></script>
-<script src="js/palette.js?v=31" defer></script>
-<script src="js/spotlight.js?v=31" defer></script>
-<script src="js/sidebar.js?v=31" defer></script>
-<script src="js/reveal.js?v=31" defer></script>
-<script src="js/a11y.js?v=31" defer></script>
-<script src="js/blocks.js?v=31" defer></script>
-<script src="js/tour.js?v=31" defer></script>
-<script src="js/settings.js?v=31" defer></script>
+<script src="js/theme.js?v=32" defer></script>
+<script src="js/field.js?v=32" defer></script>
+<script src="js/palette.js?v=32" defer></script>
+<script src="js/spotlight.js?v=32" defer></script>
+<script src="js/sidebar.js?v=32" defer></script>
+<script src="js/reveal.js?v=32" defer></script>
+<script src="js/a11y.js?v=32" defer></script>
+<script src="js/blocks.js?v=32" defer></script>
+<script src="js/tour.js?v=32" defer></script>
+<script src="js/settings.js?v=32" defer></script>
 </body>
 </html>
