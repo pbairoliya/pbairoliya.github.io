@@ -77,6 +77,11 @@ h2.reveal { transition-duration: .4s, .46s; }
   transform: translateY(-2px);
   box-shadow: 0 14px 34px -16px color-mix(in srgb, var(--hit) 60%, transparent);
 }
+/* A timeline row is not a card. The tint, the lift and the drop shadow read as
+   a grey rectangle sitting on the line; the pointer glow and the pin's ring are
+   the whole highlight here. */
+.timeline .job.lit { background-color: transparent; box-shadow: none; transform: none; }
+.timeline .job > .lit-edge { display: none; }
 .tool.lit, .btn.lit { transform: translateY(-2px); }
 /* scaleY rather than height: the same growing bar, off the layout path */
 .job .rail { height: calc(100% - 24px); transform: translateY(-50%) scaleY(0);

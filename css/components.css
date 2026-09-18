@@ -410,15 +410,15 @@ body.side-open { overflow: hidden; }
 /* A ruler down the left: start year, then the line, then the row. Every entry
    collapses to a single line, so seven of them read at a glance instead of
    filling a screen. */
-.timeline .job { position: relative; padding-left: 84px; }
-.job-year { position: absolute; left: 0; top: 15px; width: 40px; text-align: right;
+.timeline .job { position: relative; padding-left: 96px; }
+.job-year { position: absolute; left: 20px; top: 15px; width: 38px; text-align: right;
             font: 700 var(--fs-2xs)/1 var(--sans); letter-spacing: var(--ls-caps);
             color: var(--muted); transition: color .3s; }
 .job:hover .job-year, .job:not(.shut) .job-year { color: var(--accent); }
 /* One line for the whole run, drawn as you scroll past it. The grey track spans
    all three years; the gradient fill is how far down them you have read. */
 .timeline { position: relative; margin: var(--s8) 0 var(--s7); }
-.tl-line { position: absolute; left: 58px; top: 27px; bottom: 27px; width: 2px;
+.tl-line { position: absolute; left: 70px; top: 27px; bottom: 27px; width: 2px;
            background: var(--line); border-radius: var(--r-pill); }
 .tl-line i { position: absolute; inset: 0; border-radius: inherit;
              background: linear-gradient(var(--accent), var(--accent-2));
@@ -432,12 +432,11 @@ body.side-open { overflow: hidden; }
    permanent transition-delay and the last node takes 780ms to answer a hover. */
 .timeline.settled .job-node { transition-delay: 0s; }
 
-/* Each role assembles as the fill reaches it: the node pops, a ring leaves it,
-   and the heading slides in off the line. Entrances are ANIMATIONS, not
+/* Each role assembles as the fill reaches it: the pin pops, a ring leaves it,
+   and the row slides in off the line. Entrances are ANIMATIONS, not
    transitions — a transition-delay would stay on the element and make every
-   later hover answer late, which is the bug the .settled class above exists to
-   undo. `backwards` fill holds the from-state during the delay and hands the
-   element back to its own styles afterwards, so nothing is locked. */
+   later hover answer late. `backwards` fill holds the from-state during the
+   delay and hands the element back to its own styles afterwards. */
 .timeline.drawn .job-node {
   animation: node-pop .55s cubic-bezier(.34,1.5,.64,1) calc(var(--d, 0) * 1ms) backwards;
 }
@@ -448,7 +447,7 @@ body.side-open { overflow: hidden; }
 }
 .job-node::before {
   content: ""; position: absolute; inset: -2px; border-radius: inherit;
-  border: 2px solid var(--accent); opacity: 0; pointer-events: none;
+  border: 2px solid var(--pin, var(--accent)); opacity: 0; pointer-events: none;
 }
 .timeline.drawn .job-node::before {
   animation: node-ring .75s ease-out calc(var(--d, 0) * 1ms) backwards;
@@ -458,7 +457,10 @@ body.side-open { overflow: hidden; }
   to   { transform: scale(2.6); opacity: 0; }
 }
 .timeline.drawn .job-head,
-.timeline.drawn @keyframes role-in { from { opacity: 0; transform: translateX(-12px); } }
+.timeline.drawn .job-year {
+  animation: role-in .45s cubic-bezier(.2,.8,.3,1) calc(var(--d, 0) * 1ms + 70ms) backwards;
+}
+@keyframes role-in { from { opacity: 0; transform: translateX(-12px); } }
 
 /* the open role's bullets wait their turn rather than arriving before the line */
 .timeline:not(.drawn) .job-body li { opacity: 0; transform: translateX(-12px); }
@@ -471,20 +473,23 @@ body.side-open { overflow: hidden; }
 .timeline.settled .job-node,
 .timeline.settled .job-node::before,
 .timeline.settled .job-head,
-.timeline.settled 
-/* Opening an entry replays its own pop and ring. blocks.js retriggers by
-   removing and re-adding .pop, so this has to out-specify the sweep rules
-   above and carry no delay of its own. */
-.timeline.drawn .job-node.pop {
+.timeline.settled .job-year { animation: none; }
+
+/* Opening an entry replays its pin's pop and ring — and nothing else. An
+   earlier edit ran these two selector lists together, which left every ROW
+   animating node-pop: the text scaled up from 20% on each toggle. */
+.timeline.drawn .job-node.pop,
+.timeline.settled .job-node.pop {
   animation: node-pop .5s cubic-bezier(.34,1.5,.64,1) 0s backwards;
 }
-.timeline.drawn .job-node.pop::before {
+.timeline.drawn .job-node.pop::before,
+.timeline.settled .job-node.pop::before {
   animation: node-ring .7s ease-out 0s backwards;
 }
 #work .job .rail { display: none; }   /* the timeline is this section's rail */
 
 .job-node {
-  position: absolute; left: 51px; top: 14px; z-index: 1;   /* over the line */ width: 16px; height: 16px;
+  position: absolute; left: 63px; top: 14px; z-index: 1;   /* over the line */ width: 16px; height: 16px;
   border-radius: var(--r-pill); box-sizing: border-box;
   border: 2px solid var(--line); background: var(--panel);
   transition: transform .34s cubic-bezier(.34,1.4,.64,1),
@@ -503,18 +508,16 @@ body.side-open { overflow: hidden; }
                        box-shadow: 0 0 0 5px color-mix(in srgb, var(--pin, var(--accent)) 16%, transparent); }
 
 /* the whole row is the target, so give it a hover surface of its own */
-#work .job-toggle { padding: var(--s1) var(--s2); margin: calc(var(--s1) * -1) calc(var(--s2) * -1);
-                    border-radius: var(--r-sm); transition: background-color .2s; }
-#work .job-toggle:hover { background: var(--code-bg); }
+#work .job-toggle { padding: var(--s1) 0; }
 #work .job { cursor: pointer; }   /* the whole entry toggles */
 
 
 @media (max-width: 560px) {
-  .timeline .job { padding-left: 58px; }
-  .job-year { width: 28px; font-size: 10px; }
-  .tl-line { left: 38px; }
-  .job-node { left: 31px; }
-  #education > .reveal, #education .interests { padding-left: 58px; }
+  .timeline .job { padding-left: 64px; }
+  .job-year { left: 16px; width: 24px; font-size: 10px; }
+  .tl-line { left: 44px; }
+  .job-node { left: 37px; }
+  #education > .reveal, #education .interests { padding-left: 64px; }
 }
 /* The current role is still running, so its node keeps a pulse. */
 .timeline.drawn .job-now .job-node::after {
@@ -614,8 +617,8 @@ body.side-open { overflow: hidden; }
 
 
 /* School's contents line up with the entries above them */
-#education > .reveal { padding-left: 84px; }
-#education .interests { padding-left: 84px; }
+#education > .reveal { padding-left: 96px; }
+#education .interests { padding-left: 96px; }
 .shelf { display: block; }
 
 @media (max-width: 560px) {
@@ -647,3 +650,16 @@ body.side-open { overflow: hidden; }
   .filters button { transition: none; }
   .shelf.filtering .card { animation: none; }
 }
+
+/* A concurrency bracket: this entry was running while the ones above it started.
+   It lives in its own lane so it never crowds the pins. */
+.tl-span { position: absolute; left: calc(var(--lane, 0) * 7px); width: 2px; border-radius: var(--r-pill);
+           background: color-mix(in srgb, var(--pin, var(--accent)) 45%, transparent);
+           pointer-events: none; }
+.tl-span::before, .tl-span::after {
+  content: ""; position: absolute; left: -3px; width: 8px; height: 2px;
+  border-radius: var(--r-pill); background: inherit;
+}
+.tl-span::before { top: 0; }
+.tl-span::after  { bottom: 0; }
+@media (max-width: 560px) { .tl-span { left: calc(var(--lane, 0) * 5px); } }
