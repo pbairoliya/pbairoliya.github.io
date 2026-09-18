@@ -603,11 +603,6 @@ body.side-open { overflow: hidden; }
    they were the noisiest thing on the page. */
 .timeline { --lane: 72px; margin: var(--s8) 0 var(--s7); }
 #tl-list { position: relative; }
-#tl-list::before {                    /* the list view's spine */
-  content: ""; position: absolute; left: 28px; top: 10px; bottom: 18px; width: 2px;
-  border-radius: var(--r-pill);
-  background: linear-gradient(var(--line) 0 85%, transparent);
-}
 
 .tl-year { position: relative; padding-left: var(--lane); margin: var(--s5) 0 var(--s2);
            display: flex; align-items: center; gap: var(--s3); }
@@ -639,8 +634,7 @@ body.side-open { overflow: hidden; }
 
 @media (max-width: 560px) {
   .timeline { --lane: 52px; }
-  #tl-list::before { left: 10px; }
-  .job-dot { left: 28px; }
+    .job-dot { left: 28px; }
   .tl-year span { width: 26px; font-size: 10px; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -678,7 +672,7 @@ body.side-open { overflow: hidden; }
 .tlc-row { display: grid; grid-template-columns: var(--name) minmax(0, 1fr);
            align-items: center; height: 34px; }
 .tlc-row + .tlc-row { border-top: 1px solid color-mix(in srgb, var(--line) 55%, transparent); }
-.tlc-name { padding: 0 var(--s3); overflow: hidden; text-overflow: ellipsis;
+.tlc-name { padding: 0 var(--s3); transition: color .18s, opacity .18s; overflow: hidden; text-overflow: ellipsis;
             white-space: nowrap; font-size: var(--fs-md); color: var(--muted); }
 .tlc-lane { position: relative; height: 100%; border-left: 1px solid var(--line); }
 
@@ -693,9 +687,16 @@ body.side-open { overflow: hidden; }
 .tlc-bar[data-kind="research"]   { --k: var(--accent-2); }
 .tlc-bar[data-kind="leadership"] { --k: var(--hit); }
 .tlc-bar[data-kind="school"]     { --k: var(--muted); }
-.tlc-bar:hover, .tlc-bar:focus-visible { transform: scaleY(1.3);
-           filter: brightness(1.15); outline: none;
+/* The name and the bar are the same row, so hovering either lights both and
+   quiets the others. One rule, because the bar lives inside the row it names. */
+.tlc-row.is-live { cursor: pointer; }
+.tlc-row:hover .tlc-name,
+.tlc-row:focus-within .tlc-name { color: var(--ink); }
+.tlc-row:hover .tlc-bar,
+.tlc-bar:focus-visible { transform: scaleY(1.35); filter: brightness(1.15); outline: none;
            box-shadow: 0 0 0 3px color-mix(in srgb, var(--k) 22%, transparent); }
+.tlc-body:has(.tlc-row:hover) .tlc-row:not(:hover) .tlc-name { opacity: .45; }
+.tlc-body:has(.tlc-row:hover) .tlc-row:not(:hover) .tlc-bar { opacity: .35; }
 /* a run with no end yet fades out to the right rather than stopping flat */
 .tlc-bar.is-open-ended { mask-image: linear-gradient(90deg, #000 82%, transparent); }
 .tlc-bar.dim { opacity: .18; }
