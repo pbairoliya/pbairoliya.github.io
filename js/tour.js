@@ -21,9 +21,9 @@
 
   const DESKTOP_STEPS = [
     {
-      sel: ".side",
+      sel: ".side-head",
       title: "Everything lives in the sidebar",
-      body: "Sections of this page up top, my resume and links underneath. Press [ to collapse it.",
+      body: "Sections of this page, then my resume and links. Press [ to hide it.",
     },
     {
       sel: ".palette-btn",
@@ -132,16 +132,43 @@
       const ph = pop.offsetHeight;
       const pw = pop.offsetWidth;
 
-      /* Clamp on BOTH ends of BOTH axes. The old code clamped the top when
-         flipping above the target but never the bottom, and Math.min/Math.max
-         in the wrong order inverts when the popover is larger than the space —
-         which is exactly what happens on a small phone. */
+      /* Try four placements and take the first that does not sit on top of the
+         thing it is pointing at. The old code only ever went below or above, so
+         a tall target -- the sidebar is the whole viewport height -- left the
+         popover covering the very element being highlighted. Clamped on both
+         ends of both axes, because Math.min/Math.max in the wrong order inverts
+         when the popover is bigger than the space, which is what happens on a
+         phone. */
       const clamp = (v, lo, hi) => (hi < lo ? lo : Math.min(Math.max(v, lo), hi));
-      const below = r.bottom + GAP + ph < innerHeight - EDGE;
-      const y = clamp(below ? r.bottom + GAP : r.top - GAP - ph,
-                      EDGE, innerHeight - ph - EDGE);
-      const x = clamp(r.left + r.width / 2 - pw / 2,
-                      EDGE, innerWidth - pw - EDGE);
+      const cx = clamp(r.left + r.width / 2 - pw / 2, EDGE, innerWidth - pw - EDGE);
+      const cy = clamp(r.top + r.height / 2 - ph / 2, EDGE, innerHeight - ph - EDGE);
+
+      const candidates = [
+        { x: cx, y: r.bottom + GAP },                  // below
+        { x: cx, y: r.top - GAP - ph },                // above
+        { x: r.right + GAP, y: cy },                   // to the right
+        { x: r.left - GAP - pw, y: cy },               // to the left
+      ];
+
+      const fits = (c) =>
+        c.x >= EDGE && c.y >= EDGE &&
+        c.x + pw <= innerWidth - EDGE && c.y + ph <= innerHeight - EDGE &&
+        // and crucially: no overlap with the highlighted rect itself
+        !(c.x < r.right + PAD && c.x + pw > r.left - PAD &&
+          c.y < r.bottom + PAD && c.y + ph > r.top - PAD);
+
+      let spot = candidates.find(fits);
+      if (!spot) {
+        /* Nothing clears it -- the target is most of the screen. Sit in the
+           corner furthest from its centre so it covers as little as possible. */
+        const midX = r.left + r.width / 2, midY = r.top + r.height / 2;
+        spot = {
+          x: midX > innerWidth / 2 ? EDGE : innerWidth - pw - EDGE,
+          y: midY > innerHeight / 2 ? EDGE : innerHeight - ph - EDGE,
+        };
+      }
+      const x = clamp(spot.x, EDGE, innerWidth - pw - EDGE);
+      const y = clamp(spot.y, EDGE, innerHeight - ph - EDGE);
       pop.style.transform = `translate(${x}px, ${y}px)`;
     }
 
