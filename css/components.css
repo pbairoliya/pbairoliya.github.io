@@ -34,7 +34,8 @@ a.side-head:hover { background: var(--code-bg); text-decoration: none; }
 .side a i { font-style: normal; width: 17px; text-align: center; opacity: .85;
             font-size: 13px; flex: 0 0 17px; }
 .side a:hover { background: var(--code-bg); color: var(--ink); text-decoration: none; }
-.side a.on { color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent); }
+.side a.on { color: var(--accent); font-weight: 600;
+             background: color-mix(in srgb, var(--accent) 11%, transparent); }
 .side a.on::before { content: ""; position: absolute; left: 0; top: 7px; bottom: 7px;
                      width: 2.5px; border-radius: 3px; background: var(--accent); }
 .side-foot { margin-top: auto; padding: 12px 10px 2px; border-top: 1px solid var(--line);
@@ -311,3 +312,31 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
 @media (hover: none) and (pointer: coarse) {
   .btn.palette-btn { display: none; }
 }
+
+
+/* ---- collapsed rail: the icons need to say what they are ----
+   Collapsing hides every label, which leaves a column of emoji with no way to
+   know what they do. A tooltip on hover/focus restores the name without giving
+   the width back. */
+@media (min-width: 901px) {
+  body.side-collapsed .side a { position: relative; }
+  body.side-collapsed .side a::after {
+    content: attr(data-name);
+    position: absolute; left: calc(100% + 10px); top: 50%; translate: 0 -50%;
+    padding: 6px 10px; border-radius: 8px; white-space: nowrap;
+    background: var(--panel); border: 1px solid var(--line); color: var(--ink);
+    font: 12.5px/1 var(--sans); box-shadow: 0 8px 24px -12px rgba(0,0,0,.5);
+    opacity: 0; pointer-events: none; transition: opacity .14s;
+    z-index: 12;
+  }
+  body.side-collapsed .side a:hover::after,
+  body.side-collapsed .side a:focus-visible::after { opacity: 1; }
+}
+
+/* ---- the rail explains its own shortcut ---- */
+.side-foot kbd, .side-hint kbd {
+  font: 10px var(--mono); border: 1px solid var(--line); border-bottom-width: 2px;
+  border-radius: 4px; padding: 1px 4px; color: var(--muted);
+}
+.side-hint { padding: 10px 10px 0; font: 11px/1.5 var(--mono); color: var(--muted); }
+body.side-collapsed .side-hint { display: none; }
