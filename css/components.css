@@ -364,3 +364,8 @@ footer .cta-actions { margin-bottom: 18px; }
 body.no-scroll { overflow: hidden; }
 body.side-open { overflow: hidden; }
 .side-scrim, #palette { overscroll-behavior: contain; }
+
+/* Card title and its metadata on one line, title left, meta right, baselines aligned. */
+.card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.card-head h3 { margin: 0; }
+.card-head .meta { flex: 0 0 auto; }
