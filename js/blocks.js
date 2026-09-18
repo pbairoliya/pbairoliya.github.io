@@ -149,4 +149,153 @@
     };
     btns.forEach(b => b.addEventListener("click", () => apply(b.dataset.filter)));
   }
+
+  /* ---- the Timeline view ----
+     A Notion timeline: names down the left, a year axis across the top, one bar
+     per run. It is built from the list's own markup, so the two views can never
+     disagree, and it only exists once this script has run — no JS leaves the
+     list, which is the view that reads.
+
+     The gimmick is the scrubber. Drag the pointer across the chart and a line
+     follows it: everything that was NOT running on that date fades back, and a
+     chip says how many things were. Overlap stops being something you infer
+     from bar ends and becomes something you sweep for. */
+  (() => {
+    const chart = document.getElementById("tl-chart");
+    const tabs = document.querySelector(".views");
+    if (!chart || !tabs || !jobs.length) return;
+
+    const rows = jobs.map(j => ({
+      el: j,
+      name: j.querySelector(".job-name").firstChild.textContent.trim(),
+      kind: j.dataset.kind,
+      start: j.dataset.start ? Date.parse(j.dataset.start + "-01T00:00:00") : null,
+      end: j.dataset.start
+        ? (j.dataset.end === "now" ? Date.now() : Date.parse((j.dataset.end || "") + "-01T00:00:00"))
+        : null,
+      open: j.dataset.end === "now",
+    }));
+    const dated = rows.filter(r => r.start);
+    if (dated.length < 2) return;
+
+    const y0 = new Date(Math.min(...dated.map(r => r.start))).getFullYear();
+    const y1 = new Date(Math.max(...dated.map(r => r.end))).getFullYear() + 1;
+    const t0 = Date.parse(y0 + "-01-01"), t1 = Date.parse(y1 + "-01-01");
+    const pct = v => ((v - t0) / (t1 - t0)) * 100;
+
+    const head = document.createElement("div");
+    head.className = "tlc-head";
+    for (let y = y0; y < y1; y++) {
+      const cell = document.createElement("span");
+      cell.style.left = pct(Date.parse(y + "-01-01")) + "%";
+      cell.style.width = pct(Date.parse((y + 1) + "-01-01")) - pct(Date.parse(y + "-01-01")) + "%";
+      cell.textContent = y;
+      head.appendChild(cell);
+    }
+    chart.appendChild(head);
+
+    const body = document.createElement("div");
+    body.className = "tlc-body";
+    const today = document.createElement("span");
+    today.className = "tlc-today";
+    today.style.left = pct(Date.now()) + "%";
+    body.appendChild(today);
+
+    rows.forEach(r => {
+      const line = document.createElement("div");
+      line.className = "tlc-row";
+      const label = document.createElement("span");
+      label.className = "tlc-name";
+      /* three rows all began "Capital One · Software Engine…" and truncated to
+         the same string, so the column said nothing. */
+      label.textContent = r.name
+        .replace("Software Engineering Intern", "SWE Intern")
+        .replace("Software Engineer", "SWE")
+        .replace("Undergraduate Researcher", "Undergrad Researcher")
+        .replace("North Carolina State University", "NC State · B.S. ×2");
+      label.title = r.name;
+      line.appendChild(label);
+      const lane = document.createElement("span");
+      lane.className = "tlc-lane";
+      if (r.start) {
+        const bar = document.createElement("button");
+        bar.type = "button";
+        bar.className = "tlc-bar";
+        bar.dataset.kind = r.kind;
+        bar.style.left = pct(r.start) + "%";
+        bar.style.width = Math.max(pct(r.end) - pct(r.start), 2) + "%";
+        bar.style.setProperty("--e", rows.indexOf(r));
+        bar.textContent = r.name;
+        bar.setAttribute("aria-label", "Open " + r.name);
+        if (r.open) bar.classList.add("is-open-ended");
+        bar.addEventListener("click", () => {
+          setView("list");
+          r.el.querySelector(".job-toggle").click();
+          r.el.scrollIntoView({ block: "center",
+            behavior: reduced ? "auto" : "smooth" });
+        });
+        lane.appendChild(bar);
+        r.bar = bar;
+      } else {
+        lane.classList.add("undated");
+      }
+      line.appendChild(lane);
+      body.appendChild(line);
+    });
+    chart.appendChild(body);
+
+    /* the scrubber */
+    const scrub = document.createElement("div");
+    scrub.className = "tlc-scrub";
+    scrub.innerHTML = '<span class="tlc-chip"></span>';
+    body.appendChild(scrub);
+    const chip = scrub.querySelector(".tlc-chip");
+    const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+    const clear = () => {
+      body.classList.remove("scrubbing");
+      dated.forEach(r => r.bar.classList.remove("dim"));
+    };
+    body.addEventListener("pointermove", e => {
+      if (e.pointerType === "touch") return;
+      const box = body.getBoundingClientRect();
+      const x = Math.min(Math.max(e.clientX - box.left, 0), box.width);
+      const at = t0 + (x / box.width) * (t1 - t0);
+      const d = new Date(at);
+      let live = 0;
+      dated.forEach(r => {
+        const on = at >= r.start && at <= r.end;
+        r.bar.classList.toggle("dim", !on);
+        if (on) live++;
+      });
+      body.classList.add("scrubbing");
+      scrub.style.left = x + "px";
+      chip.textContent = MONTHS[d.getMonth()] + " " + d.getFullYear() +
+        " · " + live + (live === 1 ? " thing" : " things");
+    }, { passive: true });
+    body.addEventListener("pointerleave", clear);
+
+    /* view switching */
+    const list = document.getElementById("tl-list");
+    const btns = [...tabs.querySelectorAll("button[data-view]")];
+    function setView(v) {
+      btns.forEach(b => b.setAttribute("aria-selected", String(b.dataset.view === v)));
+      chart.hidden = v !== "chart";
+      list.hidden = v !== "list";
+      if (v !== "chart") clear();
+      try { localStorage.setItem("tl-view", v); } catch {}
+    }
+    btns.forEach(b => {
+      b.hidden = false;
+      b.addEventListener("click", () => setView(b.dataset.view));
+    });
+    let want = "list";
+    try { want = localStorage.getItem("tl-view") || "list"; } catch {}
+    setView(matchMedia("(max-width: 760px)").matches ? "list" : want);
+    /* a Gantt has nowhere to go on a phone */
+    matchMedia("(max-width: 760px)").addEventListener("change", e => {
+      if (e.matches) setView("list");
+    });
+  })();
+
 })();

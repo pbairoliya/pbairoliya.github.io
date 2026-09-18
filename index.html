@@ -23,10 +23,10 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <!-- /social -->
 <script>try{var t=localStorage.getItem("theme");if(t&&t!=="system")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
-<link rel="stylesheet" href="css/base.css?v=49">
-<link rel="stylesheet" href="css/components.css?v=49">
-<link rel="stylesheet" href="css/motion.css?v=49">
-<link rel="stylesheet" href="css/tour.css?v=49">
+<link rel="stylesheet" href="css/base.css?v=50">
+<link rel="stylesheet" href="css/components.css?v=50">
+<link rel="stylesheet" href="css/motion.css?v=50">
+<link rel="stylesheet" href="css/tour.css?v=50">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -72,6 +72,17 @@
 
   <section id="work">
   <h2 class="sr-only">Experience</h2>
+
+  <div class="views reveal" role="tablist" aria-label="View">
+    <button type="button" role="tab" id="view-list" aria-selected="true" aria-controls="tl-list" data-view="list">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v2H4V6Zm0 5h16v2H4v-2Zm0 5h16v2H4v-2Z"/></svg>List
+    </button>
+    <button type="button" role="tab" id="view-chart" aria-selected="false" aria-controls="tl-chart" data-view="chart" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h10v3H3V5Zm4 5.5h13v3H7v-3ZM5 16h11v3H5v-3Z"/></svg>Timeline
+    </button>
+  </div>
+  <div class="tl-chart" id="tl-chart" role="tabpanel" aria-labelledby="view-chart" hidden></div>
+  <div id="tl-list" role="tabpanel" aria-labelledby="view-list">
     <div class="tl-year reveal"><span>2026</span></div>
     <div class="job reveal job-now" data-kind="work" data-start="2026-07" data-end="now">
       <h3 class="job-head">
@@ -227,6 +238,7 @@
         </div>
       </div>
     </div>
+  </div>
   </section>
 
   <section id="education">
@@ -538,15 +550,15 @@
   </div>
 </div>
 
-<script src="js/theme.js?v=49" defer></script>
-<script src="js/field.js?v=49" defer></script>
-<script src="js/palette.js?v=49" defer></script>
-<script src="js/spotlight.js?v=49" defer></script>
-<script src="js/sidebar.js?v=49" defer></script>
-<script src="js/reveal.js?v=49" defer></script>
-<script src="js/a11y.js?v=49" defer></script>
-<script src="js/blocks.js?v=49" defer></script>
-<script src="js/tour.js?v=49" defer></script>
-<script src="js/settings.js?v=49" defer></script>
+<script src="js/theme.js?v=50" defer></script>
+<script src="js/field.js?v=50" defer></script>
+<script src="js/palette.js?v=50" defer></script>
+<script src="js/spotlight.js?v=50" defer></script>
+<script src="js/sidebar.js?v=50" defer></script>
+<script src="js/reveal.js?v=50" defer></script>
+<script src="js/a11y.js?v=50" defer></script>
+<script src="js/blocks.js?v=50" defer></script>
+<script src="js/tour.js?v=50" defer></script>
+<script src="js/settings.js?v=50" defer></script>
 </body>
 </html>

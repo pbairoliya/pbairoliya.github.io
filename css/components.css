@@ -601,7 +601,7 @@ body.side-open { overflow: hidden; }
    years punctuate the list instead of being ruled across it — the horizontal
    chart needed six vertical lines through everything to place its bars, and
    they were the noisiest thing on the page. */
-.timeline { --lane: 72px; }
+.timeline { --lane: 72px; margin: var(--s8) 0 var(--s7); }
 #work { position: relative; }
 #work::before {                       /* the spine */
   content: ""; position: absolute; left: 28px; top: 10px; bottom: 18px; width: 2px;
@@ -611,7 +611,7 @@ body.side-open { overflow: hidden; }
 
 .tl-year { position: relative; padding-left: var(--lane); margin: var(--s5) 0 var(--s2);
            display: flex; align-items: center; gap: var(--s3); }
-.tl-year:first-of-type { margin-top: 0; }
+.tl-year:first-of-type { margin-top: var(--s4); }
 .tl-year span { position: absolute; left: 0; width: 40px; text-align: right;
                 font: 700 var(--fs-2xs)/1 var(--sans); letter-spacing: var(--ls-caps);
                 color: var(--muted); }
@@ -647,4 +647,78 @@ body.side-open { overflow: hidden; }
   .job-dot { transition: none; }
   .job:hover .job-dot { transform: none; }
   .job-now .job-dot::after { animation: none; opacity: 0; }
+}
+
+/* ===== Notion's view tabs, and its timeline view =====
+   One record, two views. The list is what reads and what ships without JS; the
+   timeline is built from the list's own markup once this script runs, so the
+   two can never drift apart. */
+.views { display: flex; gap: var(--s1); margin: 0 0 var(--s4);
+         border-bottom: 1px solid var(--line); }
+.views button { display: flex; align-items: center; gap: 6px;
+                padding: var(--s2) var(--s3); margin-bottom: -1px;
+                background: none; border: 0; border-bottom: 2px solid transparent;
+                cursor: pointer; color: var(--muted);
+                font: 600 var(--fs-sm)/1 var(--sans);
+                transition: color .2s, border-color .2s; }
+.views button svg { width: 14px; height: 14px; fill: currentColor; }
+.views button:hover { color: var(--ink); }
+.views button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+
+.tl-chart { --name: 232px; margin-bottom: var(--s6);
+            border: 1px solid var(--line); border-radius: var(--r-md);
+            background: var(--panel); overflow: hidden; }
+.tlc-head { position: relative; height: 26px; margin-left: var(--name);
+            border-bottom: 1px solid var(--line); }
+.tlc-head span { position: absolute; top: 0; height: 26px; display: flex; align-items: center;
+                 padding-left: 8px; border-left: 1px solid var(--line);
+                 font: 600 var(--fs-2xs)/1 var(--sans); letter-spacing: var(--ls-caps);
+                 color: var(--muted); }
+.tlc-body { position: relative; }
+.tlc-row { display: grid; grid-template-columns: var(--name) minmax(0, 1fr);
+           align-items: center; height: 34px; }
+.tlc-row + .tlc-row { border-top: 1px solid color-mix(in srgb, var(--line) 55%, transparent); }
+.tlc-name { padding: 0 var(--s3); overflow: hidden; text-overflow: ellipsis;
+            white-space: nowrap; font-size: var(--fs-md); color: var(--muted); }
+.tlc-lane { position: relative; height: 100%; border-left: 1px solid var(--line); }
+
+.tlc-bar { position: absolute; top: 50%; height: 22px; margin-top: -11px;
+           display: flex; align-items: center; padding: 0 8px; overflow: hidden;
+           border: 0; border-radius: var(--r-sm); cursor: pointer;
+           background: color-mix(in srgb, var(--k) 26%, var(--panel));
+           box-shadow: inset 2px 0 0 var(--k);
+           color: var(--ink); font: 600 var(--fs-2xs)/1 var(--sans);
+           white-space: nowrap; text-overflow: ellipsis;
+           transition: opacity .18s, filter .18s, transform .18s cubic-bezier(.2,.8,.3,1); }
+.tlc-bar[data-kind="work"]       { --k: var(--accent); }
+.tlc-bar[data-kind="teaching"],
+.tlc-bar[data-kind="research"]   { --k: var(--accent-2); }
+.tlc-bar[data-kind="leadership"] { --k: var(--hit); }
+.tlc-bar[data-kind="school"]     { --k: var(--muted); }
+.tlc-bar:hover, .tlc-bar:focus-visible { transform: translateY(-1px);
+           filter: brightness(1.18); outline: none;
+           box-shadow: inset 2px 0 0 var(--k), 0 0 0 1px var(--k); }
+/* a run with no end yet fades out to the right rather than stopping flat */
+.tlc-bar.is-open-ended { mask-image: linear-gradient(90deg, #000 76%, transparent); }
+.tlc-bar.dim { opacity: .18; }
+.tlc-lane.undated::after { content: ""; position: absolute; inset: 50% 8px auto; height: 1px;
+            margin-top: -.5px;
+            background: repeating-linear-gradient(90deg, var(--line) 0 5px, transparent 5px 10px); }
+
+.tlc-today { position: absolute; top: 0; bottom: 0; width: 1px; z-index: 1;
+             background: color-mix(in srgb, var(--accent) 60%, transparent); }
+.tlc-scrub { position: absolute; top: 0; bottom: 0; width: 1px; z-index: 2;
+             background: var(--ink); opacity: 0; pointer-events: none;
+             transition: opacity .15s; }
+.tlc-body.scrubbing .tlc-scrub { opacity: .45; }
+.tlc-chip { position: absolute; top: 4px; left: 6px; white-space: nowrap;
+            padding: 3px var(--s2); border-radius: var(--r-sm);
+            background: var(--ink); color: var(--bg);
+            font: 600 var(--fs-2xs)/1.5 var(--sans); }
+.tlc-scrub[style*="left: 0"] .tlc-chip { left: 6px; }
+
+@media (max-width: 760px) { .views button[data-view="chart"] { display: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .views button, .tlc-bar, .tlc-scrub { transition: none; }
+  .tlc-bar:hover { transform: none; }
 }
