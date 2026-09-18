@@ -53,6 +53,9 @@
   function go(id) {
     const el = document.getElementById(id);
     if (!el) { location.assign("/#" + id); return; }   // not this page: go home
+    /* Some targets are collapsed rows inside a panel that may be hidden. Let
+       whoever owns them open and show them first, or this scrolls to nothing. */
+    location.hash = "#" + id;
     el.scrollIntoView({
       behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
       block: "start",

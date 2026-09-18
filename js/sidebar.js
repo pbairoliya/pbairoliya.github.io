@@ -101,7 +101,14 @@
     const spy = () => {
       queued = false;
       let i = 0;
-      sections.forEach((s, n) => { if (s.getBoundingClientRect().top <= LINE) i = n; });
+      sections.forEach((s, n) => {
+        const r = s.getBoundingClientRect();
+        /* A section inside a hidden panel measures 0x0 at the origin, so its
+           top is always <= the line and it would win every test. The Timeline
+           view hides the list, which is where #education now lives. */
+        if (!r.width && !r.height) return;
+        if (r.top <= LINE) i = n;
+      });
       // the top of the page always means the first entry
       if (scrollY < 80) i = 0;
       // and the bottom always means the last, for the reason above

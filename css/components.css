@@ -137,7 +137,6 @@ div.job-head .meta { white-space: nowrap; }
                             border-radius: var(--r-xs); }
 .job.shut .chev { transform: rotate(-90deg); }
 .job:not(.shut) .chev { stroke: var(--accent); }
-.job.shut 
 /* 0fr -> 1fr animates to the content's real height without measuring it. */
 .job-body { display: grid; grid-template-rows: 1fr;
             transition: grid-template-rows .34s cubic-bezier(.2,.8,.3,1); }
@@ -415,17 +414,10 @@ body.side-open { overflow: hidden; }
 /* each node lights as the fill reaches it; --d is its place in the sweep */
 /* blocks.js adds this once the sweep has finished. Without it the stagger is a
    permanent transition-delay and the last node takes 780ms to answer a hover. */
-
-/* Each role assembles as the fill reaches it: the pin pops, a ring leaves it,
-   and the row slides in off the line. Entrances are ANIMATIONS, not
-   transitions — a transition-delay would stay on the element and make every
+/* The row slides in off the line as the sweep reaches it. An ANIMATION, not a
+   transition — a transition-delay would stay on the element and make every
    later hover answer late. `backwards` fill holds the from-state during the
    delay and hands the element back to its own styles afterwards. */
-.timeline.drawn   55%  { transform: scale(1.4); }
-  100% { transform: scale(1); }
-}
-.timeline.drawn   to   { transform: scale(2.6); opacity: 0; }
-}
 .timeline.drawn .job-head {
   animation: role-in .45s cubic-bezier(.2,.8,.3,1) calc(var(--d, 0) * 1ms + 70ms) backwards;
 }
@@ -435,34 +427,23 @@ body.side-open { overflow: hidden; }
 .timeline:not(.drawn) .job-body li { opacity: 0; transform: translateX(-12px); }
 
 /* A safety floor. blocks.js marks the timeline settled once the sweep's wall
-   clock has run out, which clears the entrance animations and hands every
-   element back to its own styles. In a normal browser this changes nothing —
-   the animations have already finished. If one ever stalls, content cannot
-   stay stuck at opacity 0, which `backwards` fill would otherwise allow. */
-.timeline.settled .timeline.settled .job-head { animation: none; }
-
+   clock has run out, which clears the entrance animation and hands the element
+   back to its own styles. In a normal browser this changes nothing. */
+.timeline.settled .job-head { animation: none; }
 
 .job[data-kind="work"]       { --pin: var(--accent); }
 .job[data-kind="teaching"],
 .job[data-kind="research"]   { --pin: var(--accent-2); }
-.job[data-kind="leadership"] { --pin: var(--hit); }
-.job[data-kind="school"]     { --pin: var(--muted); }
+.job[data-kind="leadership"] { --pin: var(--hit2); }
+.job[data-kind="school"]     { --pin: var(--muted-strong); }
 
-/* the whole row is the target, so give it a hover surface of its own */
 #work .job-toggle { padding: var(--s1) 0; }
 #work .job { cursor: pointer; }   /* the whole entry toggles */
 
-
-@media (max-width: 560px) {
-  }
-  70%  { transform: scale(2.2); opacity: 0;   }
-  100% { transform: scale(2.2); opacity: 0;   }
-}
-
 @media (prefers-reduced-motion: reduce) {
-      .timeline.drawn .job-head,
-  .timeline.drawn   .timeline:not(.drawn) .job-body li { opacity: 1; transform: none; }
-  }
+  .timeline.drawn .job-head { animation: none; }
+  .timeline:not(.drawn) .job-body li { opacity: 1; transform: none; }
+}
 
 /* ---- coursework, linked straight at the repositories ---- */
 .courses { list-style: none; padding: 0; margin: 0;
@@ -472,6 +453,7 @@ body.side-open { overflow: hidden; }
 .course-head { margin: var(--s5) 0 var(--s3); align-items: baseline; }
 .course-head .stack-label { margin: 0; }
 .course-head a { white-space: nowrap; }
+@media (max-width: 400px) { .course-head a { white-space: normal; } }
 .courses a { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr);
              gap: var(--s3); align-items: center; overflow: hidden;
              padding: var(--s3) var(--s4); border: 1px solid var(--line);
@@ -683,8 +665,8 @@ body.side-open { overflow: hidden; }
 .tlc-bar[data-kind="work"]       { --k: var(--accent); }
 .tlc-bar[data-kind="teaching"],
 .tlc-bar[data-kind="research"]   { --k: var(--accent-2); }
-.tlc-bar[data-kind="leadership"] { --k: var(--hit); }
-.tlc-bar[data-kind="school"]     { --k: var(--muted); }
+.tlc-bar[data-kind="leadership"] { --k: var(--hit2); }
+.tlc-bar[data-kind="school"]     { --k: var(--muted-strong); }
 /* The name and the bar are the same row, so hovering either lights both and
    quiets the others. One rule, because the bar lives inside the row it names. */
 .tlc-row.is-live { cursor: pointer; }
@@ -712,7 +694,7 @@ body.side-open { overflow: hidden; }
             padding: 3px var(--s2); border-radius: var(--r-sm);
             background: var(--ink); color: var(--bg);
             font: 600 var(--fs-2xs)/1.5 var(--sans); }
-.tlc-scrub[style*="left: 0"] .tlc-chip { left: 6px; }
+.tlc-scrub.flip .tlc-chip { left: auto; right: 6px; }
 
 @media (max-width: 760px) { .views button[data-view="chart"] { display: none; } }
 @media (prefers-reduced-motion: reduce) {
@@ -732,4 +714,41 @@ body.side-open { overflow: hidden; }
 .job.shut .job-body .course-head { opacity: 0; transition-delay: 0s; }
 @media (prefers-reduced-motion: reduce) {
   .job-body .courses li, .job-body .course-head { transition: none; }
+}
+
+/* ===== a peek at the coursework =====
+   Hovering the degree shows what is inside it before you commit to opening it:
+   the four course codes deal in from the left. It is decoration for a pointer,
+   so it is aria-hidden, it never appears once the row is open, and there is no
+   hover on touch for it to get stuck on. */
+.peek { position: absolute; left: var(--lane); top: calc(100% - 10px); z-index: 3;
+        display: flex; align-items: center; gap: var(--s1); flex-wrap: wrap;
+        padding: var(--s2) var(--s3); border: 1px solid var(--line);
+        border-radius: var(--r-md); background: var(--panel);
+        box-shadow: var(--shadow-pop); pointer-events: none;
+        opacity: 0; transform: translateY(-6px) scale(.98); transform-origin: top left;
+        transition: opacity .18s ease, transform .22s cubic-bezier(.34,1.3,.64,1);
+        transition-delay: 0s; }
+.peek i { font-style: normal; padding: 3px var(--s2); border-radius: var(--r-pill);
+          background: var(--code-bg); border: 1px solid var(--line);
+          font: 700 var(--fs-2xs)/1.5 var(--sans); letter-spacing: var(--ls-caps);
+          color: var(--accent);
+          opacity: 0; transform: translateX(-8px);
+          transition: opacity .2s ease, transform .26s cubic-bezier(.34,1.4,.64,1); }
+.peek i:nth-child(1) { transition-delay: .06s; }
+.peek i:nth-child(2) { transition-delay: .11s; }
+.peek i:nth-child(3) { transition-delay: .16s; }
+.peek i:nth-child(4) { transition-delay: .21s; }
+.peek em { font-style: normal; margin-left: var(--s1); color: var(--muted);
+           font-size: var(--fs-2xs); opacity: 0; transition: opacity .2s ease .26s; }
+
+.job.shut:hover .peek, .job.shut:focus-within .peek {
+  opacity: 1; transform: none; transition-delay: .12s;
+}
+.job.shut:hover .peek i, .job.shut:focus-within .peek i,
+.job.shut:hover .peek em, .job.shut:focus-within .peek em { opacity: 1; transform: none; }
+
+@media (hover: none), (max-width: 620px) { .peek { display: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .peek, .peek i, .peek em { transition: opacity .12s ease; transform: none; }
 }
