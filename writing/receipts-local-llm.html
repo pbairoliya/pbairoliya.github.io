@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scanning receipts into Obsidian with a local LLM — Pratik Bairoliya</title>
+<meta name="description" content="A scan on my phone updates my pantry, shopping list and expense report seconds later — Apple Vision plus a local model, nothing leaving the laptop.">
+<link rel="stylesheet" href="../css/base.css?v=8">
+<link rel="stylesheet" href="../css/components.css?v=8">
+<link rel="stylesheet" href="../css/motion.css?v=8">
+</head>
+<body>
+<div class="wrap post">
+  <a class="back" href="index.html">← Writing</a>
+
+  <h1>Scanning receipts into Obsidian with a local LLM</h1>
+  <p class="meta byline">June 2026 · 6 min</p>
+
+  <p class="lede">
+    I scan a receipt on my phone and, seconds later, my Obsidian vault updates itself: pantry,
+    shopping list, and a monthly expense report. No cloud OCR, no API keys — Apple Vision and a
+    local model, all on-device.
+  </p>
+  <p>
+    The interesting part isn't the receipts. It's the pattern: <strong>gather context → prompt a
+    model → write the result back somewhere useful</strong>, with an index as the single source
+    of truth so the whole thing is rebuildable.
+  </p>
+
+  <h2>The problem</h2>
+  <p>
+    Receipts are a small, constant friction. They pile up in a pocket or a junk drawer, and the
+    things I actually want from them — <em>what's in the pantry, what I need to buy, how much I
+    spent this month</em> — never get extracted, because extracting them by hand is exactly the
+    kind of chore that doesn't survive a busy week.
+  </p>
+  <p>
+    I'd already built a couple of small AI tools for my vault, so I knew the shape of the fix:
+    get the receipt into the vault once, let software do the parsing, and have the vault keep
+    itself up to date. The goal wasn't a receipt app. It was to make the receipt <em>disappear</em>
+    into useful state without me touching a spreadsheet.
+  </p>
+
+  <h2>The pipeline</h2>
+<pre><code>iPhone scan ──iCloud──▶ Receipts/Inbox/*.pdf|png|jpg   (launchd watches the folder)
+        │
+   ocr.py (Apple Vision) ──▶ extract.py (gemma3 → store/date/time/type/total/items)
+        │
+   receipts.py ── fingerprint (store+date+time) → de-dup ──▶ .receipts.jsonl (source of truth)
+        │                                                          │
+   poor ink? → Review/&lt;note&gt;.md (I fix → status: ready)      (everything below derived each run)
+        │                                          ┌──────────────┼───────────────┐
+   groceries → pantry.py                       expenses.py    shopping.py    reminders_out.py
+                                            Finance/Expenses/  Shopping List  Apple Reminders</code></pre>
+  <p>
+    I scan a receipt with the iOS document scanner — groceries, gas, a restaurant, anything — and
+    it lands in an <code>Inbox</code> folder that syncs through iCloud. A background job notices
+    the new file, runs OCR on it, hands the text to a local model that pulls out the store, date,
+    total and line items, then writes the results into the right places. By the time I think to
+    check, it's done.
+  </p>
+
+  <h2>Design call #1: on-device everything</h2>
+  <p>
+    OCR runs on <strong>Apple Vision</strong>, which ships with macOS — I call it straight from
+    Python, and it reads PDFs, PNGs and JPEGs with no cloud service and no API key. The iOS
+    scanner deskews and de-glares the image before it ever hits OCR, which noticeably improves
+    accuracy.
+  </p>
+  <p>
+    The model is <strong>Ollama running <code>gemma3:12b</code></strong>, also entirely on my
+    machine. A stream of my grocery and spending data never leaves the laptop, there's nothing to
+    pay per request, and there are no credentials to rotate. For a personal tool that touches
+    finances, <em>"it physically can't leak to a third party"</em> was worth more than a slightly
+    smarter cloud model.
+  </p>
+
+  <h2>Design call #2: an open taxonomy</h2>
+  <p>
+    The model does two jobs at once: it reads the receipt <em>and</em> decides what kind of
+    expense it is. The easy version is a fixed list — groceries, dining, gas, rent — and a prompt
+    that forces a choice.
+  </p>
+  <p>
+    I let it do something better. Common categories match via synonyms (a gas station maps to
+    <em>Car</em>, a restaurant to <em>Dining</em>), but the model is allowed to <strong>invent a
+    new category</strong> when nothing fits. Scan a haircut receipt and it creates a
+    <em>Haircut</em> category, a folder, and a line in the expense report — no code change, no
+    enum to update. Letting the model <em>extend</em> the taxonomy instead of choosing from a
+    frozen one is the difference between a tool I have to maintain and one that absorbs whatever
+    I throw at it.
+  </p>
+
+  <h2>Design call #3: the index is the source of truth</h2>
+  <p>
+    This is the decision that made everything else safe. There is one canonical file —
+    <code>.receipts.jsonl</code> — and <strong>everything else is derived from it on every
+    run</strong>: the pantry, the monthly expense reports, the per-store breakdown. The vault
+    notes are disposable views; the index is the data.
+  </p>
+  <p>
+    That buys two things. <strong>Dedup</strong>: each receipt gets a fingerprint from its store,
+    date and time, so scanning the same one twice keeps a single PDF and reconciles the numbers
+    with item-level deltas instead of double-counting. And <strong>rebuildability</strong>: a
+    separate <code>reindex.py</code> reconstructs the entire index — and from it, every report —
+    out of the archived PDFs. Corrupt a note, or change how reports look, and I just regenerate.
+  </p>
+  <p class="callout">
+    "Derive, don't mutate" turned out to be the single most important rule in the project.
+    Anything I edit by hand is something the next run can fight with.
+  </p>
+
+  <h2>Keeping a human in the loop</h2>
+  <p>
+    OCR on a faded receipt is not perfect, and I'd rather have a gap than a wrong number in my
+    finances. So the pipeline checks itself: if the line items don't sum to within 10% of the
+    printed total — or a price comes back null — the receipt is held in a <code>Review/</code>
+    folder instead of being trusted.
+  </p>
+  <p>
+    Fixing it is one tap. The review note has a <strong>native Obsidian checkbox</strong>
+    (<code>- [ ] ✅ Reviewed</code>) that actually persists when I tick it on my phone; ticking it
+    finalises the receipt on the next run. That detail matters more than it sounds — I first
+    tried HTML checkboxes and learned the hard way that Obsidian doesn't save taps on those. For
+    anything that needs to stick, use the real markdown checkbox.
+  </p>
+
+  <h2>Making it invisible</h2>
+  <p>
+    A tool I have to remember to run is a tool I'll stop running. So a <code>launchd</code> agent
+    watches the Inbox folder and also fires once a day at 8am, which means a scanned receipt is
+    usually processed within seconds of syncing.
+  </p>
+  <p>
+    Two small things made the automation robust. launchd starts jobs with a bare <code>PATH</code>,
+    so I had to set it explicitly for the watcher to find <code>ollama</code> — and start it if
+    it's down. And because the watcher and the daily run can overlap, <code>main()</code> takes an
+    <code>fcntl</code> lock: Apple Vision does not enjoy being driven by two processes at once.
+  </p>
+
+  <h2>What I'd reuse</h2>
+  <p>
+    Strip away the receipts and the bones are the same loop I keep coming back to: <strong>gather
+    some context, prompt a model, write the result back somewhere useful.</strong> The OCR is just
+    an unusual context source; the open taxonomy is just a prompt that trusts the model a little
+    more.
+  </p>
+  <p>
+    The two patterns I'll carry into the next project are <em>index-as-source-of-truth with
+    everything derived</em> — it makes dedup, rebuilds and format changes trivial — and
+    <em>folder-watch automation via launchd</em>, the cheapest way to make a tool feel ambient
+    instead of manual. Both are general. The receipts were a good excuse to learn them.
+  </p>
+
+  <footer>
+    Built in <a href="https://github.com/pbairoliya/grocery-receipts">grocery-receipts</a> —
+    Apple Vision + Ollama <code>gemma3:12b</code>, 52 tests.
+    <br><a href="index.html">← more writing</a>
+  </footer>
+</div>
+<script src="../js/field.js?v=8" defer></script>
+<script src="../js/spotlight.js?v=8" defer></script>
+<script src="../js/reveal.js?v=8" defer></script>
+</body>
+</html>

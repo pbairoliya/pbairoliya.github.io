@@ -6,10 +6,10 @@
 <title>Pratik Bairoliya — SWE II @ Capital One</title>
 <meta name="description" content="Software Engineer II at Capital One on the End-of-Day team, building a custom batch ledger for the financial core. Builds local-first tools that run entirely on-device.">
 <link rel="preconnect" href="https://cdn.simpleicons.org" crossorigin>
-<link rel="stylesheet" href="css/base.css?v=7">
-<link rel="stylesheet" href="css/components.css?v=7">
-<link rel="stylesheet" href="css/motion.css?v=7">
-<link rel="stylesheet" href="css/tour.css?v=7">
+<link rel="stylesheet" href="css/base.css?v=8">
+<link rel="stylesheet" href="css/components.css?v=8">
+<link rel="stylesheet" href="css/motion.css?v=8">
+<link rel="stylesheet" href="css/tour.css?v=8">
 </head>
 <body>
 <div class="wrap">
@@ -70,18 +70,6 @@
   <p class="pull reveal">I have been teaching people to program for almost as long as I have
   been programming.</p>
 
-  <details class="fold reveal">
-    <summary><span class="chev">›</span> why that matters for the code</summary>
-    <div class="fold-body">
-      <p>It shows up in how I build. The write-ups here are the same instinct: explain the
-      decision, name the thing that nearly went wrong, say what I would do differently. A system
-      nobody else can reason about has one point of failure, and it is usually me.</p>
-      <p>The practical version, at work: I rebuilt the MATLAB assignment set around where
-      students were actually getting stuck rather than where the syllabus assumed they would —
-      which is the same instinct as observability. Find out where it really breaks, not where
-      you expect it to.</p>
-    </div>
-  </details>
 
   </section>
 
@@ -208,6 +196,25 @@
   </a>
 
   </section>
+  <section id="writing" data-label="Writing">
+  <h2 class="reveal">Writing</h2>
+
+  <a class="card reveal" href="writing/receipts-local-llm.html">
+    <div class="row">
+      <h3 style="margin:0">Scanning receipts into Obsidian with a local LLM →</h3>
+      <span class="meta">Jun 2026</span>
+    </div>
+    <p>A scan on my phone updates my pantry, shopping list and expense report seconds later.
+       The interesting part isn't the receipts — it's <em>derive, don't mutate</em>.</p>
+    <div class="tags">
+      <span class="tag">local LLM</span><span class="tag">OCR</span><span class="tag">design decisions</span>
+    </div>
+  </a>
+
+  <p class="meta"><a href="writing/index.html">All writing →</a></p>
+
+  </section>
+
   <section id="credentials" data-label="Credentials">
   <h2 class="reveal">Credentials</h2>
 
@@ -250,14 +257,27 @@
   <a href="#work">Work</a>
   <a href="#stack">Stack</a>
   <a href="#projects">Projects</a>
+  <a href="#writing">Writing</a>
   <a href="#credentials">Credentials</a>
 </nav>
 
-<span class="theme" role="group" aria-label="Colour theme">
-  <button type="button" data-theme-btn="system" aria-pressed="true">auto</button>
-  <button type="button" data-theme-btn="light"  aria-pressed="false">light</button>
-  <button type="button" data-theme-btn="dark"   aria-pressed="false">dark</button>
-</span>
+<button class="gear" id="gear" type="button" aria-label="Settings"
+        aria-expanded="false" aria-controls="settings" title="Settings">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm0 5.5a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z"/><path d="M19.4 13a7.8 7.8 0 0 0 0-2l2-1.5-2-3.4-2.3.9a7.7 7.7 0 0 0-1.8-1L14.9 3.5h-3.8l-.4 2.5a7.7 7.7 0 0 0-1.8 1l-2.3-.9-2 3.4L6.6 11a7.8 7.8 0 0 0 0 2l-2 1.5 2 3.4 2.3-.9c.55.42 1.16.76 1.8 1l.4 2.5h3.8l.4-2.5c.64-.24 1.25-.58 1.8-1l2.3.9 2-3.4-2-1.5Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+</button>
+
+<div class="settings" id="settings" role="dialog" aria-label="Settings">
+  <p class="set-label">Appearance</p>
+  <div class="set-row" role="group" aria-label="Colour theme">
+    <button type="button" data-theme-btn="system" aria-pressed="true">Auto</button>
+    <button type="button" data-theme-btn="light"  aria-pressed="false">Light</button>
+    <button type="button" data-theme-btn="dark"   aria-pressed="false">Dark</button>
+  </div>
+  <div class="set-sep"></div>
+  <button class="set-item" type="button" data-open-palette>Command menu <span>⌘K</span></button>
+  <button class="set-item" type="button" data-replay-tour>Replay the tour <span>◎</span></button>
+  <a class="set-item" href="https://github.com/pbairoliya/pbairoliya.github.io">Site source <span>↗</span></a>
+</div>
 
 <div id="palette" aria-hidden="true" role="dialog" aria-label="Command palette">
   <div class="pal-box">
@@ -272,12 +292,13 @@
   </div>
 </div>
 
-<script src="js/field.js?v=7" defer></script>
-<script src="js/palette.js?v=7" defer></script>
-<script src="js/spotlight.js?v=7" defer></script>
-<script src="js/pill.js?v=7" defer></script>
-<script src="js/reveal.js?v=7" defer></script>
-<script src="js/blocks.js?v=7" defer></script>
-<script src="js/tour.js?v=7" defer></script>
+<script src="js/field.js?v=8" defer></script>
+<script src="js/palette.js?v=8" defer></script>
+<script src="js/spotlight.js?v=8" defer></script>
+<script src="js/pill.js?v=8" defer></script>
+<script src="js/reveal.js?v=8" defer></script>
+<script src="js/blocks.js?v=8" defer></script>
+<script src="js/tour.js?v=8" defer></script>
+<script src="js/settings.js?v=8" defer></script>
 </body>
 </html>
