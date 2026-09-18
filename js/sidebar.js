@@ -88,34 +88,34 @@
     if (readerMoved && location.hash !== href) history.replaceState(null, "", href);
   }
 
-  if ("IntersectionObserver" in window && sections.length) {
-    /* Two sections can share the detection band on a tall screen — Projects and
-       Writing both do at 2000px. Keep the live set and take the TOPMOST of
-       them, rather than whichever row the observer happened to report last,
-       which used to highlight the wrong link after a hash jump. */
-    const visible = new Set();
-    const io = new IntersectionObserver(rows => {
-      rows.forEach(r => r.isIntersecting ? visible.add(r.target) : visible.delete(r.target));
-      /* At the very top of the page the answer is always the first entry; the
-         observer's first callback used to run after setActive(0) and overwrite
-         it, so a tall window opened on "Work" wearing Work's colour. */
-      if (scrollY < 80) return setActive(0);
-      let best = -1;
-      visible.forEach(el => {
-        const i = sections.indexOf(el);
-        if (i >= 0 && (best < 0 || i < best)) best = i;
-      });
-      if (best >= 0) setActive(best);
-    /* The band is anchored in PIXELS at the top, not in percent. It used to
-       start 40% down the viewport — 480px on a tall window — so #writing, which
-       is 215px tall, could never reach it: clicking "Writing" in the rail
-       scrolled it to the top and lit "Stack" instead. */
-    }, { rootMargin: "-88px 0px -55% 0px", threshold: 0 });
-    sections.forEach(s => io.observe(s));
+  /* Scroll-spy, done as a reading line rather than as an IntersectionObserver
+     band. The band approach kept producing edge cases: a 215px section could
+     not reach a band that began 40% down the viewport, and the LAST section can
+     never reach one at all, because the page stops scrolling while its
+     predecessor still occupies the band. A line is simply true or false for
+     every section at once, and both ends fall out of it. */
+  if (sections.length) {
+    const LINE = 88;                      // px below the top of the viewport
+    let queued = false;
 
-    // The intro is only the actions row, small enough to skip straight past the
-    // band on a tall screen — so being at the top always means "Hello".
-    addEventListener("scroll", () => { if (scrollY < 80) setActive(0); }, { passive: true });
+    const spy = () => {
+      queued = false;
+      let i = 0;
+      sections.forEach((s, n) => { if (s.getBoundingClientRect().top <= LINE) i = n; });
+      // the top of the page always means the first entry
+      if (scrollY < 80) i = 0;
+      // and the bottom always means the last, for the reason above
+      const doc = document.documentElement;
+      if (innerHeight + scrollY >= doc.scrollHeight - 2) i = sections.length - 1;
+      setActive(i);
+    };
+    const onScroll = () => {
+      // one batch of layout reads per frame, not one per scroll event
+      if (!queued) { queued = true; requestAnimationFrame(spy); }
+    };
+    addEventListener("scroll", onScroll, { passive: true });
+    addEventListener("resize", onScroll, { passive: true });
+    spy();
   }
   if (sections.length) setActive(0);
   addEventListener("scroll", () => { readerMoved = true; }, { passive: true, once: true });
