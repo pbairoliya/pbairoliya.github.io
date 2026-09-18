@@ -16,6 +16,11 @@
 
   const STEPS = [
     {
+      sel: ".props",
+      title: "The short version, up front",
+      body: "Role, team, scale, stack, and where I am \u2014 without scrolling.",
+    },
+    {
       sel: ".pill",
       title: "The sections live up here",
       body: "It tracks where you are as you scroll, and the colour of the page shifts with it.",
