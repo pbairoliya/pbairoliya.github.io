@@ -37,7 +37,7 @@
   /* Roles open on demand.
      The HTML ships expanded so a blocked script leaves the page fully
      readable; closing them is this script's job, not the stylesheet's. The
-     current role stays open, because that is the one a recruiter came for. */
+     page opens as a timeline rather than as one expanded entry. */
   const jobs = [...document.querySelectorAll(".job:has(.job-toggle)")];
   if (jobs.length) {
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -95,13 +95,22 @@
          "School" now targets the degree row, and landing on a closed row that
          says nothing is a dead end. */
       if (job.id) {
-        const reveal = () => { if (job.classList.contains("shut")) set(job, true); };
+        const reveal = (scroll) => {
+          /* The target lives in the Details panel, so show it first — in the
+             Timeline view the row is display:none and scrolling to it is a
+             no-op. sidebar.js's own scroll has already fired against the hidden
+             element by the time we get here, so redo it once it is visible. */
+          window.__tlView?.("list");
+          if (job.classList.contains("shut")) set(job, true);
+          if (scroll) requestAnimationFrame(() => job.scrollIntoView({
+            block: "center", behavior: reduced ? "auto" : "smooth" }));
+        };
         addEventListener("hashchange", () => {
-          if (location.hash.slice(1) === job.id) reveal();
+          if (location.hash.slice(1) === job.id) reveal(true);
         });
         document.querySelectorAll('a[href="#' + job.id + '"]')
-                .forEach(a => a.addEventListener("click", reveal));
-        if (location.hash.slice(1) === job.id) reveal();
+                .forEach(a => a.addEventListener("click", () => reveal(true)));
+        if (location.hash.slice(1) === job.id) reveal(false);
       }
       /* a role still running keeps a pulse on its node */
       if (/present/i.test(job.querySelector(".job-toggle .meta")?.textContent || ""))
@@ -194,15 +203,16 @@
 
     const y0 = new Date(Math.min(...dated.map(r => r.start))).getFullYear();
     const y1 = new Date(Math.max(...dated.map(r => r.end))).getFullYear() + 1;
-    const t0 = Date.parse(y0 + "-01-01"), t1 = Date.parse(y1 + "-01-01");
+    const yr = y => Date.parse(y + "-01-01T00:00:00");   // local, to match the chip
+        const t0 = yr(y0), t1 = yr(y1);
     const pct = v => ((v - t0) / (t1 - t0)) * 100;
 
     const head = document.createElement("div");
     head.className = "tlc-head";
     for (let y = y0; y < y1; y++) {
       const cell = document.createElement("span");
-      cell.style.left = pct(Date.parse(y + "-01-01")) + "%";
-      cell.style.width = pct(Date.parse((y + 1) + "-01-01")) - pct(Date.parse(y + "-01-01")) + "%";
+      cell.style.left = pct(yr(y)) + "%";
+      cell.style.width = pct(yr(y + 1)) - pct(yr(y)) + "%";
       cell.textContent = y;
       head.appendChild(cell);
     }
@@ -292,6 +302,9 @@
       });
       body.classList.add("scrubbing");
       scrub.style.left = x + "px";
+      /* near the right edge the chip would hang off the chart, and past ~1100px
+         off the viewport, where nothing can scroll it back */
+      scrub.classList.toggle("flip", box.width - x < 150);
       chip.textContent = MONTHS[d.getMonth()] + " " + d.getFullYear() +
         " · " + live + (live === 1 ? " thing" : " things");
     }, { passive: true });
@@ -300,24 +313,41 @@
     /* view switching */
     const list = document.getElementById("tl-list");
     const btns = [...tabs.querySelectorAll("button[data-view]")];
-    function setView(v) {
-      btns.forEach(b => b.setAttribute("aria-selected", String(b.dataset.view === v)));
+    function setView(v, remember = true) {
+      btns.forEach(b => {
+        const on = b.dataset.view === v;
+        b.setAttribute("aria-selected", String(on));
+        b.tabIndex = on ? 0 : -1;          // one tab stop for the group, APG-style
+      });
       chart.hidden = v !== "chart";
       list.hidden = v !== "list";
       if (v !== "chart") clear();
-      try { localStorage.setItem("tl-view", v); } catch {}
+      /* Only a real click is a preference. The width handler forces the list,
+         and persisting that lost the choice the moment a window got narrow. */
+      if (remember) { try { localStorage.setItem("tl-view", v); } catch {} }
     }
-    btns.forEach(b => {
+    window.__tlView = (v) => setView(v, false);
+    btns.forEach((b, i) => {
       b.hidden = false;
       b.addEventListener("click", () => setView(b.dataset.view));
+      /* APG tablist keys: arrows move and activate, Home/End jump */
+      b.addEventListener("keydown", e => {
+        const k = { ArrowRight: 1, ArrowLeft: -1, Home: "first", End: "last" }[e.key];
+        if (k === undefined) return;
+        e.preventDefault();
+        const n = k === "first" ? 0 : k === "last" ? btns.length - 1
+                : (i + k + btns.length) % btns.length;
+        setView(btns[n].dataset.view);
+        btns[n].focus();
+      });
     });
+    const narrow = matchMedia("(max-width: 760px)");
     let want = "list";
     try { want = localStorage.getItem("tl-view") || "list"; } catch {}
-    setView(matchMedia("(max-width: 760px)").matches ? "list" : want);
-    /* a Gantt has nowhere to go on a phone */
-    matchMedia("(max-width: 760px)").addEventListener("change", e => {
-      if (e.matches) setView("list");
-    });
+    const applyWidth = () => narrow.matches ? setView("list", false) : setView(want);
+    applyWidth();
+    /* a Gantt has nowhere to go on a phone — but widening should give it back */
+    narrow.addEventListener("change", applyWidth);
   })();
 
 })();
