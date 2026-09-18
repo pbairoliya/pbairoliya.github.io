@@ -31,7 +31,7 @@
       body: "Press ⌘K (or /) for résumé, links, sections and theme in one place.",
     },
     {
-      sel: ".theme",
+      sel: ".gear",
       title: "Read it however you like",
       body: "Auto follows your system. Light and dark override it, and it remembers.",
     },

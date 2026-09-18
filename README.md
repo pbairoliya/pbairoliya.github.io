@@ -7,6 +7,8 @@ no build step, no dependencies. Edit, commit, push; GitHub Pages serves it.
 index.html                     landing
 projects/on-device-tools.html  write-up
 projects/lc.html               write-up
+writing/index.html             the learning blog
+writing/*.html                 posts
 
 css/base.css                   tokens, reset, typography, layout
 css/components.css             every discrete piece of UI
@@ -19,6 +21,7 @@ js/spotlight.js                pointer-following highlight
 js/reveal.js                   reveal-on-scroll
 js/blocks.js                   per-section copy-link anchors
 js/tour.js                     first-visit walkthrough
+js/settings.js                 the gear popover
 css/tour.css                   its styles
 ```
 
