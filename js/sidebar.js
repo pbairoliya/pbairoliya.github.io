@@ -11,6 +11,9 @@
   const links  = [...bar.querySelectorAll("a[href^='#']")];
   const scrim  = document.querySelector(".side-scrim");
 
+  /* On a sub-page the sidebar lists other PAGES rather than sections of this
+     one, so there is nothing to observe and the active entry is already marked
+     in the markup. Everything below the observer still applies. */
   const sections = links.map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
   let active = -1;
   /* The observer fires while the page is still settling, which used to rewrite
@@ -72,7 +75,7 @@
     }, { rootMargin: "-45% 0px -50% 0px" });
     sections.forEach(s => io.observe(s));
   }
-  setActive(0);
+  if (sections.length) setActive(0);
   addEventListener("scroll", () => { readerMoved = true; }, { passive: true, once: true });
 
   /* Collapse, the way Notion has it: the rail shrinks to its icons and the page

@@ -15,6 +15,8 @@
   border-right: 1px solid var(--line);
   overflow-y: auto; overscroll-behavior: contain;
 }
+a.side-head { color: inherit; border-radius: 9px; }
+a.side-head:hover { background: var(--code-bg); text-decoration: none; }
 .side-head { display: flex; align-items: center; gap: 9px; padding: 6px 10px 14px; }
 .side-avatar { width: 26px; height: 26px; border-radius: 8px; flex: 0 0 26px;
                display: grid; place-items: center; color: #fff;
