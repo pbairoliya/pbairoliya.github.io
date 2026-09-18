@@ -45,8 +45,10 @@
     if (wasOpen) toggle?.focus({ preventScroll: true });
   };
 
-  toggle?.addEventListener("click", () =>
-    document.body.classList.contains("side-open") ? closeSheet() : openSheet());
+  toggle?.addEventListener("click", () => {
+    if (!isSheet()) { setCollapsed(false); return; }   // desktop: bring the rail back
+    document.body.classList.contains("side-open") ? closeSheet() : openSheet();
+  });
   scrim?.addEventListener("click", closeSheet);
   addEventListener("keydown", e => {
     if (e.key !== "Escape") return;
@@ -102,6 +104,9 @@
   const collapseBtn = document.getElementById("side-collapse");
   const setCollapsed = (on) => {
     document.body.classList.toggle("side-collapsed", on);
+    // a rail that is gone must not keep its links in the tab order
+    if (on && !isSheet()) bar.setAttribute("inert", "");
+    else if (!isSheet()) bar.removeAttribute("inert");
     collapseBtn?.setAttribute("aria-label", on ? "Expand sidebar" : "Collapse sidebar");
     collapseBtn?.setAttribute("title", on ? "Expand sidebar" : "Collapse sidebar");
     try { localStorage.setItem(COLLAPSE_KEY, on ? "1" : "0"); } catch {}
@@ -125,7 +130,10 @@
   const syncInert = () => {
     // a sheet left open at phone width must not still be "open" at desktop width
     if (!isSheet()) closeSheet();
-    if (isSheet() && !document.body.classList.contains("side-open")) bar.setAttribute("inert", "");
+    const hidden = isSheet()
+      ? !document.body.classList.contains("side-open")
+      : document.body.classList.contains("side-collapsed");
+    if (hidden) bar.setAttribute("inert", "");
     else bar.removeAttribute("inert");
   };
   syncInert();
