@@ -279,7 +279,9 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
 }
 .side:hover .side-collapse, .side-collapse:focus-visible { opacity: 1; }
 .side-collapse:hover { background: var(--code-bg); color: var(--accent); }
-.side-collapse svg { width: 17px; height: 17px; fill: currentColor; }
+/* the same glyph the phone uses, so one icon means "menu" everywhere */
+body.side-collapsed .side-collapse { color: var(--accent); }
+.side-collapse svg { width: 15px; height: 15px; fill: currentColor; }
 
 /* collapsed: the rail keeps its icons and the page takes the width back */
 @media (min-width: 900.02px) {
@@ -291,7 +293,7 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
   body.side-collapsed .side a > :not(i) { display: none; }
   body.side-collapsed .side a { justify-content: center; padding-inline: 0; }
   body.side-collapsed .side-collapse { position: static; margin: 10px auto 0; opacity: 1; }
-  body.side-collapsed .side-collapse svg { transform: rotate(180deg); }
+
   body.side-collapsed .side-head { justify-content: center; padding: 6px 0 4px; }
   body.side-collapsed .side { display: flex; flex-direction: column; }
   .side, body { transition: width .24s cubic-bezier(.2,.8,.3,1), padding-left .24s cubic-bezier(.2,.8,.3,1); }

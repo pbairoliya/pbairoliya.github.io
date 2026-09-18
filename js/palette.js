@@ -34,7 +34,7 @@
     { g:"Open",       i:"↓", label:"Resume (PDF)",       hint:"download",   run:() => location.assign("/Pratik-Bairoliya-Resume.pdf") },
     { g:"Open",       i:"✎", label:"Writing",              hint:"blog",       run:() => location.assign("/writing/") },
     { g:"Open",       i:"◆", label:"On-device tools",    hint:"write-up",   run:() => location.assign("/projects/on-device-tools.html") },
-    { g:"Open",       i:"◆", label:"lc",                 hint:"write-up",   run:() => location.assign("/projects/lc.html") },
+    { g:"Open",       i:"◆", label:"LC Bot",             hint:"write-up",   run:() => location.assign("/projects/lc.html") },
     { g:"Open",       i:"↗", label:"GitHub",             hint:"pbairoliya", run:() => open("https://github.com/pbairoliya","_blank") },
     { g:"Open",       i:"↗", label:"LinkedIn",           hint:"pbairol",    run:() => open("https://linkedin.com/in/pbairol","_blank") },
     { g:"Open",       i:"↗", label:"InspireNC",          hint:"the non-profit", run:() => open("https://inspirenc.us/","_blank") },
