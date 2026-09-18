@@ -23,10 +23,10 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <!-- /social -->
 <script>try{var t=localStorage.getItem("theme");if(t&&t!=="system")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
-<link rel="stylesheet" href="css/base.css?v=38">
-<link rel="stylesheet" href="css/components.css?v=38">
-<link rel="stylesheet" href="css/motion.css?v=38">
-<link rel="stylesheet" href="css/tour.css?v=38">
+<link rel="stylesheet" href="css/base.css?v=39">
+<link rel="stylesheet" href="css/components.css?v=39">
+<link rel="stylesheet" href="css/motion.css?v=39">
+<link rel="stylesheet" href="css/tour.css?v=39">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -161,9 +161,9 @@
   <section id="projects">
   <h2 class="reveal">Projects</h2>
 
-  <a class="card reveal" href="projects/on-device-tools.html">
+  <a class="card reveal" style="--n:1" href="projects/on-device-tools.html">
     <div class="row">
-      <h3>Nothing leaves the laptop →</h3>
+      <h3><b class="card-no" aria-hidden="true">01</b>Nothing leaves the laptop →</h3>
       <span class="meta">Three local-first tools</span>
     </div>
     <p class="chips"><span>Python</span><span>Ollama</span><span>Apple Vision OCR</span><span>SQLite</span><span>launchd</span><span>Google APIs</span></p>
@@ -172,9 +172,9 @@
        behaves like software rather than like a guess. Nothing is uploaded, and no key is needed.</p>
   </a>
 
-  <a class="card reveal" href="projects/lc.html">
+  <a class="card reveal" style="--n:2" href="projects/lc.html">
     <div class="row">
-      <h3>LC Bot — a LeetCode workflow that lives in your notes →</h3>
+      <h3><b class="card-no" aria-hidden="true">02</b>LC Bot — a LeetCode workflow that lives in your notes →</h3>
       <span class="meta">94 offline tests</span>
     </div>
     <p class="chips"><span>Python</span><span>Git</span><span>Obsidian</span><span>launchd</span><span>pytest</span><span>GitHub Actions</span></p>
@@ -183,9 +183,9 @@
        one thing: which side wins when the note and the repo disagree.</p>
   </a>
 
-  <a class="card reveal" href="projects/systems-and-algorithms.html">
+  <a class="card reveal" style="--n:3" href="projects/systems-and-algorithms.html">
     <div class="row">
-      <h3>Systems and algorithms →</h3>
+      <h3><b class="card-no" aria-hidden="true">03</b>Systems and algorithms →</h3>
       <span class="meta">2020 – 2024</span>
     </div>
     <p class="chips"><span>C++</span><span>Python</span><span>SFML</span><span>PyGame</span><span>PyTorch</span></p>
@@ -194,9 +194,9 @@
        published unfinished on purpose, and the 221-problem practice archive underneath all of it.</p>
   </a>
 
-  <a class="card reveal" href="projects/coursework.html">
+  <a class="card reveal" style="--n:4" href="projects/coursework.html">
     <div class="row">
-      <h3>Coursework →</h3>
+      <h3><b class="card-no" aria-hidden="true">04</b>Coursework →</h3>
       <span class="meta">NC State · four semesters</span>
     </div>
     <p class="chips"><span>C</span><span>C++</span><span>Java</span><span>CUDA</span><span>pthreads</span><span>Scapy</span><span>SFML</span></p>
@@ -317,17 +317,19 @@
           non-profit teaching FIRST Robotics in NC schools; captain of Team 6908.</li>
     </ul>
 
-    <p class="course-lead">Four semesters of the coursework are public, one repository each —
-       <a href="projects/coursework.html">the write-up is here</a>.</p>
+    <div class="row course-head">
+      <p class="stack-label">Coursework</p>
+      <a class="meta" href="projects/coursework.html">What each one was for →</a>
+    </div>
     <ul class="courses">
       <li><a href="https://github.com/pbairoliya/csc230-c-software-tools">
-        <b>CSC 230</b><span>C and Software Tools — a generic hash map on a hand-written vtable</span></a></li>
+        <b>CSC 230</b><span><strong>C and Software Tools</strong>a generic hash map on a hand-written vtable</span></a></li>
       <li><a href="https://github.com/pbairoliya/csc246-operating-systems">
-        <b>CSC 246</b><span>Operating Systems — max-subarray five ways, down to CUDA</span></a></li>
+        <b>CSC 246</b><span><strong>Operating Systems</strong>max-subarray five ways, down to CUDA</span></a></li>
       <li><a href="https://github.com/pbairoliya/csc474-network-security">
-        <b>CSC 474</b><span>Network Security — a repeating-key XOR break, and the detector that catches it</span></a></li>
+        <b>CSC 474</b><span><strong>Network Security</strong>a repeating-key XOR break, and the detector that catches it</span></a></li>
       <li><a href="https://github.com/pbairoliya/csc484-game-ai">
-        <b>CSC 484</b><span>Building Game AI — steering, A*, and a decision tree over both</span></a></li>
+        <b>CSC 484</b><span><strong>Building Game AI</strong>steering, A*, and a decision tree over both</span></a></li>
     </ul>
   </div>
 
@@ -451,15 +453,15 @@
   </div>
 </div>
 
-<script src="js/theme.js?v=38" defer></script>
-<script src="js/field.js?v=38" defer></script>
-<script src="js/palette.js?v=38" defer></script>
-<script src="js/spotlight.js?v=38" defer></script>
-<script src="js/sidebar.js?v=38" defer></script>
-<script src="js/reveal.js?v=38" defer></script>
-<script src="js/a11y.js?v=38" defer></script>
-<script src="js/blocks.js?v=38" defer></script>
-<script src="js/tour.js?v=38" defer></script>
-<script src="js/settings.js?v=38" defer></script>
+<script src="js/theme.js?v=39" defer></script>
+<script src="js/field.js?v=39" defer></script>
+<script src="js/palette.js?v=39" defer></script>
+<script src="js/spotlight.js?v=39" defer></script>
+<script src="js/sidebar.js?v=39" defer></script>
+<script src="js/reveal.js?v=39" defer></script>
+<script src="js/a11y.js?v=39" defer></script>
+<script src="js/blocks.js?v=39" defer></script>
+<script src="js/tour.js?v=39" defer></script>
+<script src="js/settings.js?v=39" defer></script>
 </body>
 </html>
