@@ -80,7 +80,7 @@
     // Resolve targets up front so a missing element costs nothing later.
     const steps = STEPS
       .map(s => ({ ...s, el: document.querySelector(s.sel) }))
-      .filter(s => s.el);
+      .filter(s => s.el && s.el.getClientRects().length);
     if (!steps.length) return;
 
     let i = 0;
@@ -125,15 +125,23 @@
       hole.style.height = h + "px";
       hole.style.transform = `translate(${r.left - PAD}px, ${r.top - PAD}px)`;
 
-      // below the target when there is room for it, otherwise above
+      /* Measure AFTER this step's text is in the DOM. Reading offsetHeight in
+         the same tick as the content change used to return the PREVIOUS step's
+         height, so a taller step overflowed the bottom and its buttons ended up
+         off the frame. */
       const ph = pop.offsetHeight;
       const pw = pop.offsetWidth;
+
+      /* Clamp on BOTH ends of BOTH axes. The old code clamped the top when
+         flipping above the target but never the bottom, and Math.min/Math.max
+         in the wrong order inverts when the popover is larger than the space —
+         which is exactly what happens on a small phone. */
+      const clamp = (v, lo, hi) => (hi < lo ? lo : Math.min(Math.max(v, lo), hi));
       const below = r.bottom + GAP + ph < innerHeight - EDGE;
-      const y = below ? r.bottom + GAP : Math.max(EDGE, r.top - GAP - ph);
-      const x = Math.min(
-        Math.max(EDGE, r.left + r.width / 2 - pw / 2),
-        innerWidth - pw - EDGE
-      );
+      const y = clamp(below ? r.bottom + GAP : r.top - GAP - ph,
+                      EDGE, innerHeight - ph - EDGE);
+      const x = clamp(r.left + r.width / 2 - pw / 2,
+                      EDGE, innerWidth - pw - EDGE);
       pop.style.transform = `translate(${x}px, ${y}px)`;
     }
 
@@ -158,6 +166,7 @@
     function next() {
       if (++i >= steps.length) return finish();
       show();
+    requestAnimationFrame(() => requestAnimationFrame(place));
     }
 
     function finish() {
@@ -176,9 +185,16 @@
     addEventListener("keydown", e => {
       if (e.key === "Escape") { e.preventDefault(); finish(); return; }
       if (e.key !== "Enter" && e.key !== "ArrowRight") return;
-      // A focused button already turns Enter into a click; handling it here too
-      // would advance two steps at once.
-      if (e.key === "Enter" && e.target.closest(".tour-btn")) return;
+      /* Enter belongs to whatever is focused. Previously this swallowed it for
+         the WHOLE document, so pressing Enter on any focused link advanced the
+         tour instead of following the link. Only claim it when focus is on the
+         tour itself or on nothing in particular. */
+      const focused = document.activeElement;
+      const inTour = focused && root.contains(focused);
+      if (e.key === "Enter") {
+        if (inTour && focused.closest(".tour-btn")) return;   // the button handles it
+        if (focused && focused !== document.body && !inTour) return;
+      }
       e.preventDefault();
       next();
     }, { signal });

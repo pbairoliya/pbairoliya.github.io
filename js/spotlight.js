@@ -11,7 +11,6 @@
   const EASE = 0.18;                 // how fast the light catches up (0..1)
 
   let active = null;                 // element currently lit
-  let target = null;                 // where the pointer actually is
   let cur = { x: 0, y: 0 };          // where the light currently is
   let want = { x: 0, y: 0 };
   let raf = 0;
@@ -71,11 +70,17 @@
     if (e.pointerType === "touch") return;
     want = { x: e.clientX, y: e.clientY };
     const hit = document.elementFromPoint(e.clientX, e.clientY)?.closest(SELECTOR) || null;
-    if (hit !== active) { target = hit; setActive(hit); }
+    if (hit !== active) setActive(hit);
     schedule();
   }, { passive: true });
 
   addEventListener("pointerleave", () => setActive(null));
   addEventListener("blur", () => setActive(null));
-  addEventListener("scroll", schedule, { passive: true });
+  /* Scrolling moves the page under a stationary cursor, so re-test what is
+     under it rather than only re-easing whatever was lit before. */
+  addEventListener("scroll", () => {
+    if (!want.x && !want.y) return;
+    setActive(document.elementFromPoint(want.x, want.y)?.closest(SELECTOR) || null);
+    schedule();
+  }, { passive: true });
 })();

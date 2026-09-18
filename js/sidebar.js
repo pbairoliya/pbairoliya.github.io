@@ -14,7 +14,13 @@
   /* On a sub-page the sidebar lists other PAGES rather than sections of this
      one, so there is nothing to observe and the active entry is already marked
      in the markup. Everything below the observer still applies. */
-  const sections = links.map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
+  /* Keep the pairing explicit. sections used to be a filtered array indexed
+     back into links, so deleting one section silently shifted every highlight
+     below it by one. */
+  const pairs = links
+    .map((a, i) => ({ i, el: document.querySelector(a.getAttribute("href")) }))
+    .filter(p => p.el);
+  const sections = pairs.map(p => p.el);
   let active = -1;
   /* The observer fires while the page is still settling, which used to rewrite
      the URL to whatever happened to be mid-viewport — so the NEXT visit arrived
@@ -42,7 +48,14 @@
   toggle?.addEventListener("click", () =>
     document.body.classList.contains("side-open") ? closeSheet() : openSheet());
   scrim?.addEventListener("click", closeSheet);
-  addEventListener("keydown", e => { if (e.key === "Escape") closeSheet(); });
+  addEventListener("keydown", e => {
+    if (e.key !== "Escape") return;
+    // the sheet is the bottom layer: only close it if nothing sits above it
+    if (document.querySelector(".tour")) return;
+    if (document.getElementById("palette")?.classList.contains("on")) return;
+    if (document.getElementById("settings")?.classList.contains("on")) return;
+    closeSheet();
+  });
 
   // links that leave the page (resume, GitHub) should also dismiss the sheet
   bar.querySelectorAll("a:not([href^='#'])").forEach(a =>
@@ -72,8 +85,12 @@
   if ("IntersectionObserver" in window && sections.length) {
     const io = new IntersectionObserver(rows => {
       rows.forEach(r => { if (r.isIntersecting) setActive(sections.indexOf(r.target)); });
-    }, { rootMargin: "-45% 0px -50% 0px" });
+    }, { rootMargin: "-40% 0px -45% 0px", threshold: 0 });
     sections.forEach(s => io.observe(s));
+
+    // The intro is only the actions row, small enough to skip straight past the
+    // band on a tall screen — so being at the top always means "Hello".
+    addEventListener("scroll", () => { if (scrollY < 80) setActive(0); }, { passive: true });
   }
   if (sections.length) setActive(0);
   addEventListener("scroll", () => { readerMoved = true; }, { passive: true, once: true });
@@ -106,6 +123,8 @@
      tab order. `inert` takes them out of it — applied only at sheet widths, and
      re-checked when the viewport crosses the breakpoint. */
   const syncInert = () => {
+    // a sheet left open at phone width must not still be "open" at desktop width
+    if (!isSheet()) closeSheet();
     if (isSheet() && !document.body.classList.contains("side-open")) bar.setAttribute("inert", "");
     else bar.removeAttribute("inert");
   };

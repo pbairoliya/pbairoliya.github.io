@@ -26,8 +26,9 @@ class Doc(html.parser.HTMLParser):
     def _links(self, attrs):
         for key in ("src", "href"):
             v = attrs.get(key)
-            if v and not v.startswith(("http", "mailto:", "data:")):
-                (self.anchors if v.startswith("#") else self.files).append(v)
+            if not v or v.startswith(("http://", "https://", "mailto:", "data:", "tel:")):
+                continue
+            (self.anchors if v.startswith("#") else self.files).append(v)
 
     def handle_startendtag(self, tag, attrs):
         self._links(dict(attrs))                      # <x/> opens and closes
@@ -62,6 +63,20 @@ def main() -> int:
                 missing.append(f)
         ids = set(re.findall(r'id="([^"]+)"', src))
         dead = [a for a in doc.anchors if a[1:] and a[1:] not in ids]
+
+        # a page.html#id fragment has to resolve in the OTHER page, which is the
+        # check that would have caught the palette linking at 404s
+        for f in doc.files:
+            frag = urllib.parse.urlparse(f).fragment
+            if not frag:
+                continue
+            base = ROOT if f.startswith("/") else page.parent
+            target = (base / urllib.parse.urlparse(f).path.lstrip("/")).resolve()
+            if target.is_dir():
+                target = target / "index.html"
+            if target.exists() and frag not in set(
+                    re.findall(r'id="([^"]+)"', target.read_text())):
+                dead.append(f)
         good = not (doc.stray or doc.stack or missing or dead)
         ok &= good
         rel = page.relative_to(ROOT)
@@ -91,6 +106,21 @@ def main() -> int:
     orphans = sorted(d for d in defined if d not in used and d not in js_used)
     # advisory only: a selector can be legitimately built at runtime
     print(f"note  CSS rules nothing uses: {orphans or 'none'}")
+
+    # js/*.js navigates by string; those paths are invisible to the HTML checks
+    js_paths = set(re.findall(r'location\.assign\("([^"]+)"\)', js_src))
+    js_paths |= set(re.findall(r'open\("(/[^"]+)"', js_src))
+    bad_js = []
+    for u in js_paths:
+        if u.startswith(("http", "mailto:", "#")):
+            continue
+        target = (ROOT / u.lstrip("/")).resolve()
+        if target.is_dir():
+            target = target / "index.html"
+        if not target.exists():
+            bad_js.append(u)
+    print(f"{'ok  ' if not bad_js else 'FAIL'} paths navigated from JS: {bad_js or 'all resolve'}")
+    ok &= not bad_js
 
     return 0 if ok else 1
 

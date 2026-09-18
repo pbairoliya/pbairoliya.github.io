@@ -28,11 +28,13 @@
   });
 
   /* ---------- command palette ---------- */
+  /* Root-absolute, always. These used to be relative, so from /writing/ the
+     resume resolved to /writing/Pratik-…pdf and every Open action 404'd. */
   const ACTIONS = [
-    { g:"Open",       i:"↓", label:"Resume (PDF)",       hint:"download",   run:() => location.assign("Pratik-Bairoliya-Resume.pdf") },
-    { g:"Open",       i:"✎", label:"Writing",              hint:"blog",       run:() => location.assign("writing/") },
-    { g:"Open",       i:"◆", label:"On-device tools",    hint:"write-up",   run:() => location.assign("projects/on-device-tools.html") },
-    { g:"Open",       i:"◆", label:"lc",                 hint:"write-up",   run:() => location.assign("projects/lc.html") },
+    { g:"Open",       i:"↓", label:"Resume (PDF)",       hint:"download",   run:() => location.assign("/Pratik-Bairoliya-Resume.pdf") },
+    { g:"Open",       i:"✎", label:"Writing",              hint:"blog",       run:() => location.assign("/writing/") },
+    { g:"Open",       i:"◆", label:"On-device tools",    hint:"write-up",   run:() => location.assign("/projects/on-device-tools.html") },
+    { g:"Open",       i:"◆", label:"lc",                 hint:"write-up",   run:() => location.assign("/projects/lc.html") },
     { g:"Open",       i:"↗", label:"GitHub",             hint:"pbairoliya", run:() => open("https://github.com/pbairoliya","_blank") },
     { g:"Open",       i:"↗", label:"LinkedIn",           hint:"pbairol",    run:() => open("https://linkedin.com/in/pbairol","_blank") },
     { g:"Open",       i:"↗", label:"InspireNC",          hint:"the non-profit", run:() => open("https://inspirenc.us/","_blank") },
@@ -59,7 +61,9 @@
   ];
 
   function go(id) {
-    document.getElementById(id)?.scrollIntoView({
+    const el = document.getElementById(id);
+    if (!el) { location.assign("/#" + id); return; }   // not this page: go home
+    el.scrollIntoView({
       behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
       block: "start",
     });
@@ -135,13 +139,15 @@
 
     addEventListener("keydown", e => {
       const k = e.key.toLowerCase();
+      if (document.querySelector(".tour")) return;   // the tour owns the keyboard
       if ((e.metaKey || e.ctrlKey) && k === "k") { e.preventDefault(); pal.classList.contains("on") ? close() : openPal(); return; }
       if (!pal.classList.contains("on")) {
         // "/" opens it too, unless you're already typing somewhere
-        if (k === "/" && !/^(input|textarea)$/i.test(document.activeElement.tagName)) { e.preventDefault(); openPal(); }
+        if (k === "/" && !/^(input|textarea|select)$/i.test(document.activeElement?.tagName || "") &&
+            !document.activeElement?.isContentEditable) { e.preventDefault(); openPal(); }
         return;
       }
-      if (k === "escape") { close(); }
+      if (k === "escape") { e.stopPropagation(); close(); }
       else if (k === "arrowdown") { e.preventDefault(); cursor = (cursor + 1) % Math.max(matches.length, 1); render(); }
       else if (k === "arrowup")   { e.preventDefault(); cursor = (cursor - 1 + matches.length) % Math.max(matches.length, 1); render(); }
       else if (k === "enter")     { e.preventDefault(); const a = matches[cursor]; if (a) { close(); a.run(); } }

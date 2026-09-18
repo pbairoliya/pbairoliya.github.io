@@ -3,6 +3,10 @@
 (() => {
   "use strict";
   const items = document.querySelectorAll(".reveal, .stack-group");
+  /* Arm the hidden state only now that this script is running. The CSS shows
+     everything by default, so a blocked or broken script degrades to a plain,
+     fully readable page instead of a blank one. */
+  document.documentElement.classList.add("armed");
   if (!("IntersectionObserver" in window) ||
       matchMedia("(prefers-reduced-motion: reduce)").matches) {
     items.forEach(n => n.classList.add("seen"));
