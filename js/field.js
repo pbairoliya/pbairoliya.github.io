@@ -61,6 +61,7 @@
     work:        [216, 248],   // azure → indigo
     stack:       [176, 206],   // teal → cyan
     projects:    [292, 318],   // violet → magenta
+    writing:     [246, 276],   // blue → indigo
     credentials: [238, 270],   // blue → indigo
   };
   const FALLBACK = SECTION_HUES.intro;

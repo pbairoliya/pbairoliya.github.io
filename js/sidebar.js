@@ -15,10 +15,21 @@
   let active = -1;
 
   const isSheet = () => matchMedia("(max-width: 900px)").matches;
-  const openSheet  = () => { document.body.classList.add("side-open");
-                             toggle?.setAttribute("aria-expanded", "true"); };
-  const closeSheet = () => { document.body.classList.remove("side-open");
-                             toggle?.setAttribute("aria-expanded", "false"); };
+  const openSheet = () => {
+    document.body.classList.add("side-open");
+    toggle?.setAttribute("aria-expanded", "true");
+    bar.removeAttribute("inert");
+    // focus has to follow the sheet, or a keyboard user opens something they
+    // then cannot reach
+    bar.querySelector("a")?.focus({ preventScroll: true });
+  };
+  const closeSheet = () => {
+    const wasOpen = document.body.classList.contains("side-open");
+    document.body.classList.remove("side-open");
+    toggle?.setAttribute("aria-expanded", "false");
+    if (isSheet()) bar.setAttribute("inert", "");
+    if (wasOpen) toggle?.focus({ preventScroll: true });
+  };
 
   toggle?.addEventListener("click", () =>
     document.body.classList.contains("side-open") ? closeSheet() : openSheet());
@@ -52,4 +63,15 @@
     sections.forEach(s => io.observe(s));
   }
   setActive(0);
+
+  /* A closed sheet is only translated off-screen, which leaves its links in the
+     tab order. `inert` takes them out of it — applied only at sheet widths, and
+     re-checked when the viewport crosses the breakpoint. */
+  const syncInert = () => {
+    if (isSheet() && !document.body.classList.contains("side-open")) bar.setAttribute("inert", "");
+    else bar.removeAttribute("inert");
+  };
+  syncInert();
+  matchMedia("(max-width: 900px)").addEventListener?.("change", syncInert);
+  addEventListener("resize", syncInert, { passive: true });
 })();

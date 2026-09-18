@@ -64,18 +64,6 @@
 }
 @media (prefers-reduced-motion: reduce) { .side { transition: none; } }
 
-/* ---- theme switch, pinned ---- */
-.theme { position: fixed; z-index: 9;
-         top: max(12px, env(safe-area-inset-top)); right: clamp(12px, 3vw, 18px);
-         display: inline-flex; border: 1px solid var(--line); border-radius: 999px;
-         overflow: hidden; background: color-mix(in srgb, var(--panel) 80%, transparent);
-         backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-.theme button { background: none; border: 0; cursor: pointer; color: var(--muted);
-                padding: clamp(5px, 1.6vw, 7px) clamp(8px, 2.4vw, 11px);
-                font: clamp(10px, 2.6vw, 11px) var(--mono); }
-.theme button[aria-pressed="true"] { color: #fff;
-  background: linear-gradient(120deg, var(--accent), var(--accent-2)); }
-
 /* ---- actions ---- */
 .actions { display: flex; flex-wrap: wrap; gap: 9px; margin: 18px 0 4px; }
 .btn { display: inline-flex; align-items: center; gap: 7px;
@@ -247,3 +235,21 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
 .set-item:hover { background: var(--code-bg); text-decoration: none; }
 .set-item span { font: 10.5px var(--mono); color: var(--muted); }
 .set-sep { height: 1px; background: var(--line); margin: 5px 8px; }
+
+/* ---- skip link ----
+   The sidebar sits at the end of the DOM so the page reads first for a screen
+   reader. That would otherwise make the nav the LAST thing a keyboard user
+   reaches, so offer it as the first. */
+.skip { position: fixed; top: 8px; left: 8px; z-index: 60;
+        transform: translateY(-160%); transition: transform .18s;
+        background: var(--panel); border: 1px solid var(--accent); color: var(--accent);
+        border-radius: 9px; padding: 9px 15px; font: 13px var(--sans); }
+.skip:focus { transform: none; text-decoration: none; }
+
+/* A sheet that is merely translated off-screen still holds its links in the tab
+   order. Hide it from assistive tech and from tabbing until it is open. */
+@media (max-width: 900px) {
+  .side { visibility: hidden; }
+  body.side-open .side { visibility: visible; }
+}
+@media (prefers-reduced-motion: reduce) { .skip { transition: none; } }
