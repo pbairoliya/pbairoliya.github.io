@@ -156,9 +156,10 @@ a.cred:hover { text-decoration: none; }
 .pal-box { max-width: 520px; margin: 0 auto; background: var(--panel);
            border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
            box-shadow: 0 30px 80px rgba(0,0,0,.45); }
+.pal-box input:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 .pal-box input { width: 100%; border: 0; border-bottom: 1px solid var(--line);
                  background: none; color: var(--ink); font: 15px var(--sans);
-                 padding: 15px 18px; outline: none; }
+                 padding: 15px 18px; }
 .pal-list { max-height: 330px; overflow-y: auto; padding: 6px; }
 .pal-row { display: flex; justify-content: space-between; align-items: baseline; gap: 14px;
            width: 100%; text-align: left; background: none; border: 0; cursor: pointer;
@@ -202,7 +203,8 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
 .pal-t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* ---- icon buttons ---- */
-.btn.icon { padding: 9px; width: 38px; height: 38px; justify-content: center; }
+.btn.icon { padding: 9px; width: 38px; height: 38px; justify-content: center;
+            border-color: color-mix(in srgb, var(--ink) 22%, transparent); }
 .btn.icon svg { width: 17px; height: 17px; fill: currentColor; display: block; }
 .btn.icon:hover { color: var(--accent); }
 
@@ -251,7 +253,7 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
 .set-row button { flex: 1; background: none; border: 1px solid var(--line);
                   border-radius: 9px; padding: 7px 0; cursor: pointer;
                   font: 11.5px var(--sans); color: var(--muted); }
-.set-row button[aria-pressed="true"] { color: #fff; border-color: transparent;
+.set-row button[aria-pressed="true"] { color: var(--on-accent); border-color: transparent;
   background: linear-gradient(120deg, var(--accent), var(--accent-2)); }
 .set-item { display: flex; justify-content: space-between; align-items: center; gap: 10px;
             min-width: 0; text-align: left;
@@ -260,6 +262,10 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
 .set-item:hover { background: var(--code-bg); text-decoration: none; }
 .set-item span { font: 10.5px var(--mono); color: var(--muted); }
 .set-sep { height: 1px; background: var(--line); margin: 5px 8px; }
+
+/* Two skip links now: the conventional "to content" first, then the rail. Offset
+   the second so they don't stack on top of each other when both are focused. */
+.skip-2 { left: 152px; }
 
 /* ---- skip link ----
    The sidebar sits at the end of the DOM so the page reads first for a screen
@@ -291,7 +297,7 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
    this rule was unscoped it sat after the sheet rules with equal specificity,
    so a stored `side-collapsed` pinned the sheet off-screen at every width and
    the menu button silently did nothing. */
-@media (min-width: 900.02px) {
+@media not all and (max-width: 900px) {
   /* the page sits beside the rail rather than under it */
   body:not(.bare) { padding-left: 232px; }
   body.side-collapsed .side {
@@ -307,6 +313,11 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
   .side-toggle { display: grid; }
   body.side-open .side-toggle { opacity: 0; pointer-events: none; }
 }
-@media (prefers-reduced-motion: reduce) and (min-width: 900.02px) {
+@media (prefers-reduced-motion: reduce) and (not all and (max-width: 900px)) {
   body.side-collapsed .side { transition: none; }
 }
+.side a:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--accent); }
+
+/* The closing ask. A reader who got this far should not be handed only a link to the CSS. */
+footer .cta { color: var(--ink); font-size: 1rem; max-width: 60ch; margin: 0 0 12px; }
+footer .cta-actions { margin-bottom: 18px; }

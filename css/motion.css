@@ -96,3 +96,14 @@ h2.reveal { transition-duration: .4s, .46s; }
   .job, .card, .cred, .tool, .btn, .job .rail, .side a, #toast { transition: none; }
   .job.lit, .card.lit, .cred.lit, .tool.lit, .btn.lit { transform: none; }
 }
+
+/* Without this the page prints blank: anything the observer has not revealed yet
+   is still at opacity 0 when the print snapshot is taken. */
+@media print {
+  .reveal, .armed .reveal { opacity: 1 !important; transform: none !important; }
+  #field, .side, .side-toggle, .gear, .settings, #palette, .tour, .anchor, .skip { display: none !important; }
+  body { padding-left: 0 !important; background: #fff; color: #000; }
+  .wrap { max-width: none; padding: 0; }
+  .card, .cred, .job, .tool { break-inside: avoid; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: .85em; color: #555; }
+}

@@ -171,7 +171,7 @@
 
 
     ctx.globalAlpha = 1;
-    if (document.hidden) { running = false; return; }   // park, do not queue
+    if (document.hidden || reduced) { running = false; return; }  // one static frame under reduced motion
     requestAnimationFrame(frame);
   }
   /* One guard, because the frame already queued before the tab hid will still

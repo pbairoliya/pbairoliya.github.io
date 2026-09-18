@@ -59,7 +59,7 @@
 }
 .tour-btn:hover { color: var(--ink); border-color: var(--accent); }
 .tour-btn.go {
-  border-color: transparent; color: #fff;
+  border-color: transparent; color: var(--on-accent);
   background: linear-gradient(120deg, var(--accent), var(--accent-2));
 }
 

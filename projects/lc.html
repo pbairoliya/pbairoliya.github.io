@@ -12,16 +12,24 @@
 <meta property="og:description" content="A LeetCode workflow where an Obsidian note is the source of truth, reconciled with a Git repo.">
 <meta property="og:url" content="https://pbairoliya.github.io/projects/lc.html">
 <meta property="og:site_name" content="Pratik Bairoliya">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://pbairoliya.github.io/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Pratik Bairoliya — full-stack software engineer. Every night, a bank has to close its books. I own that job.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#fbfbfa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16171b" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <!-- /social -->
+<script>try{var t=localStorage.getItem("theme");if(t&&t!=="system")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <link rel="stylesheet" href="../css/base.css?v=24">
 <link rel="stylesheet" href="../css/components.css?v=24">
 <link rel="stylesheet" href="../css/motion.css?v=24">
 <link rel="stylesheet" href="../css/tour.css?v=24">
 </head>
 <body>
-<a class="skip" href="#side" data-skip>Skip to navigation</a>
+<a class="skip" href="#main">Skip to content</a>
+<a class="skip skip-2" href="#side" data-skip>Skip to navigation</a>
 
 <button class="side-toggle" id="side-toggle" type="button"
         aria-label="Open menu" aria-expanded="false" aria-controls="side">
@@ -86,12 +94,13 @@
   </div>
 </nav>
 
-<div class="wrap">
+<main class="wrap" id="main" tabindex="-1">
   <h1>LC Bot</h1>
   <p class="lede">
     A LeetCode workflow that lives in your notes. One command imports a problem, starts a clock,
     and scaffolds the code; another publishes everything to a Git repo and schedules the review.
   </p>
+  <p class="meta"><a href="https://github.com/pbairoliya/leetcode">Source on GitHub →</a> · Python · 94 offline tests</p>
 
   <h2 id="why-it-exists">Why it exists</h2>
   <p>
@@ -147,7 +156,7 @@ lc sync / lc push        generate the repo, commit, push (nightly via launchd)</
   </p>
 
   <footer><a href="../">← back</a></footer>
-</div>
+</main>
 <script src="../js/field.js?v=24" defer></script>
 <script src="../js/palette.js?v=24" defer></script>
 <script src="../js/spotlight.js?v=24" defer></script>

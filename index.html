@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pratik Bairoliya — SWE II @ Capital One</title>
+<title>Pratik Bairoliya — full-stack engineer, ledgers and batch systems</title>
 <meta name="description" content="Software Engineer II at Capital One. I own the nightly end-of-day close — posting, settlement and ledger cutoff across Card and Bank, run on Temporal.">
 <link rel="preconnect" href="https://cdn.simpleicons.org" crossorigin>
 
@@ -13,21 +13,28 @@
 <meta property="og:description" content="I own the nightly end-of-day close at Capital One — posting, settlement and ledger cutoff across Card and Bank, run on Temporal.">
 <meta property="og:url" content="https://pbairoliya.github.io/">
 <meta property="og:site_name" content="Pratik Bairoliya">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://pbairoliya.github.io/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Pratik Bairoliya — full-stack software engineer. Every night, a bank has to close its books. I own that job.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#1f5fd6">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <!-- /social -->
+<script>try{var t=localStorage.getItem("theme");if(t&&t!=="system")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <link rel="stylesheet" href="css/base.css?v=24">
 <link rel="stylesheet" href="css/components.css?v=24">
 <link rel="stylesheet" href="css/motion.css?v=24">
 <link rel="stylesheet" href="css/tour.css?v=24">
 </head>
 <body>
-<a class="skip" href="#side" data-skip>Skip to navigation</a>
-<div class="wrap">
+<a class="skip" href="#main">Skip to content</a>
+<a class="skip skip-2" href="#side" data-skip>Skip to navigation</a>
+<main class="wrap" id="main" tabindex="-1">
   <div class="boot">
 
   <h1>Pratik Bairoliya</h1>
-  <p class="tagline">SWE II @ Capital One</p>
+  <p class="tagline">Full-stack software engineer @ Capital One · ledgers, batch systems, Go</p>
   <p class="lede">
     Every night, a bank has to close its books. I own that job at Capital One — the run that
     posts the day's transactions, settles balances and cuts the ledger across Card and Bank.
@@ -228,12 +235,18 @@
        of them about the reconciliation rules.</p>
   </a>
 
-  <a class="card reveal" href="https://github.com/pbairoliya?tab=repositories">
-    <h3>Systems and algorithms →</h3>
-    <p>Earlier work, kept public: a Unix shell in C++ with process control and piping, a
-       pursuit-evasion game running two different search algorithms against each other, an
-       unfinished Deep Q-Network for Snake, and 200+ LeetCode solutions from 2023–24.</p>
-  </a>
+  <div class="card reveal">
+    <h3>Systems and algorithms</h3>
+    <p>Earlier work, kept public:
+       <a href="https://github.com/pbairoliya/customBash">a Unix shell in C++</a> with process
+       control, piping and job handling;
+       <a href="https://github.com/pbairoliya/ai-cops-and-robbers">a pursuit-evasion game</a> in
+       C++/SFML running two search algorithms against each other;
+       <a href="https://github.com/pbairoliya/ai-arcade-games">an unfinished Deep Q-Network</a>
+       for Snake, kept honest about where it stops; and
+       <a href="https://github.com/pbairoliya/leetcode-archive">600+ LeetCode solutions</a>
+       from 2023–24.</p>
+  </div>
 
   </section>
   <section id="writing" data-label="Writing">
@@ -310,18 +323,27 @@
   </section>
 
   <footer>
+    <p class="cta">
+      I'm listening for backend and full-stack work where correctness is the hard part —
+      ledgers, payments, anything that has to be right the first time. I'd rather talk than
+      be screened.
+    </p>
+    <p class="actions cta-actions">
+      <a class="btn primary" href="mailto:pratik0520@gmail.com">pratik0520@gmail.com</a>
+      <a class="btn" href="Pratik-Bairoliya-Resume.pdf">Resume <span class="k">PDF</span></a>
+    </p>
     Source for this site:
     <a href="https://github.com/pbairoliya/pbairoliya.github.io">pbairoliya.github.io</a>
   </footer>
 
-</div>
+</main>
 <button class="side-toggle" id="side-toggle" type="button"
         aria-label="Open menu" aria-expanded="false" aria-controls="side">
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg>
 </button>
 <div class="side-scrim" aria-hidden="true"></div>
 
-<nav class="side" id="side" aria-label="Pages">
+<nav class="side" id="side" tabindex="-1" aria-label="On this page">
   <button class="side-collapse" id="side-collapse" type="button"
           aria-label="Collapse sidebar" title="Collapse sidebar ( [ )">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg>

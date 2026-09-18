@@ -237,8 +237,8 @@
     if (!document.querySelector(".tour")) start();
   };
 
-  if (seen()) return;
-  // After first paint, always. Nothing here is worth delaying the page for.
-  const idle = window.requestIdleCallback || (fn => setTimeout(fn, 600));
-  idle(() => start(), { timeout: 2000 });
+  /* Deliberately not auto-run. It used to open a modal on first visit, which spent
+     a recruiter's first fifteen seconds teaching them the sidebar — and on a phone
+     the popover covered the h1 outright. Both entry points remain: the command
+     palette ("Replay the tour") and the settings popover. */
 })();

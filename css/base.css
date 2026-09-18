@@ -5,6 +5,7 @@
   --bg:#fbfbfa; --panel:#fff; --ink:#16171a; --muted:#62646b;
   --line:#e6e5e2; --code-bg:#f3f3f1;
   --accent:#1f5fd6; --accent-2:#6d4bd8; --hit:#8b5cf6; --wash:#1f5fd6;
+  --on-accent:#fbfbfa;
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
@@ -13,13 +14,13 @@
   :root:not([data-theme="light"]) {
     --bg:#0e0f12; --panel:#16171b; --ink:#e9e9ea; --muted:#9a9ca3;
     --line:#26282d; --code-bg:#1d1f23;
-    --accent:#7fb2ff; --accent-2:#b18cff; --hit:#a97bff;
+    --accent:#7fb2ff; --accent-2:#b18cff; --hit:#a97bff; --on-accent:#0e0f12;
   }
 }
 :root[data-theme="dark"] {
   --bg:#0e0f12; --panel:#16171b; --ink:#e9e9ea; --muted:#9a9ca3;
   --line:#26282d; --code-bg:#1d1f23;
-  --accent:#7fb2ff; --accent-2:#b18cff; --hit:#a97bff;
+  --accent:#7fb2ff; --accent-2:#b18cff; --hit:#a97bff; --on-accent:#0e0f12;
 }
 :root[data-theme="light"] {
   --bg:#fbfbfa; --panel:#fff; --ink:#16171a; --muted:#62646b;
@@ -48,15 +49,16 @@ body::before {
 a { color: var(--accent); text-decoration: none; transition: color .8s linear; }
 a:hover { text-decoration: underline; }
 
-h1 { font-size: clamp(1.6rem, 6vw, 2rem); letter-spacing: -.02em; margin: 0 0 6px; }
-h2 { font-size: 1.15rem; letter-spacing: -.01em; margin: 46px 0 14px;
+h1 { font-size: clamp(1.9rem, 6vw, 2.4rem); line-height: 1.1; letter-spacing: -.025em; margin: 0 0 6px; }
+h2 { font-size: 1.25rem; line-height: 1.25; letter-spacing: -.015em; margin: 52px 0 16px;
      padding-bottom: 8px; border-bottom: 1px solid var(--line); }
-h3 { font-size: 1rem; margin: 28px 0 8px; }
+h3 { font-size: 1.0625rem; line-height: 1.35; letter-spacing: -.005em; margin: 28px 0 8px; }
 p  { margin: 0 0 14px; }
 ul { padding-left: 20px; margin: 0 0 14px; }
 li { margin-bottom: 7px; }
 
-.lede { color: var(--muted); font-size: clamp(.98rem, 3.4vw, 1.05rem); margin-bottom: 16px; }
+.lede { color: var(--ink); font-size: clamp(1.05rem, 3.4vw, 1.18rem);
+        line-height: 1.55; margin-bottom: 18px; max-width: 34em; }
 .meta { color: var(--muted); font-size: .9rem; }
 .tagline { font: 13px/1 var(--mono); letter-spacing: .05em; text-transform: uppercase;
            color: var(--accent); margin: 0 0 14px; transition: color .8s linear; }
@@ -74,3 +76,12 @@ footer { margin-top: 64px; padding-top: 18px; border-top: 1px solid var(--line);
            color: var(--muted); }
 .row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
 .row .meta { white-space: nowrap; }
+
+/* A designed focus state, everywhere. The rail clips outlines (overflow-y:auto),
+   so links inside it get an inset ring instead. */
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px;
+}
+
+/* Cap prose at ~72 characters; the stack grid and cards keep the full width. */
+.boot p, .job li, .job p, .card p, section > p { max-width: 66ch; }
