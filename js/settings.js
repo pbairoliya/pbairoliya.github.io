@@ -12,7 +12,13 @@
      same way clicking outside already does. Without this, focus walked onto the
      page behind while the popover stayed open. */
   const onFocusOut = (e) => {
-    if (!pop.contains(e.target) && e.target !== btn) close({ refocus: false });
+    if (pop.contains(e.target) || e.target === btn) return;
+    /* A layer opening ON TOP takes focus, which is not the user tabbing away.
+       Without these two the popover closed the instant the palette opened, and
+       the Escape-layering guard below became unreachable. */
+    if (document.getElementById("palette")?.classList.contains("on")) return;
+    if (document.querySelector(".tour")) return;
+    close({ refocus: false });
   };
   const open = () => {
     pop.classList.add("on"); btn.setAttribute("aria-expanded", "true");

@@ -26,17 +26,27 @@
      the palette re-renders its list — this watches focusin and pulls focus
      back the moment it leaves. Tab and Shift+Tab both wrap, and so does
      anything else that moves focus. */
+  const FOCUSABLE =
+    'input, button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])';
+
   window.__trap = (root) => {
-    const inside = (n) => root.contains(n);
-    const firstIn = () => root.querySelector(
-      'input, button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])');
-    let last = null;
+    /* Which end to wrap to depends on which way the user was going, so remember
+       the last Tab's shift state. Restoring the previously focused element
+       instead — as this did at first — contains focus but never cycles: Tab
+       past the last item just re-focused the last item. */
+    let back = false;
+    const onKey = (e) => { if (e.key === "Tab") back = e.shiftKey; };
     const onFocus = (e) => {
-      if (inside(e.target)) { last = e.target; return; }
-      const back = (last && inside(last) && last.isConnected) ? last : firstIn() || root;
-      back.focus?.();
+      if (root.contains(e.target)) return;
+      const items = [...root.querySelectorAll(FOCUSABLE)]
+        .filter(el => el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+      (back ? items[items.length - 1] : items[0] || root)?.focus?.();
     };
+    document.addEventListener("keydown", onKey, true);
     document.addEventListener("focusin", onFocus);
-    return () => document.removeEventListener("focusin", onFocus);
+    return () => {
+      document.removeEventListener("keydown", onKey, true);
+      document.removeEventListener("focusin", onFocus);
+    };
   };
 })();
