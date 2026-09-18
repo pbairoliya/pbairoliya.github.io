@@ -70,7 +70,6 @@ pre code { background: none; padding: 0; }
 
 footer { margin-top: 64px; padding-top: 18px; border-top: 1px solid var(--line);
          color: var(--muted); font-size: .88rem; }
-.back { display: inline-block; margin-bottom: 26px; font-size: .9rem; color: var(--muted); }
 .callout { border-left: 3px solid var(--accent); padding: 2px 0 2px 16px; margin: 18px 0;
            color: var(--muted); }
 .row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
