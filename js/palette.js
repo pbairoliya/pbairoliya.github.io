@@ -38,12 +38,13 @@
     { g:"Open",       i:"↗", label:"InspireNC",          hint:"the non-profit", run:() => open("https://inspirenc.us/","_blank") },
     { g:"Open",       i:"↗", label:"Site source",        hint:"repo",       run:() => open("https://github.com/pbairoliya/pbairoliya.github.io","_blank") },
 
+
     { g:"Jump to",    i:"§", label:"Intro",              hint:"#intro",          run:() => go("intro") },
-    { g:"Jump to",    i:"§", label:"School",             hint:"#education",         run:() => go("education") },
     { g:"Jump to",    i:"§", label:"Work",               hint:"#work",         run:() => go("work") },
     { g:"Jump to",    i:"§", label:"Stack",              hint:"#stack",        run:() => go("stack") },
     { g:"Jump to",    i:"§", label:"Projects",           hint:"#projects",     run:() => go("projects") },
     { g:"Jump to",    i:"§", label:"Writing",            hint:"#writing",      run:() => go("writing") },
+    { g:"Jump to",    i:"§", label:"School",             hint:"#education",         run:() => go("education") },
     { g:"Jump to",    i:"§", label:"Credentials",        hint:"#credentials",  run:() => go("credentials") },
 
     { g:"Do",         i:"⧉", label:"Copy email address", hint:"pratik0520@gmail.com", run: copyEmail },

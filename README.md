@@ -44,5 +44,10 @@ section's id.
 **Every script is additive.** No JavaScript, no `IntersectionObserver`, no
 `color-mix()`, or `prefers-reduced-motion` — the page still reads correctly.
 
+Run `python3 tools/check.py` before deploying. It catches the mistakes that
+actually happen in a hand-edited static site: an unclosed tag, a link to a file
+that moved, an anchor to a renamed id, a mixed asset version, and CSS rules left
+behind after their element was deleted.
+
 Asset URLs carry a `?v=N` query. Bump it when changing CSS or JS so nobody gets
 a half-cached mix of old styles and new markup.
