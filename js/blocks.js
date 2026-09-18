@@ -6,7 +6,7 @@
   "use strict";
   const toast = m => (window.__toast ? window.__toast(m) : null);
 
-  document.querySelectorAll("section[id] > h2").forEach(h => {
+  document.querySelectorAll("section[id] > h2, h2[id]").forEach(h => {
     const a = document.createElement("button");
     a.type = "button";
     a.className = "anchor";
@@ -15,10 +15,11 @@
     const name = h.textContent.trim();          // read BEFORE the button is appended
     a.setAttribute("aria-label", `Copy link to ${name}`);
     a.addEventListener("click", async () => {
-      const url = location.href.split("#")[0] + "#" + h.parentElement.id;
+      const id = h.id || h.parentElement.id;
+      const url = location.href.split("#")[0] + "#" + id;
       try { await navigator.clipboard.writeText(url); toast("Link to “" + name + "” copied"); }
       catch { toast(url); }
-      history.replaceState(null, "", "#" + h.parentElement.id);
+      history.replaceState(null, "", "#" + id);
     });
     h.appendChild(a);
   });

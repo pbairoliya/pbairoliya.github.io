@@ -140,6 +140,26 @@ def main() -> int:
           f"{leaks or 'yes'}")
     ok &= not leaks
 
+    # Every page should carry the same shell. Divergence here is what makes one
+    # page feel like a different site, and it is invisible until you look for it.
+    SHELL = ['class="skip"', 'id="side-toggle"', 'class="side-scrim"', 'id="gear"',
+             'id="settings"', 'class="side"', 'id="palette"', 'id="side-collapse"']
+    SHEETS = ["base.css", "components.css", "motion.css", "tour.css"]
+    SCRIPTS = ["field", "palette", "spotlight", "sidebar", "reveal", "settings",
+               "a11y", "blocks"]
+    gaps = []
+    for page in pages:
+        if page.name == "404.html":
+            continue                       # deliberately bare
+        src = page.read_text()
+        rel = page.relative_to(ROOT)
+        gaps += [f"{rel}: no {m}" for m in SHELL if m not in src]
+        gaps += [f"{rel}: no {s}" for s in SHEETS if s not in src]
+        gaps += [f"{rel}: no js/{s}" for s in SCRIPTS if f"js/{s}.js" not in src]
+    print(f"{'ok  ' if not gaps else 'FAIL'} every page carries the same shell: "
+          f"{gaps or 'yes'}")
+    ok &= not gaps
+
     return 0 if ok else 1
 
 
