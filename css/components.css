@@ -112,7 +112,9 @@ body.side-open .side-scrim { opacity: 1; pointer-events: auto; }
 .card { display: block; background: var(--panel); border: 1px solid var(--line);
         border-radius: var(--r-md); padding: 18px 20px; margin-bottom: 14px; color: inherit; }
 .card:hover { text-decoration: none; }
-.card h3 { margin: 0 0 6px; }
+.card h3 { margin: 0 0 var(--s1); }
+.card .row { margin-bottom: var(--s1); }
+.card .row h3 { margin: 0; }
 .card p  { margin: 0 0 10px; color: var(--muted); font-size: var(--fs-base); }
 
 /* ---- stack ---- */
@@ -150,11 +152,35 @@ body.side-open .side-scrim { opacity: 1; pointer-events: auto; }
         border-radius: var(--r-md); padding: 16px 18px; margin-bottom: 12px; color: inherit;
         transition: border-left-color .8s linear; }
 a.cred:hover { text-decoration: none; }
-.cred-body h3 { margin: 0 0 3px; font-size: var(--fs-base); }
+.cred-body h3 { margin: 0 0 var(--s1); }
 .cred-body p  { margin: 0; color: var(--muted); font-size: var(--fs-md); }
-.cred-mark { font: 600 var(--fs-2xs)/var(--lh-snug) var(--sans); letter-spacing: var(--ls-caps);
-             text-align: center; color: var(--accent);
-             padding-top: 3px; flex: 0 0 34px; transition: color .8s linear; }
+/* Same badge as a stack tile's monogram, one size up: a single word on one
+   line. It used to be two <br>-separated words squeezed into 34px. */
+.cred-mark { display: grid; place-items: center; flex: 0 0 auto; min-width: 46px;
+             align-self: center; padding: var(--s1) var(--s2);
+             border: 1px solid var(--line); border-radius: var(--r-xs);
+             background: var(--code-bg);
+             font: 700 var(--fs-2xs)/1 var(--sans); letter-spacing: var(--ls-caps);
+             text-transform: uppercase; color: var(--accent);
+             transition: color .8s linear; }
+.cred-quiet { border-left-color: var(--line); }
+.cred-quiet .cred-mark { color: var(--muted); }
+
+/* The numbers that used to clutter the opening paragraph. */
+/* Four across, or two-by-two on a phone. auto-fit left a lone fourth tile on a
+   row of its own at desktop widths. */
+.facts { display: grid; gap: var(--s2); padding: 0; margin: var(--s6) 0 0;
+         list-style: none; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 760px) { .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.facts li { margin: 0; padding: var(--s3) var(--s4); background: var(--panel);
+            border: 1px solid var(--line); border-radius: var(--r-md); }
+.facts b { display: block; font: 600 var(--fs-xl)/var(--lh-tight) var(--sans);
+           letter-spacing: var(--ls-tight); color: var(--accent);
+           transition: color .8s linear; }
+.facts span { display: block; margin-top: var(--s1); color: var(--muted);
+              font-size: var(--fs-md); line-height: var(--lh-snug); }
+
+.interests { margin-top: var(--s5); }
 
 /* ---- background section ---- */
 
