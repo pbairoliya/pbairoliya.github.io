@@ -64,6 +64,8 @@
     { label: "lc",                  hint: "write-up",  run: () => location.assign("projects/lc.html") },
     { label: "Site source",         hint: "repo",      run: () => open("https://github.com/pbairoliya/pbairoliya.github.io", "_blank") },
     { label: "Jump to Background",  hint: "section",   run: () => go("about") },
+    { label: "Expand the long version", hint: "background", run: () => {
+        const d = document.querySelector(".fold"); if (d) { d.open = true; go("about"); } } },
     { label: "Jump to Work",        hint: "section",   run: () => go("work") },
     { label: "Jump to Stack",       hint: "section",   run: () => go("stack") },
     { label: "Jump to Projects",    hint: "section",   run: () => go("projects") },
@@ -123,6 +125,8 @@
       cursor = 0; render();
     }
     function openPal() {
+      const b = document.querySelector(".palette-btn");
+      if (b) { b.classList.remove("hint"); try { localStorage.setItem("pal-seen", "1"); } catch {} }
       pal.classList.add("on"); pal.setAttribute("aria-hidden", "false");
       input.value = ""; filter(""); input.focus();
     }
@@ -144,6 +148,9 @@
     input.addEventListener("input", () => filter(input.value));
     pal.addEventListener("click", e => { if (e.target === pal) close(); });
     document.querySelectorAll("[data-open-palette]").forEach(b => b.addEventListener("click", openPal));
+    try {
+      if (localStorage.getItem("pal-seen")) document.querySelector(".palette-btn")?.classList.remove("hint");
+    } catch {}
     render();
   }
 

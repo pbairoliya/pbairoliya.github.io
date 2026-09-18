@@ -54,15 +54,17 @@
      about three minutes. It drives the CSS accent AND the canvas, so links,
      borders, the tagline and the field all move together. Nothing jumps:
      a full sweep takes longer than anyone stays on the page. */
-  const HUE_LO = 186, HUE_HI = 288, HUE_PERIOD = 186000;
+  const HUE_LO = 196, HUE_HI = 322, HUE_PERIOD = 52000;   // teal → blue → violet → magenta
+  const HIT_HUE = 282;                                     // the purple things light up in
   let hue = HUE_LO;
 
   function driftHue(now) {
     const s = (Math.sin((now / HUE_PERIOD) * Math.PI * 2) + 1) / 2;   // 0..1
     hue = HUE_LO + s * (HUE_HI - HUE_LO);
-    const dark = isDark();
-    document.documentElement.style.setProperty(
-      "--accent", `hsl(${hue.toFixed(1)} ${dark ? "88% 74%" : "70% 42%"})`);
+    const dark = isDark(), st = document.documentElement.style;
+    st.setProperty("--accent",  `hsl(${hue.toFixed(1)} ${dark ? "90% 74%" : "72% 42%"})`);
+    st.setProperty("--accent-2", `hsl(${(hue + 34).toFixed(1)} ${dark ? "82% 68%" : "66% 46%"})`);
+    st.setProperty("--hit",      `hsl(${HIT_HUE} ${dark ? "92% 72%" : "74% 48%"})`);
   }
 
   function palette() {
