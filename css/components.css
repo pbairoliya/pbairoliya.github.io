@@ -181,14 +181,14 @@ div.job-head .meta { white-space: nowrap; }
 :root[data-theme="dark"] .tool img,
 :root:not([data-theme="light"]) .tool img { filter: brightness(1.7) saturate(.85); }
 @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .tool img { filter: none; } }
-/* Six tools have no logo in the icon set. A single-letter monogram in the same
-   20px box as a real icon keeps the label column aligned; the old badge spelled
-   the tool's name and then the label repeated it ("AWS  AWS"). */
-.tool .txt { display: grid; place-items: center; width: 20px; height: 20px; flex: 0 0 20px;
-             border-radius: var(--r-xs); background: var(--code-bg);
-             border: 1px solid var(--line);
-             font: 700 var(--fs-xs)/1 var(--sans); color: var(--accent);
-             transition: color .8s linear, background-color .8s linear; }
+/* A handful of tools have no logo anywhere public — S3, EMR, DynamoDB, SQL and
+   "REST APIs" are services or concepts, not brands. They get a drawn glyph in
+   the same 20px box as a real logo, which reads as an icon; the letter badges
+   they replace read as a placeholder. */
+.tool .gl { width: 20px; height: 20px; flex: 0 0 20px; fill: var(--accent);
+            transition: fill .8s linear; }
+/* AWS only publishes a wordmark, so let that one tile be wider than tall. */
+.tool .wordmark { width: auto; height: 15px; flex: 0 0 auto; }
 
 /* ---- credentials ---- */
 .cred { display: flex; align-items: flex-start; gap: 14px; background: var(--panel);
@@ -413,9 +413,12 @@ body.side-open { overflow: hidden; }
            background: var(--line); border-radius: var(--r-pill); }
 .tl-line i { position: absolute; inset: 0; border-radius: inherit;
              background: linear-gradient(var(--accent), var(--accent-2));
-             transform: scaleY(var(--p, 0)); transform-origin: top;
-             transition: transform .12s linear, background .8s linear; }
-.job.reached .job-node { border-color: var(--accent); }
+             transform: scaleY(0); transform-origin: top;
+             transition: transform .95s cubic-bezier(.22,.61,.36,1), background .8s linear; }
+.timeline.drawn .tl-line i { transform: scaleY(1); }
+/* each node lights as the fill reaches it; --d is its place in the sweep */
+.timeline.drawn .job-node { border-color: var(--accent);
+                            transition-delay: calc(var(--d, 0) * 1ms); }
 #work .job .rail { display: none; }   /* the timeline is this section's rail */
 
 .job-node {
@@ -434,6 +437,7 @@ body.side-open { overflow: hidden; }
 #work .job-toggle { padding: var(--s1) var(--s2); margin: calc(var(--s1) * -1) calc(var(--s2) * -1);
                     border-radius: var(--r-sm); transition: background-color .2s; }
 #work .job-toggle:hover { background: var(--code-bg); }
+#work .job { cursor: pointer; }   /* the whole entry toggles */
 
 
 @media (max-width: 560px) {
@@ -442,9 +446,10 @@ body.side-open { overflow: hidden; }
   .job-node { left: 2px; }
 }
 /* The current role is still running, so its node keeps a pulse. */
-.job-now .job-node::after {
+.timeline.drawn .job-now .job-node::after {
   content: ""; position: absolute; inset: -2px; border-radius: inherit;
-  border: 2px solid var(--accent); animation: node-pulse 2.6s ease-out infinite;
+  border: 2px solid var(--accent);
+  animation: node-pulse 2.6s ease-out .9s infinite;   /* after the line arrives */
 }
 @keyframes node-pulse {
   0%   { transform: scale(1);   opacity: .65; }
@@ -455,6 +460,52 @@ body.side-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .job-node { transition: none; }
   .job:hover .job-node { transform: none; }
-  .tl-line i { transition: none; transform: scaleY(1); }
+  .tl-line i { transition: none; }
+  .timeline.drawn .job-node { transition-delay: 0s; }
   .job-now .job-node::after { animation: none; opacity: 0; }
 }
+
+/* ---- coursework, linked straight at the repositories ---- */
+.course-lead { color: var(--muted); font-size: var(--fs-md); margin: var(--s5) 0 var(--s3); }
+.courses { list-style: none; padding: 0; margin: 0;
+           display: grid; gap: var(--s2);
+           grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+.courses li { margin: 0; }
+.courses a { display: flex; align-items: baseline; gap: var(--s3);
+             padding: var(--s3) var(--s4); border: 1px solid var(--line);
+             border-radius: var(--r-md); background: var(--panel); color: var(--ink);
+             transition: border-color .2s, transform .2s cubic-bezier(.2,.8,.3,1); }
+.courses a:hover { text-decoration: none; border-color: var(--accent); transform: translateY(-2px); }
+.courses b { flex: 0 0 auto; font: 700 var(--fs-2xs)/1 var(--sans);
+             letter-spacing: var(--ls-caps); color: var(--accent);
+             transition: color .8s linear; }
+.courses span { min-width: 0; color: var(--muted); font-size: var(--fs-md);
+                line-height: var(--lh-snug); }
+
+/* ---- projects read as a numbered set ---- */
+#projects .card { position: relative; overflow: hidden; }
+#projects .card::before {
+  content: ""; position: absolute; inset: 0 auto 0 0; width: 3px;
+  background: linear-gradient(var(--accent), var(--accent-2));
+  transform: scaleY(0); transform-origin: bottom;
+  transition: transform .34s cubic-bezier(.2,.8,.3,1);
+}
+#projects .card:hover::before, #projects .card:focus-visible::before { transform: scaleY(1); }
+#projects .card .row h3 { transition: transform .24s cubic-bezier(.2,.8,.3,1); }
+#projects .card:hover .row h3 { transform: translateX(4px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .courses a, #projects .card::before, #projects .card .row h3 { transition: none; }
+  .courses a:hover, #projects .card:hover .row h3 { transform: none; }
+}
+
+/* The stack a project is built in, up top where a recruiter scans first. */
+.chips { display: flex; flex-wrap: wrap; gap: var(--s1); margin: 0 0 var(--s3); }
+.chips span { padding: 3px var(--s2); border: 1px solid var(--line);
+              border-radius: var(--r-pill); background: var(--code-bg);
+              font: 600 var(--fs-2xs)/1.5 var(--sans); letter-spacing: .02em;
+              color: var(--muted); white-space: nowrap;
+              transition: border-color .2s, color .2s; }
+.card:hover .chips span { border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
+                          color: var(--ink); }
+@media (prefers-reduced-motion: reduce) { .chips span { transition: none; } }

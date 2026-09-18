@@ -85,8 +85,19 @@
   }
 
   if ("IntersectionObserver" in window && sections.length) {
+    /* Two sections can share the detection band on a tall screen — Projects and
+       Writing both do at 2000px. Keep the live set and take the TOPMOST of
+       them, rather than whichever row the observer happened to report last,
+       which used to highlight the wrong link after a hash jump. */
+    const visible = new Set();
     const io = new IntersectionObserver(rows => {
-      rows.forEach(r => { if (r.isIntersecting) setActive(sections.indexOf(r.target)); });
+      rows.forEach(r => r.isIntersecting ? visible.add(r.target) : visible.delete(r.target));
+      let best = -1;
+      visible.forEach(el => {
+        const i = sections.indexOf(el);
+        if (i >= 0 && (best < 0 || i < best)) best = i;
+      });
+      if (best >= 0) setActive(best);
     }, { rootMargin: "-40% 0px -45% 0px", threshold: 0 });
     sections.forEach(s => io.observe(s));
 

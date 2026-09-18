@@ -22,10 +22,10 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <!-- /social -->
 <script>try{var t=localStorage.getItem("theme");if(t&&t!=="system")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
-<link rel="stylesheet" href="css/base.css?v=34">
-<link rel="stylesheet" href="css/components.css?v=34">
-<link rel="stylesheet" href="css/motion.css?v=34">
-<link rel="stylesheet" href="css/tour.css?v=34">
+<link rel="stylesheet" href="css/base.css?v=36">
+<link rel="stylesheet" href="css/components.css?v=36">
+<link rel="stylesheet" href="css/motion.css?v=36">
+<link rel="stylesheet" href="css/tour.css?v=36">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -156,6 +156,71 @@
   </div>
   </section>
 
+
+  <section id="projects">
+  <h2 class="reveal">Projects</h2>
+
+  <a class="card reveal" href="projects/on-device-tools.html">
+    <div class="row">
+      <h3>Nothing leaves the laptop →</h3>
+      <span class="meta">Three local-first tools</span>
+    </div>
+    <p class="chips"><span>Python</span><span>Ollama</span><span>Apple Vision OCR</span><span>SQLite</span><span>launchd</span><span>Google APIs</span></p>
+    <p>A daily briefing, a receipt pipeline and a screenshot sorter, all sharing one core: OCR plus
+       a language model running on the machine, wrapped in a deterministic rules layer so the output
+       behaves like software rather than like a guess. Nothing is uploaded, and no key is needed.</p>
+  </a>
+
+  <a class="card reveal" href="projects/lc.html">
+    <div class="row">
+      <h3>LC Bot — a LeetCode workflow that lives in your notes →</h3>
+      <span class="meta">94 offline tests</span>
+    </div>
+    <p class="chips"><span>Python</span><span>Git</span><span>Obsidian</span><span>launchd</span><span>pytest</span><span>GitHub Actions</span></p>
+    <p>A CLI that makes an Obsidian note the source of truth for a problem, reconciles it with a Git
+       repo, schedules spaced-repetition reviews and pushes nightly. Most of the 94 tests are about
+       one thing: which side wins when the note and the repo disagree.</p>
+  </a>
+
+  <a class="card reveal" href="projects/systems-and-algorithms.html">
+    <div class="row">
+      <h3>Systems and algorithms →</h3>
+      <span class="meta">2020 – 2024</span>
+    </div>
+    <p class="chips"><span>C++</span><span>Python</span><span>SFML</span><span>PyGame</span><span>PyTorch</span></p>
+    <p>Earlier work, kept public. A Unix shell written from scratch, a pursuit-evasion game where two
+       agents run different search algorithms against each other, a Deep Q-Network for Snake that is
+       published unfinished on purpose, and the 221-problem practice archive underneath all of it.</p>
+  </a>
+
+  <a class="card reveal" href="projects/coursework.html">
+    <div class="row">
+      <h3>Coursework →</h3>
+      <span class="meta">NC State · four semesters</span>
+    </div>
+    <p class="chips"><span>C</span><span>C++</span><span>Java</span><span>CUDA</span><span>pthreads</span><span>Scapy</span><span>SFML</span></p>
+    <p>Systems work, documented rather than dumped. A generic hash map built on a vtable written by
+       hand, max-subarray solved five ways down to CUDA, a repeating-key XOR key recovered from
+       statistics alone, and a game agent that moves, plans and decides in three layers.</p>
+  </a>
+
+  </section>
+  <section id="writing">
+  <h2 class="reveal">Writing</h2>
+
+  <a class="card reveal" href="writing/receipts-local-llm.html">
+    <div class="row">
+      <h3>Scanning receipts into Obsidian with a local LLM →</h3>
+      <span class="meta">Jun 2026</span>
+    </div>
+    <p>A scan on my phone updates my pantry, shopping list and expense report seconds later.
+       The interesting part isn't the receipts — it's <em>derive, don't mutate</em>.</p>
+  </a>
+
+  <p class="meta"><a href="writing/">All writing →</a></p>
+
+  </section>
+
   <section id="stack">
   <h2 class="reveal">Stack</h2>
 
@@ -164,10 +229,10 @@
     <div class="stack">
       <span class="tool" style="--i:0"><img src="https://cdn.simpleicons.org/go" alt="" loading="lazy">Go</span>
       <span class="tool" style="--i:1"><img src="https://cdn.simpleicons.org/python" alt="" loading="lazy">Python</span>
-      <span class="tool" style="--i:2"><img src="https://cdn.simpleicons.org/openjdk/989ea6" alt="" loading="lazy">Java</span>
+      <span class="tool" style="--i:2"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="" loading="lazy">Java</span>
       <span class="tool" style="--i:3"><img src="https://cdn.simpleicons.org/typescript" alt="" loading="lazy">TypeScript</span>
       <span class="tool" style="--i:4"><img src="https://cdn.simpleicons.org/javascript" alt="" loading="lazy">JavaScript</span>
-      <span class="tool" style="--i:5"><span class="txt">S</span>SQL</span>
+      <span class="tool" style="--i:5"><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18v16H3V4Zm2 2v3h14V6H5Zm0 5v3h6v-3H5Zm8 0v3h6v-3h-6Zm-8 5v2h6v-2H5Zm8 0v2h6v-2h-6Z"/></svg>SQL</span>
       <span class="tool" style="--i:6"><img src="https://cdn.simpleicons.org/cplusplus" alt="" loading="lazy">C++</span>
       <span class="tool" style="--i:7"><img src="https://cdn.simpleicons.org/gnubash" alt="" loading="lazy">Bash</span>
     </div>
@@ -176,9 +241,9 @@
   <div class="stack-group reveal">
     <p class="stack-label">Infrastructure</p>
     <div class="stack">
-      <span class="tool" style="--i:0"><span class="txt">A</span>AWS</span>
-      <span class="tool" style="--i:1"><span class="txt">E</span>AWS EMR</span>
-      <span class="tool" style="--i:2"><span class="txt">S</span>S3</span>
+      <span class="tool" style="--i:0"><img class="wordmark" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="" loading="lazy">AWS</span>
+      <span class="tool" style="--i:1"><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 2h2v5h-2V2Zm-7 5h6v2H4V7Zm10 0h6v2h-6V7ZM3 11h5v9H3v-9Zm6.5 0h5v9h-5v-9ZM16 11h5v9h-5v-9Z"/></svg>AWS EMR</span>
+      <span class="tool" style="--i:2"><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14l-1.4 15.2a2 2 0 0 1-2 1.8H8.4a2 2 0 0 1-2-1.8L5 4Zm2.2 2 .4 4.5h8.8l.4-4.5H7.2Z"/></svg>S3</span>
       <span class="tool" style="--i:3"><img src="https://cdn.simpleicons.org/kubernetes" alt="" loading="lazy">Kubernetes</span>
       <span class="tool" style="--i:4"><img src="https://cdn.simpleicons.org/temporal/989ea6" alt="" loading="lazy">Temporal</span>
       <span class="tool" style="--i:5"><img src="https://cdn.simpleicons.org/docker" alt="" loading="lazy">Docker</span>
@@ -201,13 +266,13 @@
       <span class="tool" style="--i:1"><img src="https://cdn.simpleicons.org/databricks" alt="" loading="lazy">Databricks</span>
       <span class="tool" style="--i:2"><img src="https://cdn.simpleicons.org/apachehive" alt="" loading="lazy">Hive</span>
       <span class="tool" style="--i:3"><img src="https://cdn.simpleicons.org/postgresql" alt="" loading="lazy">Postgres</span>
-      <span class="tool" style="--i:4"><span class="txt">D</span>DynamoDB</span>
+      <span class="tool" style="--i:4"><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c4.4 0 8 1.3 8 3v14c0 1.7-3.6 3-8 3s-8-1.3-8-3V5c0-1.7 3.6-3 8-3Zm0 2C8.3 4 6 5 6 5s2.3 1 6 1 6-1 6-1-2.3-1-6-1Zm6 4.6C16.5 9.4 14.4 9.8 12 9.8s-4.5-.4-6-1.2v3.2c1.5.8 3.6 1.2 6 1.2s4.5-.4 6-1.2V8.6Zm0 6C16.5 15.4 14.4 15.8 12 15.8s-4.5-.4-6-1.2V19s2.3 1 6 1 6-1 6-1v-4.4Z"/></svg>DynamoDB</span>
       <span class="tool" style="--i:5"><img src="https://cdn.simpleicons.org/neo4j" alt="" loading="lazy">Neo4j</span>
       <span class="tool" style="--i:6"><img src="https://cdn.simpleicons.org/mongodb" alt="" loading="lazy">MongoDB</span>
       <span class="tool" style="--i:7"><img src="https://cdn.simpleicons.org/sqlite" alt="" loading="lazy">SQLite</span>
       <span class="tool" style="--i:8"><img src="https://cdn.simpleicons.org/redis" alt="" loading="lazy">Redis</span>
       <span class="tool" style="--i:9"><img src="https://cdn.simpleicons.org/springboot" alt="" loading="lazy">Spring Boot</span>
-      <span class="tool" style="--i:10"><span class="txt">R</span>REST APIs</span>
+      <span class="tool" style="--i:10"><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.4 3.6 7.9 2.2 1.1 9l6.8 6.8 1.5-1.5L4.1 9l5.3-5.4Zm5.2 0L16.1 2.2 22.9 9l-6.8 6.8-1.5-1.5L19.9 9l-5.3-5.4ZM10 21.5l3.1-19 1.9.3-3.1 19-1.9-.3Z"/></svg>REST APIs</span>
       <span class="tool" style="--i:11"><img src="https://cdn.simpleicons.org/graphql" alt="" loading="lazy">GraphQL</span>
       <span class="tool" style="--i:12"><img src="https://cdn.simpleicons.org/nodedotjs" alt="" loading="lazy">Node.js</span>
       <span class="tool" style="--i:13"><img src="https://cdn.simpleicons.org/fastify/989ea6" alt="" loading="lazy">Fastify</span>
@@ -220,75 +285,14 @@
       <span class="tool" style="--i:0"><img src="https://cdn.simpleicons.org/react" alt="" loading="lazy">React</span>
       <span class="tool" style="--i:1"><img src="https://cdn.simpleicons.org/vuedotjs" alt="" loading="lazy">Vue</span>
       <span class="tool" style="--i:2"><img src="https://cdn.simpleicons.org/angular/989ea6" alt="" loading="lazy">Angular</span>
-      <span class="tool" style="--i:3"><span class="txt">H</span>HTML / CSS</span>
+      <span class="tool" style="--i:3"><img src="https://cdn.simpleicons.org/html5" alt="" loading="lazy">HTML</span>
+      <span class="tool" style="--i:8"><img src="https://cdn.simpleicons.org/css" alt="" loading="lazy">CSS</span>
       <span class="tool" style="--i:4"><img src="https://cdn.simpleicons.org/ollama/989ea6" alt="" loading="lazy">Ollama</span>
       <span class="tool" style="--i:5"><img src="https://cdn.simpleicons.org/apple/989ea6" alt="" loading="lazy">Vision OCR</span>
       <span class="tool" style="--i:6"><img src="https://cdn.simpleicons.org/anthropic/989ea6" alt="" loading="lazy">Claude API</span>
       <span class="tool" style="--i:7"><img src="https://cdn.simpleicons.org/pytorch" alt="" loading="lazy">PyTorch</span>
     </div>
   </div>
-
-  </section>
-
-  <section id="projects">
-  <h2 class="reveal">Projects</h2>
-
-  <a class="card reveal" href="projects/on-device-tools.html">
-    <div class="row">
-      <h3>On-device tools →</h3>
-      <span class="meta">Python · Ollama</span>
-    </div>
-    <p>Three programs sharing one core: Apple Vision OCR plus a local LLM, wrapped in a
-       deterministic rules layer so the output behaves like software. A daily briefing, a receipt
-       pipeline, and a screenshot sorter — none of them send your data anywhere.</p>
-  </a>
-
-  <a class="card reveal" href="projects/lc.html">
-    <div class="row">
-      <h3>LC Bot — a LeetCode workflow that lives in your notes →</h3>
-      <span class="meta">Python · 94 tests</span>
-    </div>
-    <p>A CLI that makes an Obsidian note the source of truth for a problem, reconciles it with a
-       Git repo, schedules spaced-repetition reviews, and pushes nightly. 94 offline tests, most
-       of them about the reconciliation rules.</p>
-  </a>
-
-  <a class="card reveal" href="projects/systems-and-algorithms.html">
-    <div class="row">
-      <h3>Systems and algorithms →</h3>
-      <span class="meta">C++ · Python</span>
-    </div>
-    <p>Earlier work, kept public. A Unix shell written from scratch, a pursuit-evasion game where
-       two agents run different search algorithms against each other, a Deep Q-Network for Snake
-       that is published unfinished on purpose, and the 221-problem practice archive underneath
-       all of it.</p>
-  </a>
-
-  <a class="card reveal" href="projects/coursework.html">
-    <div class="row">
-      <h3>Coursework, published →</h3>
-      <span class="meta">NC State · C, C++, Java</span>
-    </div>
-    <p>Four semesters of systems work, documented rather than dumped. A generic hash map built on
-       a vtable written by hand, max-subarray solved five ways down to CUDA, a repeating-key XOR
-       key recovered from statistics alone, and a game agent that moves, plans and decides in
-       three layers.</p>
-  </a>
-
-  </section>
-  <section id="writing">
-  <h2 class="reveal">Writing</h2>
-
-  <a class="card reveal" href="writing/receipts-local-llm.html">
-    <div class="row">
-      <h3>Scanning receipts into Obsidian with a local LLM →</h3>
-      <span class="meta">Jun 2026</span>
-    </div>
-    <p>A scan on my phone updates my pantry, shopping list and expense report seconds later.
-       The interesting part isn't the receipts — it's <em>derive, don't mutate</em>.</p>
-  </a>
-
-  <p class="meta"><a href="writing/">All writing →</a></p>
 
   </section>
 
@@ -310,6 +314,19 @@
           automated a faculty group's data analysis.</li>
       <li><strong>Chairman, <a href="https://inspirenc.us/">InspireNC</a></strong> — student-run
           non-profit teaching FIRST Robotics in NC schools; captain of Team 6908.</li>
+    </ul>
+
+    <p class="course-lead">Four semesters of the coursework are public, one repository each —
+       <a href="projects/coursework.html">the write-up is here</a>.</p>
+    <ul class="courses">
+      <li><a href="https://github.com/pbairoliya/csc230-c-software-tools">
+        <b>CSC 230</b><span>C and Software Tools — a generic hash map on a hand-written vtable</span></a></li>
+      <li><a href="https://github.com/pbairoliya/csc246-operating-systems">
+        <b>CSC 246</b><span>Operating Systems — max-subarray five ways, down to CUDA</span></a></li>
+      <li><a href="https://github.com/pbairoliya/csc474-network-security">
+        <b>CSC 474</b><span>Network Security — a repeating-key XOR break, and the detector that catches it</span></a></li>
+      <li><a href="https://github.com/pbairoliya/csc484-game-ai">
+        <b>CSC 484</b><span>Building Game AI — steering, A*, and a decision tree over both</span></a></li>
     </ul>
   </div>
 
@@ -383,9 +400,9 @@
   <p class="side-label">On this page</p>
   <a href="#intro"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 11h3v9h5v-6h4v6h5v-9h3L12 3Z"/></svg><span>Home</span></a>
   <a href="#work"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4h6a2 2 0 0 1 2 2v1h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h3V6a2 2 0 0 1 2-2Zm0 3h6V6H9v1Zm-5 2v9h16V9H4Z"/></svg><span>Work</span></a>
-  <a href="#stack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 2 7l10 5 10-5-10-5Zm-7.8 8.6L2 12l10 5 10-5-2.2-1.4L12 14.2 4.2 10.6Zm0 4.5L2 16.5l10 5 10-5-2.2-1.4L12 18.7l-7.8-3.6Z"/></svg><span>Stack</span></a>
   <a href="#projects"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 1 5.4 5.2l-1.6-1.6-1.9.5-.5 1.9 1.6 1.6a4 4 0 0 1-5.2-5.4L4.4 2 2 4.4l6.5 8.1a4 4 0 0 0 5.4 5.4l4.3 4.3 2.4-2.4-4.3-4.3"/></svg><span>Things I built</span></a>
   <a href="#writing"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17.3V21h3.7L17.8 9.9l-3.7-3.7L3 17.3ZM20.7 7a1 1 0 0 0 0-1.4l-2.3-2.3a1 1 0 0 0-1.4 0l-1.8 1.8 3.7 3.7L20.7 7Z"/></svg><span>Writing</span></a>
+  <a href="#stack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 2 7l10 5 10-5-10-5Zm-7.8 8.6L2 12l10 5 10-5-2.2-1.4L12 14.2 4.2 10.6Zm0 4.5L2 16.5l10 5 10-5-2.2-1.4L12 18.7l-7.8-3.6Z"/></svg><span>Stack</span></a>
   <a href="#education"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 1 9l11 6 9-4.9V17h2V9L12 3ZM5 13.2V17c0 1.7 3.1 3 7 3s7-1.3 7-3v-3.8l-7 3.8-7-3.8Z"/></svg><span>School</span></a>
   <a href="#credentials"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6.1c0 5 3.4 9.7 8 10.9 4.6-1.2 8-5.9 8-10.9V5l-8-3Zm-1.2 13.4-3.2-3.2 1.4-1.4 1.8 1.8 4.3-4.3 1.4 1.4-5.7 5.7Z"/></svg><span>Credentials</span></a>
 
@@ -433,15 +450,15 @@
   </div>
 </div>
 
-<script src="js/theme.js?v=34" defer></script>
-<script src="js/field.js?v=34" defer></script>
-<script src="js/palette.js?v=34" defer></script>
-<script src="js/spotlight.js?v=34" defer></script>
-<script src="js/sidebar.js?v=34" defer></script>
-<script src="js/reveal.js?v=34" defer></script>
-<script src="js/a11y.js?v=34" defer></script>
-<script src="js/blocks.js?v=34" defer></script>
-<script src="js/tour.js?v=34" defer></script>
-<script src="js/settings.js?v=34" defer></script>
+<script src="js/theme.js?v=36" defer></script>
+<script src="js/field.js?v=36" defer></script>
+<script src="js/palette.js?v=36" defer></script>
+<script src="js/spotlight.js?v=36" defer></script>
+<script src="js/sidebar.js?v=36" defer></script>
+<script src="js/reveal.js?v=36" defer></script>
+<script src="js/a11y.js?v=36" defer></script>
+<script src="js/blocks.js?v=36" defer></script>
+<script src="js/tour.js?v=36" defer></script>
+<script src="js/settings.js?v=36" defer></script>
 </body>
 </html>
