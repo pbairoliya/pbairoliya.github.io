@@ -30,7 +30,7 @@
   /* ---------- command palette ---------- */
   const ACTIONS = [
     { g:"Open",       i:"↓", label:"Resume (PDF)",       hint:"download",   run:() => location.assign("Pratik-Bairoliya-Resume.pdf") },
-    { g:"Open",       i:"✎", label:"Writing",              hint:"blog",       run:() => location.assign("writing/index.html") },
+    { g:"Open",       i:"✎", label:"Writing",              hint:"blog",       run:() => location.assign("writing/") },
     { g:"Open",       i:"◆", label:"On-device tools",    hint:"write-up",   run:() => location.assign("projects/on-device-tools.html") },
     { g:"Open",       i:"◆", label:"lc",                 hint:"write-up",   run:() => location.assign("projects/lc.html") },
     { g:"Open",       i:"↗", label:"GitHub",             hint:"pbairoliya", run:() => open("https://github.com/pbairoliya","_blank") },
