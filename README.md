@@ -17,12 +17,18 @@ js/palette.js                  command palette (Cmd-K) and theme control
 js/pill.js                     floating section nav
 js/spotlight.js                pointer-following highlight
 js/reveal.js                   reveal-on-scroll
+js/blocks.js                   per-section copy-link anchors
 ```
 
-**Colour** is driven at runtime. `js/field.js` walks a palette of hue pairs,
-easing between stops, and writes `--accent`, `--accent-2`, `--wash` and `--hit`
-onto `:root`. Everything tinted on the page reads those variables, so the whole
-site drifts together. A full lap is about two and a half minutes.
+**Colour follows the reader.** Every section owns a hue pair — cyan/azure for
+the intro, indigo/violet for the background, teal/cyan for the stack, amber for
+credentials. Scrolling into a section eases the whole palette toward it, with a
+few degrees of wobble so it is never quite still. `js/field.js` writes
+`--accent`, `--accent-2`, `--wash` and `--hit` onto `:root`; everything tinted
+reads those, so the page changes character as you read it.
+
+To retheme a section, edit `SECTION_HUES` in `js/field.js` — the key is the
+section's id.
 
 **Every script is additive.** No JavaScript, no `IntersectionObserver`, no
 `color-mix()`, or `prefers-reduced-motion` — the page still reads correctly.

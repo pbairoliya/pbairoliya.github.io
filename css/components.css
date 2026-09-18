@@ -155,3 +155,23 @@ a.cred:hover { text-decoration: none; }
          opacity: 0; pointer-events: none; z-index: 50;
          transition: opacity .2s, transform .2s; }
 #toast.on { opacity: 1; transform: translate(-50%, 0); }
+
+/* ---- notion-ish block affordances ---- */
+section[id] > h2 { position: relative; }
+.anchor {
+  background: none; border: 0; cursor: pointer; padding: 0 0 0 9px;
+  font: 15px var(--mono); color: var(--muted); opacity: 0;
+  transition: opacity .18s, color .18s;
+}
+section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
+.anchor:hover { color: var(--accent); }
+
+/* ---- palette, grouped like a quick-find ---- */
+.pal-group { margin: 8px 0 3px; padding: 0 12px;
+             font: 10px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase;
+             color: var(--muted); opacity: .75; }
+.pal-list .pal-group:first-child { margin-top: 2px; }
+.pal-row { display: grid; grid-template-columns: 20px 1fr auto; align-items: baseline; gap: 10px; }
+.pal-i { font: 12px var(--mono); color: var(--muted); text-align: center; }
+.pal-row.on .pal-i { color: var(--accent); }
+.pal-t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

@@ -38,6 +38,8 @@
     if (i === activeIdx) return;
     activeIdx = i;
     links.forEach((a, j) => a.classList.toggle("on", j === i));
+    const slug = (links[i]?.getAttribute("href") || "#top").slice(1);
+    dispatchEvent(new CustomEvent("sectionchange", { detail: slug }));
     if (!pill.matches(":hover")) settle();
   }
 
