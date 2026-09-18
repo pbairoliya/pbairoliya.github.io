@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pratik Bairoliya — SWE @ Capital One</title>
-<meta name="description" content="Software Engineer II at Capital One. I own the nightly end-of-day close — posting, settlement and ledger cutoff across Card and Bank, run on Temporal.">
+<meta name="description" content="Backend and infrastructure engineer at Capital One. I own the nightly end-of-day close — posting, settlement and ledger cutoff across Card and Bank — in Go on Temporal, Kubernetes and AWS.">
 <link rel="preconnect" href="https://cdn.simpleicons.org" crossorigin>
 
 <link rel="canonical" href="https://pbairoliya.github.io/">
@@ -22,10 +22,10 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <!-- /social -->
 <script>try{var t=localStorage.getItem("theme");if(t&&t!=="system")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
-<link rel="stylesheet" href="css/base.css?v=25">
-<link rel="stylesheet" href="css/components.css?v=25">
-<link rel="stylesheet" href="css/motion.css?v=25">
-<link rel="stylesheet" href="css/tour.css?v=25">
+<link rel="stylesheet" href="css/base.css?v=26">
+<link rel="stylesheet" href="css/components.css?v=26">
+<link rel="stylesheet" href="css/motion.css?v=26">
+<link rel="stylesheet" href="css/tour.css?v=26">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -35,15 +35,23 @@
   <h1>Pratik Bairoliya</h1>
   <p class="tagline">SWE @ Capital One</p>
   <p class="lede">
-    Every night, a bank has to close its books. I own that job at Capital One — the run that
-    posts the day's transactions, settles balances and cuts the ledger across Card and Bank.
-    It gets one shot, so most of my work is making a very large batch fail loudly and early
-    instead of quietly at the last minute.
+    Backend and infrastructure engineer on Capital One's <strong>End-of-Day</strong> team.
+    I own the nightly close — posting, settlement and ledger cutoff across Card and Bank —
+    written in <strong>Go</strong>, orchestrated on <strong>Temporal</strong> and
+    <strong>Kubernetes</strong>, publishing <strong>99M+ account records a night</strong>
+    through <strong>PySpark</strong> and <strong>Hive</strong> on <strong>AWS EMR</strong>.
   </p>
   <p>
-    Off the clock I build small tools that use an AI model but keep everything on your own
-    laptop — a daily briefing, a receipt scanner. The fun part isn't the model, it's making
-    something that guesses behave like something that doesn't.
+    One window a night and no retry, so most of the engineering is making a large distributed
+    batch fail loudly and early rather than quietly at cutoff: distributed tracing in
+    <strong>OpenTelemetry</strong> and <strong>Splunk</strong> that pages on-call mid-run,
+    day-over-day reconciliation in <strong>Databricks</strong> that catches a bad cycle before
+    it ships, and <strong>Argo CD</strong> rollouts that are one revision from a rollback.
+  </p>
+  <p>
+    Outside work I build local-first tools — a daily briefing, a receipt pipeline — that run a
+    language model entirely on-device. The interesting problem there is not the model, it is
+    making something that guesses behave like something that does not.
   </p>
   </div>
 
@@ -388,14 +396,14 @@
   </div>
 </div>
 
-<script src="js/field.js?v=25" defer></script>
-<script src="js/palette.js?v=25" defer></script>
-<script src="js/spotlight.js?v=25" defer></script>
-<script src="js/sidebar.js?v=25" defer></script>
-<script src="js/reveal.js?v=25" defer></script>
-<script src="js/a11y.js?v=25" defer></script>
-<script src="js/blocks.js?v=25" defer></script>
-<script src="js/tour.js?v=25" defer></script>
-<script src="js/settings.js?v=25" defer></script>
+<script src="js/field.js?v=26" defer></script>
+<script src="js/palette.js?v=26" defer></script>
+<script src="js/spotlight.js?v=26" defer></script>
+<script src="js/sidebar.js?v=26" defer></script>
+<script src="js/reveal.js?v=26" defer></script>
+<script src="js/a11y.js?v=26" defer></script>
+<script src="js/blocks.js?v=26" defer></script>
+<script src="js/tour.js?v=26" defer></script>
+<script src="js/settings.js?v=26" defer></script>
 </body>
 </html>

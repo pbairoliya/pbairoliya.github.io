@@ -19,11 +19,25 @@
      to make an onboarding feel like it was written for somebody else. */
   const PHONE = matchMedia("(max-width: 900px)").matches;
 
+  /* The rail can be collapsed away, in which case .side-head is hidden and the
+     only thing to point at is the button that brings it back. Resolved when the
+     tour starts, not when the file loads. */
+  const railVisible = () => {
+    const el = document.querySelector(".side-head");
+    return !!el && el.getClientRects().length > 0;
+  };
+
   const DESKTOP_STEPS = [
     {
-      sel: ".side-head",
-      title: "Everything lives in the sidebar",
-      body: "Sections of this page, then my resume and links. Press [ to hide it.",
+      get sel() { return railVisible() ? ".side-head" : ".side-toggle"; },
+      get title() {
+        return railVisible() ? "Everything lives in the sidebar" : "The menu lives here";
+      },
+      get body() {
+        return railVisible()
+          ? "Sections of this page, then my resume and links. Press [ to hide it."
+          : "Sections of this page, my resume and my links. Press [ to bring it back.";
+      },
     },
     {
       sel: ".palette-btn",
