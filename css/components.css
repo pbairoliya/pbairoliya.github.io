@@ -15,6 +15,9 @@
   border-right: 1px solid var(--line);
   overflow-y: auto; overscroll-behavior: contain;
 }
+/* overflow-y:auto computes overflow-x to auto, which clipped the collapsed
+   tooltip that escapes the rail. Only the collapsed rail needs to spill. */
+@media (min-width: 900.02px) { body.side-collapsed .side { overflow: visible; } }
 a.side-head { color: inherit; border-radius: 9px; }
 a.side-head:hover { background: var(--code-bg); text-decoration: none; }
 .side-head { display: flex; align-items: center; gap: 9px; padding: 6px 10px 14px; }
@@ -42,7 +45,9 @@ a.side-head:hover { background: var(--code-bg); text-decoration: none; }
              font: 11px/1.5 var(--mono); color: var(--muted); }
 .side-foot a { padding: 4px 0; font: 11px var(--mono); }
 
-.side-toggle { position: fixed; z-index: 11; display: none; place-items: center;
+/* The toggle must sit UNDER the sheet it opens, or it floats over the sheet's
+   own header. Above the scrim (7), below the sheet (8). */
+.side-toggle { position: fixed; z-index: 6; display: none; place-items: center;
                top: max(12px, env(safe-area-inset-top)); left: clamp(12px, 3vw, 18px);
                width: 36px; height: 36px; border-radius: 999px; cursor: pointer;
                background: color-mix(in srgb, var(--panel) 84%, transparent);
@@ -54,15 +59,16 @@ a.side-head:hover { background: var(--code-bg); text-decoration: none; }
               background: rgba(8,9,12,.45); backdrop-filter: blur(2px); }
 
 /* the page sits beside the rail rather than under it */
-@media (min-width: 901px) {
-  .wrap { margin-left: max(auto, 218px); }
-  body { padding-left: 218px; }
+@media (min-width: 900.02px) {
+  body:not(.bare) { padding-left: 218px; }
 }
 @media (max-width: 900px) {
   .side-collapse { display: none; }
   .side { transform: translateX(-102%); transition: transform .28s cubic-bezier(.2,.8,.3,1);
           box-shadow: 0 0 60px rgba(0,0,0,.4); width: min(260px, 82vw); }
   .side-toggle { display: grid; }
+  /* once the sheet is open the toggle is both redundant and in the way */
+  body.side-open .side-toggle { opacity: 0; pointer-events: none; }
   body.side-open .side { transform: none; }
   body.side-open .side-scrim { display: block; }
 }
@@ -205,7 +211,7 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
 .post .callout { font: 400 clamp(15px, 3.8vw, 17px)/1.6 var(--serif); color: var(--ink); }
 
 /* ---- settings ---- */
-.gear { position: fixed; z-index: 11; display: grid; place-items: center;
+.gear { position: fixed; z-index: 6; display: grid; place-items: center;
         top: max(12px, env(safe-area-inset-top)); right: clamp(12px, 3vw, 18px);
         width: 36px; height: 36px; border-radius: 999px; cursor: pointer;
         background: color-mix(in srgb, var(--panel) 80%, transparent);
@@ -216,7 +222,7 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
 .gear svg { width: 17px; height: 17px; fill: currentColor; }
 .gear[aria-expanded="true"] { color: var(--accent); border-color: var(--accent); }
 
-.settings { position: fixed; z-index: 10; display: none;
+.settings { position: fixed; z-index: 12; display: none;
             top: calc(max(12px, env(safe-area-inset-top)) + 44px);
             right: clamp(12px, 3vw, 18px); width: 226px; padding: 6px;
             background: color-mix(in srgb, var(--panel) 94%, transparent);
@@ -276,7 +282,7 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
 .side-collapse svg { width: 17px; height: 17px; fill: currentColor; }
 
 /* collapsed: the rail keeps its icons and the page takes the width back */
-@media (min-width: 901px) {
+@media (min-width: 900.02px) {
   body.side-collapsed .side { width: 58px; padding-inline: 9px; }
   body.side-collapsed { padding-left: 58px; }
   body.side-collapsed .side-name,
@@ -318,7 +324,7 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
    Collapsing hides every label, which leaves a column of emoji with no way to
    know what they do. A tooltip on hover/focus restores the name without giving
    the width back. */
-@media (min-width: 901px) {
+@media (min-width: 900.02px) {
   body.side-collapsed .side a { position: relative; }
   body.side-collapsed .side a::after {
     content: attr(data-name);

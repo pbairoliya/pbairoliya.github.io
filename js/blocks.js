@@ -12,10 +12,11 @@
     a.className = "anchor";
     a.textContent = "#";
     a.title = "Copy link to this section";
-    a.setAttribute("aria-label", `Copy link to ${h.textContent.trim()}`);
+    const name = h.textContent.trim();          // read BEFORE the button is appended
+    a.setAttribute("aria-label", `Copy link to ${name}`);
     a.addEventListener("click", async () => {
       const url = location.href.split("#")[0] + "#" + h.parentElement.id;
-      try { await navigator.clipboard.writeText(url); toast("Link to “" + h.textContent.trim() + "” copied"); }
+      try { await navigator.clipboard.writeText(url); toast("Link to “" + name + "” copied"); }
       catch { toast(url); }
       history.replaceState(null, "", "#" + h.parentElement.id);
     });
@@ -23,8 +24,12 @@
   });
 
   // a deep link should land on the section, not halfway through it
-  if (location.hash) {
-    const el = document.querySelector(location.hash);
+  // A shared link can carry anything; "#1" is not a valid selector and used to
+  // throw, taking the rest of this script with it.
+  if (location.hash.length > 1) {
+    let el = null;
+    try { el = document.querySelector(location.hash); } catch { /* not a selector */ }
+    el ||= document.getElementById(decodeURIComponent(location.hash.slice(1)));
     if (el) requestAnimationFrame(() => el.scrollIntoView({ block: "start" }));
   }
 })();

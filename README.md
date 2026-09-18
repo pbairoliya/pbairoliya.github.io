@@ -1,6 +1,6 @@
 # pbairoliya.github.io
 
-Personal site. Plain HTML, three stylesheets, five small scripts — no framework,
+Personal site. Plain HTML, four stylesheets, nine small scripts — no framework,
 no build step, no dependencies. Edit, commit, push; GitHub Pages serves it.
 
 ```
@@ -21,6 +21,7 @@ js/spotlight.js                pointer-following highlight
 js/reveal.js                   reveal-on-scroll
 js/blocks.js                   per-section copy-link anchors
 js/tour.js                     first-visit walkthrough
+js/a11y.js                     skip-link and touch corrections
 js/settings.js                 the gear popover
 css/tour.css                   its styles
 ```

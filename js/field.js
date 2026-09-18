@@ -167,13 +167,29 @@
 
 
     ctx.globalAlpha = 1;
-    if (!document.hidden) requestAnimationFrame(frame);
+    if (document.hidden) { running = false; return; }   // park, do not queue
+    requestAnimationFrame(frame);
   }
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) requestAnimationFrame(frame);
-  });
+  /* One guard, because the frame already queued before the tab hid will still
+     fire on return. Without it each hide/show doubled the number of live loops
+     and the canvas ran at 2^n speed. */
+  let running = false;
+  const start = () => {
+    if (running || document.hidden) return;
+    running = true;
+    requestAnimationFrame(frame);
+  };
+  document.addEventListener("visibilitychange", start);
 
-  addEventListener("resize", seed, { passive: true });
+  /* Mobile fires resize as the URL bar shows and hides during a scroll, and
+     seed() re-randomises every glyph — the whole background reshuffling while
+     you read. Debounce, and ignore height-only changes. */
+  let reseed, lastW = 0;
+  addEventListener("resize", () => {
+    if (innerWidth === lastW) return;
+    clearTimeout(reseed);
+    reseed = setTimeout(() => { lastW = innerWidth; seed(); }, 180);
+  }, { passive: true });
   addEventListener("scroll", () => {
     const wrap = document.querySelector(".wrap");
     if (wrap) colCentre = wrap.getBoundingClientRect().left + wrap.offsetWidth / 2;
@@ -188,8 +204,15 @@
   /* The field is decoration, so it must never be on the critical path: seed and
      start it once the browser is idle, after first paint. */
   driftHue(performance.now());          // colours are cheap and are needed immediately
-  const start = () => { seed(); requestAnimationFrame(frame); };
-  (window.requestIdleCallback || (f => setTimeout(f, 200)))(start, { timeout: 900 });
+  (window.requestIdleCallback || (f => setTimeout(f, 200)))(
+    () => { seed(); start(); }, { timeout: 900 });
+
+  /* Under reduced motion the loop never runs, so the colours are computed once
+     at load — before palette.js has applied a stored data-theme. Recompute
+     whenever the theme changes, or an explicit light/dark visitor is stuck with
+     the other theme's accents forever. */
+  addEventListener("themechange", () => driftHue(performance.now()));
+  darkQ.addEventListener?.("change", () => driftHue(performance.now()));
 
   console.log(
     "%cyou opened the console. good instinct.",

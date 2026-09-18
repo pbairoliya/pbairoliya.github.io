@@ -15,12 +15,12 @@
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <!-- /social -->
-<link rel="stylesheet" href="../css/base.css?v=15">
-<link rel="stylesheet" href="../css/components.css?v=15">
-<link rel="stylesheet" href="../css/motion.css?v=15">
+<link rel="stylesheet" href="../css/base.css?v=16">
+<link rel="stylesheet" href="../css/components.css?v=16">
+<link rel="stylesheet" href="../css/motion.css?v=16">
 </head>
 <body>
-<a class="skip" href="#side">Skip to navigation</a>
+<a class="skip" href="#side" data-skip>Skip to navigation</a>
 
 <button class="side-toggle" id="side-toggle" type="button"
         aria-label="Open menu" aria-expanded="false" aria-controls="side">
@@ -43,6 +43,19 @@
   <div class="set-sep"></div>
   <a class="set-item" href="../">Back to the start <span>↰</span></a>
   <a class="set-item" href="https://github.com/pbairoliya/pbairoliya.github.io">Site source <span>↗</span></a>
+</div>
+
+<div id="palette" aria-hidden="true" role="dialog" aria-label="Command palette">
+  <div class="pal-box">
+    <input type="text" placeholder="Type to filter — résumé, email, projects, theme…"
+           aria-label="Filter commands" autocomplete="off" spellcheck="false">
+    <div class="pal-list"></div>
+    <div class="pal-foot">
+      <span><span class="kbd">↑↓</span> move</span>
+      <span><span class="kbd">↵</span> run</span>
+      <span><span class="kbd">esc</span> close</span>
+    </div>
+  </div>
 </div>
 
 <nav class="side" id="side" aria-label="Pages">
@@ -138,11 +151,12 @@ lc sync / lc push        generate the repo, commit, push (nightly via launchd)</
 
   <footer><a href="../">← back</a></footer>
 </div>
-<script src="../js/field.js?v=15" defer></script>
-<script src="../js/palette.js?v=15" defer></script>
-<script src="../js/spotlight.js?v=15" defer></script>
-<script src="../js/sidebar.js?v=15" defer></script>
-<script src="../js/reveal.js?v=15" defer></script>
-<script src="../js/settings.js?v=15" defer></script>
+<script src="../js/field.js?v=16" defer></script>
+<script src="../js/palette.js?v=16" defer></script>
+<script src="../js/spotlight.js?v=16" defer></script>
+<script src="../js/sidebar.js?v=16" defer></script>
+<script src="../js/reveal.js?v=16" defer></script>
+<script src="../js/a11y.js?v=16" defer></script>
+<script src="../js/settings.js?v=16" defer></script>
 </body>
 </html>

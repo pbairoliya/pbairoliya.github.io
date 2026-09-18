@@ -19,7 +19,12 @@
   document.addEventListener("click", e => {
     if (pop.classList.contains("on") && !pop.contains(e.target)) close();
   });
-  addEventListener("keydown", e => { if (e.key === "Escape") close(); });
+  addEventListener("keydown", e => {
+    // one Escape should close ONE thing — the topmost open layer
+    if (e.key !== "Escape") return;
+    if (document.querySelector(".tour") || document.getElementById("palette")?.classList.contains("on")) return;
+    if (pop.classList.contains("on")) { e.stopPropagation(); close(); }
+  });
 
   // the tour and the palette own their own behaviour; settings just points at them
   pop.querySelector("[data-replay-tour]")?.addEventListener("click", () => {
