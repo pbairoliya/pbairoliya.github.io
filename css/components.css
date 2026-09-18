@@ -426,6 +426,40 @@ body.side-open { overflow: hidden; }
 /* blocks.js adds this once the sweep has finished. Without it the stagger is a
    permanent transition-delay and the last node takes 780ms to answer a hover. */
 .timeline.settled .job-node { transition-delay: 0s; }
+
+/* Each role assembles as the fill reaches it: the node pops, a ring leaves it,
+   and the heading slides in off the line. Entrances are ANIMATIONS, not
+   transitions — a transition-delay would stay on the element and make every
+   later hover answer late, which is the bug the .settled class above exists to
+   undo. `backwards` fill holds the from-state during the delay and hands the
+   element back to its own styles afterwards, so nothing is locked. */
+.timeline.drawn .job-node {
+  animation: node-pop .55s cubic-bezier(.34,1.5,.64,1) calc(var(--d, 0) * 1ms) backwards;
+}
+@keyframes node-pop {
+  0%   { transform: scale(.2); }
+  55%  { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+.job-node::before {
+  content: ""; position: absolute; inset: -2px; border-radius: inherit;
+  border: 2px solid var(--accent); opacity: 0; pointer-events: none;
+}
+.timeline.drawn .job-node::before {
+  animation: node-ring .75s ease-out calc(var(--d, 0) * 1ms) backwards;
+}
+@keyframes node-ring {
+  from { transform: scale(1);   opacity: .75; }
+  to   { transform: scale(2.6); opacity: 0; }
+}
+.timeline.drawn .job-head,
+.timeline.drawn .job-sub {
+  animation: role-in .5s cubic-bezier(.2,.8,.3,1) calc(var(--d, 0) * 1ms + 70ms) backwards;
+}
+@keyframes role-in { from { opacity: 0; transform: translateX(-12px); } }
+
+/* the open role's bullets wait their turn rather than arriving before the line */
+.timeline:not(.drawn) .job-body li { opacity: 0; transform: translateX(-12px); }
 #work .job .rail { display: none; }   /* the timeline is this section's rail */
 
 .job-node {
@@ -435,7 +469,8 @@ body.side-open { overflow: hidden; }
   transition: transform .34s cubic-bezier(.34,1.4,.64,1),
               border-color .3s, background-color .3s, box-shadow .3s;
 }
-.job:hover .job-node { border-color: var(--accent); transform: scale(1.18); }
+.job:hover .job-node { border-color: var(--accent); transform: scale(1.18);
+                       box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 14%, transparent); }
 .job:not(.shut) .job-node {
   border-color: var(--accent); background: var(--accent);
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);
@@ -467,30 +502,53 @@ body.side-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .job-node { transition: none; }
   .job:hover .job-node { transform: none; }
+  .timeline.drawn .job-node,
+  .timeline.drawn .job-node::before,
+  .timeline.drawn .job-head,
+  .timeline.drawn .job-sub { animation: none; }
+  .timeline:not(.drawn) .job-body li { opacity: 1; transform: none; }
   .tl-line i { transition: none; }
   .timeline.drawn .job-node { transition-delay: 0s; }
   .timeline.drawn .job-now .job-node::after { animation: none; opacity: 0; }
 }
 
 /* ---- coursework, linked straight at the repositories ---- */
-.course-lead { color: var(--muted); font-size: var(--fs-md); margin: var(--s5) 0 var(--s3); }
 .courses { list-style: none; padding: 0; margin: 0;
            display: grid; gap: var(--s2);
            grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
 .courses li { margin: 0; }
-.courses a { display: flex; align-items: baseline; gap: var(--s3);
+.course-head { margin: var(--s6) 0 var(--s3); align-items: baseline; }
+.course-head .stack-label { margin: 0; }
+.course-head a { white-space: nowrap; }
+.courses a { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr);
+             gap: var(--s3); align-items: center; overflow: hidden;
              padding: var(--s3) var(--s4); border: 1px solid var(--line);
              border-radius: var(--r-md); background: var(--panel); color: var(--ink);
              transition: border-color .2s, transform .2s cubic-bezier(.2,.8,.3,1); }
+.courses a::after {
+  content: ""; position: absolute; inset: 0 auto 0 0; width: 3px;
+  background: linear-gradient(var(--accent), var(--accent-2));
+  transform: scaleY(0); transform-origin: bottom;
+  transition: transform .3s cubic-bezier(.2,.8,.3,1);
+}
 .courses a:hover { text-decoration: none; border-color: var(--accent); transform: translateY(-2px); }
-.courses b { flex: 0 0 auto; font: 700 var(--fs-2xs)/1 var(--sans);
-             letter-spacing: var(--ls-caps); color: var(--accent);
-             transition: color .8s linear; }
+.courses a:hover::after { transform: scaleY(1); }
+.courses b { font: 700 var(--fs-2xs)/1 var(--sans); letter-spacing: var(--ls-caps);
+             color: var(--accent); transition: color .8s linear; }
 .courses span { min-width: 0; color: var(--muted); font-size: var(--fs-md);
                 line-height: var(--lh-snug); }
+.courses strong { display: block; color: var(--ink); font-weight: 600; }
 
 /* ---- projects read as a numbered set ---- */
 #projects .card { position: relative; overflow: hidden; }
+/* An index per card. Big, faint, and out of the way until you hover it — it
+   gives the section a rhythm without adding anything to read. */
+.card-no { display: inline-block; margin-right: var(--s3); vertical-align: baseline;
+           font: 700 var(--fs-2xs)/1 var(--sans); letter-spacing: var(--ls-caps);
+           color: var(--muted); transition: color .25s; }
+#projects .card:hover .card-no { color: var(--accent); }
+.armed #projects .card.reveal { transition-delay: calc(var(--n, 0) * 70ms); }
+.armed #projects .card.reveal.seen { transition-delay: calc(var(--n, 0) * 70ms); }
 #projects .card::before {
   content: ""; position: absolute; inset: 0 auto 0 0; width: 3px;
   background: linear-gradient(var(--accent), var(--accent-2));
@@ -502,7 +560,9 @@ body.side-open { overflow: hidden; }
 #projects .card:hover .row h3 { transform: translateX(4px); }
 
 @media (prefers-reduced-motion: reduce) {
-  .courses a, #projects .card::before, #projects .card .row h3 { transition: none; }
+  .courses a, .courses a::after, #projects .card::before,
+  #projects .card .row h3, .card-no { transition: none; }
+  .armed #projects .card.reveal, .armed #projects .card.reveal.seen { transition-delay: 0s; }
   .courses a:hover, #projects .card:hover .row h3 { transform: none; }
 }
 
