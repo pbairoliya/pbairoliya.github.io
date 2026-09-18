@@ -23,10 +23,10 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <!-- /social -->
 <script>try{var t=localStorage.getItem("theme");if(t&&t!=="system")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
-<link rel="stylesheet" href="css/base.css?v=45">
-<link rel="stylesheet" href="css/components.css?v=45">
-<link rel="stylesheet" href="css/motion.css?v=45">
-<link rel="stylesheet" href="css/tour.css?v=45">
+<link rel="stylesheet" href="css/base.css?v=46">
+<link rel="stylesheet" href="css/components.css?v=46">
+<link rel="stylesheet" href="css/motion.css?v=46">
+<link rel="stylesheet" href="css/tour.css?v=46">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -69,17 +69,18 @@
   </section>
 
   <div class="timeline">
+    <div class="tl-axis reveal" aria-hidden="true"></div>
     <span class="tl-line" aria-hidden="true"><i></i></span>
 
   <section id="work">
   <h2 class="sr-only">Experience</h2>
 
     <div class="job reveal job-now" data-kind="work" data-start="2026-07" data-end="now">
-      <span class="job-year" aria-hidden="true">2026</span>
       <span class="job-node" aria-hidden="true"></span>
       <h3 class="job-head">
         <button class="job-toggle" type="button" aria-expanded="true" aria-controls="job-1">
           <span class="job-name">Capital One — Software Engineer II <i>McLean, VA</i></span>
+          <span class="span" aria-hidden="true"><i></i></span>
           <span class="meta">Jul 2026 – Present</span>
           <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 10.5 12 15l4.5-4.5"/></svg>
         </button>
@@ -96,13 +97,13 @@
       </div>
     </div>
 
-    <div class="job reveal" data-kind="work" data-start="2024-05" data-end="2026-07">
-      <span class="job-year" aria-hidden="true">2024</span>
+    <div class="job reveal" data-kind="work" data-start="2025-08" data-end="2026-07">
       <span class="job-node" aria-hidden="true"></span>
       <h3 class="job-head">
         <button class="job-toggle" type="button" aria-expanded="true" aria-controls="job-2">
           <span class="job-name">Capital One — Software Engineer I <i>McLean, VA</i></span>
-          <span class="meta">May 2024 – Jul 2026</span>
+          <span class="span" aria-hidden="true"><i></i></span>
+          <span class="meta">Aug 2025 – Jul 2026</span>
           <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 10.5 12 15l4.5-4.5"/></svg>
         </button>
       </h3>
@@ -114,27 +115,46 @@
           <li>Built the nightly <strong>PySpark</strong>/<strong>Databricks</strong> reconciliation — day-over-day aggregate diffs alert before a bad cycle ships.</li>
           <li>Cut data egress on the nightly <strong>99M+ Card account</strong> publish by performance-tuning <strong>Hive</strong> sort on <strong>AWS EMR</strong>.</li>
           <li>Rolled <strong>proof-of-possession tokens</strong> across Card and Bank endpoints, binding each call to a key a thief lacks.</li>
-          <li>Rebuilt the military rewards catalog in <strong>Vue.js</strong>/<strong>Spring Boot</strong>/<strong>DynamoDB</strong>: <strong>2.8×</strong> faster, <strong>$9M</strong> projected revenue.</li>
           </ul>
         </div>
       </div>
     </div>
 
-    <div class="job reveal" data-kind="work" data-start="2023-06" data-end="2024-05">
-      <span class="job-year" aria-hidden="true">2023</span>
+    <div class="job reveal" data-kind="work" data-start="2024-05" data-end="2024-08">
       <span class="job-node" aria-hidden="true"></span>
       <h3 class="job-head">
         <button class="job-toggle" type="button" aria-expanded="true" aria-controls="job-3">
-          <span class="job-name">Fidelity Investments — Software Engineer <i>Durham, NC</i></span>
-          <span class="meta">Jun 2023 – May 2024</span>
+          <span class="job-name">Capital One — Software Engineering Intern <i>Richmond, VA</i></span>
+          <span class="span" aria-hidden="true"><i></i></span>
+          <span class="meta">May 2024 – Aug 2024</span>
           <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 10.5 12 15l4.5-4.5"/></svg>
         </button>
       </h3>
       <div class="job-body" id="job-3">
         <div>
           <ul>
-          <li>Moved mainframe stock and job workflows to <strong>AWS</strong> with <strong>Terraform</strong> — <strong>45%</strong> of volume, <strong>400+</strong> associates.</li>
-          <li>Modeled system metadata as a <strong>Neo4j</strong> graph; graph queries found and removed <strong>5,000+</strong> duplicate records.</li>
+          <li>Moved the military rewards catalog off SharePoint into a <strong>Vue.js</strong>/<strong>Spring Boot</strong>/<strong>DynamoDB</strong> app: <strong>2.8×</strong> faster.</li>
+          <li>Shipped it to production myself on <strong>Terraform</strong>, <strong>Docker</strong> and <strong>Jenkins</strong> pipelines.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="job reveal" data-kind="work" data-start="2023-06" data-end="2024-05">
+      <span class="job-node" aria-hidden="true"></span>
+      <h3 class="job-head">
+        <button class="job-toggle" type="button" aria-expanded="true" aria-controls="job-4">
+          <span class="job-name">Fidelity Investments — Software Engineer <i>Durham, NC</i></span>
+          <span class="span" aria-hidden="true"><i></i></span>
+          <span class="meta">Jun 2023 – May 2024</span>
+          <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 10.5 12 15l4.5-4.5"/></svg>
+        </button>
+      </h3>
+      <div class="job-body" id="job-4">
+        <div>
+          <ul>
+          <li>Migrated Fidelity's mainframe files and job calls to <strong>AWS</strong> with <strong>Terraform</strong>, serving <strong>400+</strong> associates.</li>
+          <li>Built the single source of truth for every mainframe API as a <strong>Neo4j</strong> graph, cutting <strong>5,000+</strong> duplicate nodes.</li>
           <li>Delivered the full stack on a 4-person team: <strong>Angular</strong> UI, <strong>Java</strong> services, <strong>S3</strong> metadata sync.</li>
           </ul>
         </div>
@@ -142,16 +162,16 @@
     </div>
 
     <div class="job reveal" data-kind="teaching">
-      <span class="job-year" aria-hidden="true"></span>
       <span class="job-node" aria-hidden="true"></span>
       <h3 class="job-head">
-        <button class="job-toggle" type="button" aria-expanded="true" aria-controls="job-4">
+        <button class="job-toggle" type="button" aria-expanded="true" aria-controls="job-5">
           <span class="job-name">NC State — Teaching Assistant <i>Raleigh, NC</i></span>
+          <span class="span" aria-hidden="true"><i></i></span>
           <span class="meta">CSC 221 · MA 405</span>
           <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 10.5 12 15l4.5-4.5"/></svg>
         </button>
       </h3>
-      <div class="job-body" id="job-4">
+      <div class="job-body" id="job-5">
         <div>
           <ul>
           <li>Taught <strong>CSC 221</strong> (Python) and <strong>MA 405</strong> (Linear Algebra): labs, office hours and grading.</li>
@@ -161,16 +181,16 @@
     </div>
 
     <div class="job reveal" data-kind="research" data-start="2022-01" data-end="2024-12">
-      <span class="job-year" aria-hidden="true">2022</span>
       <span class="job-node" aria-hidden="true"></span>
       <h3 class="job-head">
-        <button class="job-toggle" type="button" aria-expanded="true" aria-controls="job-5">
+        <button class="job-toggle" type="button" aria-expanded="true" aria-controls="job-6">
           <span class="job-name">NC State — Undergraduate Researcher <i>Raleigh, NC</i></span>
+          <span class="span" aria-hidden="true"><i></i></span>
           <span class="meta">2022 – 2024</span>
           <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 10.5 12 15l4.5-4.5"/></svg>
         </button>
       </h3>
-      <div class="job-body" id="job-5">
+      <div class="job-body" id="job-6">
         <div>
           <ul>
           <li>Built <strong>Python</strong> tooling that automated a faculty group's data analysis.</li>
@@ -180,41 +200,40 @@
     </div>
 
     <div class="job reveal job-now" data-kind="leadership" data-start="2021-07" data-end="now">
-      <span class="job-year" aria-hidden="true">2021</span>
-      <span class="job-node" aria-hidden="true"></span>
-      <h3 class="job-head">
-        <button class="job-toggle" type="button" aria-expanded="true" aria-controls="job-6">
-          <span class="job-name">InspireNC — Co-founder &amp; Mentor <i>Raleigh, NC</i></span>
-          <span class="meta">Jul 2021 – Present</span>
-          <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 10.5 12 15l4.5-4.5"/></svg>
-        </button>
-      </h3>
-      <div class="job-body" id="job-6">
-        <div>
-          <ul>
-          <li>Co-founded a student-run non-profit teaching FIRST Robotics in NC schools; <strong>100+</strong> students across STEAM projects and robot fabrication.</li>
-          <li>Captain and mentor of <strong>FIRST Robotics Team 6908</strong>.</li>
-          <li>Taught <strong>Java</strong> to cohorts of <strong>35</strong> students, and ran pseudo-code workshops, free boot-camps and outreach events.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="job reveal" data-kind="school" data-start="2021-08" data-end="2025-05">
-      <span class="job-year" aria-hidden="true">2021</span>
       <span class="job-node" aria-hidden="true"></span>
       <h3 class="job-head">
         <button class="job-toggle" type="button" aria-expanded="true" aria-controls="job-7">
-          <span class="job-name">North Carolina State University <i>Raleigh, NC</i></span>
-          <span class="meta">Aug 2021 – May 2025</span>
+          <span class="job-name">InspireNC — Co-founder &amp; Mentor <i>Raleigh, NC</i></span>
+          <span class="span" aria-hidden="true"><i></i></span>
+          <span class="meta">Jul 2021 – Present</span>
           <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 10.5 12 15l4.5-4.5"/></svg>
         </button>
       </h3>
       <div class="job-body" id="job-7">
         <div>
           <ul>
-          <li>Graduated <strong>summa cum laude</strong> with a <strong>4.0</strong> GPA, both degrees conferred May 2025.</li>
-          <li><strong><a href="https://park.ncsu.edu/">Park Scholar</a></strong> — full merit scholarship to the top <strong>1%</strong> of applicants, for scholarship, leadership, service and character.</li>
+          <li>Co-founded a student-run non-profit running <strong>FIRST Robotics 6908</strong> for <strong>100+</strong> students.</li>
+          <li>Taught <strong>Java</strong> to cohorts of <strong>35</strong>, and ran pseudo-code workshops, free boot-camps and outreach events.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="job reveal" data-kind="school" data-start="2021-08" data-end="2025-05">
+      <span class="job-node" aria-hidden="true"></span>
+      <h3 class="job-head">
+        <button class="job-toggle" type="button" aria-expanded="true" aria-controls="job-8">
+          <span class="job-name">North Carolina State University <i>Raleigh, NC</i></span>
+          <span class="span" aria-hidden="true"><i></i></span>
+          <span class="meta">Aug 2021 – May 2025</span>
+          <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 10.5 12 15l4.5-4.5"/></svg>
+        </button>
+      </h3>
+      <div class="job-body" id="job-8">
+        <div>
+          <ul>
+          <li>Graduated <strong>summa cum laude</strong> with a <strong>4.0</strong> GPA — B.S. Computer Science and B.S. Applied Mathematics, both conferred May 2025.</li>
+          <li><strong><a href="https://park.ncsu.edu/">Park Scholar</a></strong> — full merit scholarship to the top <strong>1%</strong> of applicants, for leadership and service.</li>
           <li>Coursework across systems, security, game AI and pure maths — <a href="projects/coursework.html">four semesters of it are public</a>.</li>
           </ul>
         </div>
@@ -244,8 +263,8 @@
   </div>
 
   <p class="meta interests reveal">
-    Away from a keyboard: underwater robotics, running the Krispy Kreme Challenge, and home-lab
-    automation.
+    Away from a keyboard: competitive Bhangra dance, Taekwondo, weightlifting, and running the
+    Krispy Kreme Challenge.
   </p>
 
   </section>
@@ -532,15 +551,15 @@
   </div>
 </div>
 
-<script src="js/theme.js?v=45" defer></script>
-<script src="js/field.js?v=45" defer></script>
-<script src="js/palette.js?v=45" defer></script>
-<script src="js/spotlight.js?v=45" defer></script>
-<script src="js/sidebar.js?v=45" defer></script>
-<script src="js/reveal.js?v=45" defer></script>
-<script src="js/a11y.js?v=45" defer></script>
-<script src="js/blocks.js?v=45" defer></script>
-<script src="js/tour.js?v=45" defer></script>
-<script src="js/settings.js?v=45" defer></script>
+<script src="js/theme.js?v=46" defer></script>
+<script src="js/field.js?v=46" defer></script>
+<script src="js/palette.js?v=46" defer></script>
+<script src="js/spotlight.js?v=46" defer></script>
+<script src="js/sidebar.js?v=46" defer></script>
+<script src="js/reveal.js?v=46" defer></script>
+<script src="js/a11y.js?v=46" defer></script>
+<script src="js/blocks.js?v=46" defer></script>
+<script src="js/tour.js?v=46" defer></script>
+<script src="js/settings.js?v=46" defer></script>
 </body>
 </html>

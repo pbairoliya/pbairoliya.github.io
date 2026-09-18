@@ -90,7 +90,7 @@
           if (top < 0) job.scrollIntoView({ block: "start", behavior: "smooth" });
         }
       });
-      if (i > 0) set(job, false);
+      set(job, false);
       /* a role still running keeps a pulse on its node */
       if (/present/i.test(job.querySelector(".job-toggle .meta")?.textContent || ""))
         job.classList.add("job-now");
@@ -101,58 +101,43 @@
        changes the track's height, so every open re-scaled a fill that was
        measured against the old layout. Drawing once and staying drawn has none
        of that problem and reads better anyway. */
-    /* Two entries run alongside the rest — InspireNC since 2021, the degree
-       from 2021 to 2025 — and a list sorted by start date hides that. Each one
-       gets a bracket in a lane left of the line, spanning from its own pin up
-       to the last entry that began before it ended. Drawn from the rows'
-       measured positions, because the rows change height when they open. */
+    /* A real time axis. Every entry with dates gets a bar drawn on one shared
+       scale, so a reader sees at a glance that InspireNC and the degree ran
+       underneath four jobs. Brackets in a gutter were trying to say the same
+       thing and said it badly. Positions are percentages of the span, so the
+       lane can be any width and the whole thing survives a resize with no
+       measuring at all. */
     const track = document.querySelector(".timeline");
-    if (track) {
-      const ms = (v) => v === "now" ? Date.now() : Date.parse(v + "-01");
-      const dated = jobs.filter(j => j.dataset.start).map(j => ({
-        el: j, start: ms(j.dataset.start), end: ms(j.dataset.end || "now"),
-      }));
-      const bars = dated.map(d => {
-        // how many entries above this one began before it finished
-        const covered = dated.filter(o => o !== d && o.start > d.start && o.start <= d.end);
-        if (covered.length < 2) return null;            // only mark a real overlap
-        const top = covered.reduce((a, b) => (a.start > b.start ? a : b));
-        const bar = document.createElement("span");
-        bar.className = "tl-span";
-        bar.setAttribute("aria-hidden", "true");
-        bar.style.setProperty("--pin", getComputedStyle(d.el).getPropertyValue("--pin"));
-        track.appendChild(bar);
-        return { bar, from: top.el, to: d.el };
-      }).filter(Boolean);
+    const axis = track?.querySelector(".tl-axis");
+    if (track && axis) {
+      const ms = (v) => v === "now" ? Date.now() : Date.parse(v + "-01T00:00:00");
+      const dated = jobs.filter(j => j.dataset.start);
+      if (dated.length) {
+        const starts = dated.map(j => ms(j.dataset.start));
+        const ends   = dated.map(j => ms(j.dataset.end || "now"));
+        const y0 = new Date(Math.min(...starts)).getFullYear();
+        const y1 = new Date(Math.max(...ends)).getFullYear() + 1;
+        const t0 = Date.parse(y0 + "-01-01"), t1 = Date.parse(y1 + "-01-01");
+        const pct = (v) => ((v - t0) / (t1 - t0)) * 100;
 
-      const place = () => {
-        const base = track.getBoundingClientRect().top;
-        const lanes = [];                       // the bottom edge occupied by each lane
-        bars.forEach(({ bar, from, to }) => {
-          const a = from.querySelector(".job-node").getBoundingClientRect();
-          const b = to.querySelector(".job-node").getBoundingClientRect();
-          const top = a.top - base + a.height / 2, h = b.top - a.top;
-          bar.style.top = top + "px";
-          bar.style.height = h + "px";
-          /* Two brackets that share vertical space would draw on top of each
-             other, so pack them into the first lane that is free below. */
-          let lane = lanes.findIndex(bottom => top > bottom + 6);
-          if (lane < 0) lane = lanes.length;
-          lanes[lane] = top + h;
-          bar.style.setProperty("--lane", lane);
+        for (let y = y0; y < y1; y++) {
+          const tick = document.createElement("i");
+          tick.style.left = pct(Date.parse(y + "-01-01")) + "%";
+          tick.dataset.year = String(y).slice(2);
+          axis.appendChild(tick);
+        }
+        dated.forEach(j => {
+          const bar = j.querySelector(".span > i");
+          if (!bar) return;
+          const a = pct(ms(j.dataset.start)), b = pct(ms(j.dataset.end || "now"));
+          bar.style.left = a + "%";
+          bar.style.width = Math.max(b - a, 1.6) + "%";
+          bar.style.setProperty("--e", (1 + [...dated].indexOf(j)));
         });
-      };
-      if (bars.length) {
-        let q = false;
-        const relayout = () => { if (!q) { q = true; requestAnimationFrame(() => { q = false; place(); }); } };
-        addEventListener("resize", relayout, { passive: true });
-        track.addEventListener("transitionend", e => {
-          if (e.propertyName === "grid-template-rows") place();
-        });
-        jobs.forEach(j => j.addEventListener("click", relayout));
-        place();
+        track.classList.add("has-axis");
       }
     }
+
     if (track) {
       jobs.forEach((j, n) => j.style.setProperty("--d", 120 + n * 150));
       const last = 120 + (jobs.length - 1) * 150;

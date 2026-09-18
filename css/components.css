@@ -410,15 +410,11 @@ body.side-open { overflow: hidden; }
 /* A ruler down the left: start year, then the line, then the row. Every entry
    collapses to a single line, so seven of them read at a glance instead of
    filling a screen. */
-.timeline .job { position: relative; padding-left: 96px; }
-.job-year { position: absolute; left: 20px; top: 15px; width: 38px; text-align: right;
-            font: 700 var(--fs-2xs)/1 var(--sans); letter-spacing: var(--ls-caps);
-            color: var(--muted); transition: color .3s; }
-.job:hover .job-year, .job:not(.shut) .job-year { color: var(--accent); }
+.timeline .job { position: relative; padding-left: 40px; }
 /* One line for the whole run, drawn as you scroll past it. The grey track spans
    all three years; the gradient fill is how far down them you have read. */
 .timeline { position: relative; margin: var(--s8) 0 var(--s7); }
-.tl-line { position: absolute; left: 70px; top: 27px; bottom: 27px; width: 2px;
+.tl-line { position: absolute; left: 14px; top: 27px; bottom: 27px; width: 2px;
            background: var(--line); border-radius: var(--r-pill); }
 .tl-line i { position: absolute; inset: 0; border-radius: inherit;
              background: linear-gradient(var(--accent), var(--accent-2));
@@ -456,8 +452,7 @@ body.side-open { overflow: hidden; }
   from { transform: scale(1);   opacity: .75; }
   to   { transform: scale(2.6); opacity: 0; }
 }
-.timeline.drawn .job-head,
-.timeline.drawn .job-year {
+.timeline.drawn .job-head {
   animation: role-in .45s cubic-bezier(.2,.8,.3,1) calc(var(--d, 0) * 1ms + 70ms) backwards;
 }
 @keyframes role-in { from { opacity: 0; transform: translateX(-12px); } }
@@ -472,8 +467,7 @@ body.side-open { overflow: hidden; }
    stay stuck at opacity 0, which `backwards` fill would otherwise allow. */
 .timeline.settled .job-node,
 .timeline.settled .job-node::before,
-.timeline.settled .job-head,
-.timeline.settled .job-year { animation: none; }
+.timeline.settled .job-head { animation: none; }
 
 /* Opening an entry replays its pin's pop and ring — and nothing else. An
    earlier edit ran these two selector lists together, which left every ROW
@@ -489,7 +483,7 @@ body.side-open { overflow: hidden; }
 #work .job .rail { display: none; }   /* the timeline is this section's rail */
 
 .job-node {
-  position: absolute; left: 63px; top: 14px; z-index: 1;   /* over the line */ width: 16px; height: 16px;
+  position: absolute; left: 7px; top: 14px; z-index: 1;   /* over the line */ width: 16px; height: 16px;
   border-radius: var(--r-pill); box-sizing: border-box;
   border: 2px solid var(--line); background: var(--panel);
   transition: transform .34s cubic-bezier(.34,1.4,.64,1),
@@ -513,11 +507,10 @@ body.side-open { overflow: hidden; }
 
 
 @media (max-width: 560px) {
-  .timeline .job { padding-left: 64px; }
-  .job-year { left: 16px; width: 24px; font-size: 10px; }
-  .tl-line { left: 44px; }
-  .job-node { left: 37px; }
-  #education > .reveal, #education .interests { padding-left: 64px; }
+  .timeline .job { padding-left: 30px; }
+  .tl-line { left: 9px; }
+  .job-node { left: 2px; }
+  #education > .reveal, #education .interests { padding-left: 30px; }
 }
 /* The current role is still running, so its node keeps a pulse. */
 .timeline.drawn .job-now .job-node::after {
@@ -617,8 +610,8 @@ body.side-open { overflow: hidden; }
 
 
 /* School's contents line up with the entries above them */
-#education > .reveal { padding-left: 96px; }
-#education .interests { padding-left: 96px; }
+#education > .reveal { padding-left: 40px; }
+#education .interests { padding-left: 40px; }
 .shelf { display: block; }
 
 @media (max-width: 560px) {
@@ -651,15 +644,51 @@ body.side-open { overflow: hidden; }
   .shelf.filtering .card { animation: none; }
 }
 
-/* A concurrency bracket: this entry was running while the ones above it started.
-   It lives in its own lane so it never crowds the pins. */
-.tl-span { position: absolute; left: calc(var(--lane, 0) * 7px); width: 2px; border-radius: var(--r-pill);
-           background: color-mix(in srgb, var(--pin, var(--accent)) 45%, transparent);
-           pointer-events: none; }
-.tl-span::before, .tl-span::after {
-  content: ""; position: absolute; left: -3px; width: 8px; height: 2px;
-  border-radius: var(--r-pill); background: inherit;
+
+/* ===== the time axis =====
+   One shared scale across every row, so overlap is something you see rather
+   than something you work out. The lane is a fixed column between the title
+   and the dates; below 900px there is no room for it and it goes. */
+/* The lane is a fixed column and the date column is fixed too, so the axis can
+   be placed with a margin and land exactly on top of it. Sizing the lane with
+   1fr would have made its offset depend on the longest title. */
+.timeline { --lane: 150px; --dates: 132px; --chev: 18px; }
+.tl-axis { position: relative; height: 15px; width: var(--lane);
+           margin: 0 calc(var(--dates) + var(--chev) + var(--s3) * 2) var(--s2) auto;
+           display: none; }
+.timeline.has-axis .tl-axis { display: block; }
+.tl-axis i { position: absolute; top: 0; bottom: -8px; width: 1px;
+             background: var(--line); font-style: normal; }
+.tl-axis i::after { content: "’" attr(data-year); position: absolute; top: -2px; left: 4px;
+                    font: 600 var(--fs-2xs)/1 var(--sans); letter-spacing: .04em;
+                    color: var(--muted); }
+
+/* the lane, and the faint year gridlines behind every row */
+.job-toggle .span { position: relative; display: none; height: 7px;
+                    border-radius: var(--r-pill); background: var(--code-bg);
+                    align-self: center; }
+.timeline.has-axis .job-toggle .span { display: block; }
+.job-toggle .span > i { position: absolute; top: 0; bottom: 0; border-radius: inherit;
+                        background: var(--pin, var(--accent)); opacity: .85;
+                        transform-origin: left center;
+                        transition: opacity .2s, filter .2s; }
+.job:hover .span > i, .job:not(.shut) .span > i { opacity: 1;
+                        filter: drop-shadow(0 0 6px color-mix(in srgb, var(--pin, var(--accent)) 60%, transparent)); }
+.timeline.drawn .span > i { animation: bar-grow .5s cubic-bezier(.2,.8,.3,1)
+                            calc(var(--e, 0) * 80ms + 200ms) backwards; }
+@keyframes bar-grow { from { transform: scaleX(0); opacity: 0; } }
+.timeline.settled .span > i { animation: none; }
+
+@media (min-width: 900.02px) {
+  .timeline.has-axis .job-toggle {
+    grid-template-columns: minmax(0, 1fr) var(--lane) var(--dates) var(--chev);
+  }
+  .timeline.has-axis .job-toggle .meta { text-align: right; }
 }
-.tl-span::before { top: 0; }
-.tl-span::after  { bottom: 0; }
-@media (max-width: 560px) { .tl-span { left: calc(var(--lane, 0) * 5px); } }
+@media (max-width: 900px) {
+  .timeline.has-axis .tl-axis,
+  .timeline.has-axis .job-toggle .span { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .timeline.drawn .span > i { animation: none; }
+}
