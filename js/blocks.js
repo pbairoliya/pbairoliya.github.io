@@ -51,8 +51,13 @@
       /* the stagger is per-bullet and lives in CSS; JS only supplies the index */
       job.querySelectorAll(".job-body li")
          .forEach((li, n) => li.style.setProperty("--i", n));
-      const btn = job.querySelector(".job-toggle");
-      btn.addEventListener("click", () => {
+      /* The whole entry is the target, not just the header row. Two things it
+         must not swallow: a click on a real link, and the mouse-up that ends a
+         text selection inside an open entry. */
+      job.addEventListener("click", e => {
+        if (e.target.closest("a")) return;
+        if (!e.target.closest(".job-toggle") &&
+            (getSelection?.()?.toString() || "")) return;
         const open = job.classList.contains("shut");
         set(job, open);
         /* an entry opened from far down the page should not push its own
@@ -68,44 +73,22 @@
         job.classList.add("job-now");
     });
 
-    /* The line draws itself as you scroll past it.
-       p is 0 when the timeline's top crosses three-quarters of the way down the
-       viewport and 1 when its bottom crosses a third of the way down, so the
-       fill tracks reading position rather than raw scroll offset. Nodes light
-       as the fill passes them. */
-    const line = document.querySelector(".tl-line");
-    if (line && !reduced) {
-      const track = line.parentElement;
-      let queued = false;
-
-      const draw = () => {
-        queued = false;
-        const r = track.getBoundingClientRect();
-        const from = innerHeight * 0.75, to = innerHeight * 0.35;
-        const span = (r.height || 1) + (from - to);
-        const p = Math.min(1, Math.max(0, (from - r.top) / span));
-        line.style.setProperty("--p", p.toFixed(4));
-
-        const lr = line.getBoundingClientRect();
-        const front = lr.top + lr.height * p;
-        jobs.forEach(j => {
-          const n = j.querySelector(".job-node").getBoundingClientRect();
-          j.classList.toggle("reached", n.top + n.height / 2 <= front + 1);
-        });
-      };
-      const onScroll = () => { if (!queued) { queued = true; requestAnimationFrame(draw); } };
-
-      addEventListener("scroll", onScroll, { passive: true });
-      addEventListener("resize", onScroll, { passive: true });
-      /* opening a role changes the track's height, so redraw after the
-         0fr -> 1fr transition rather than leaving a stale fill behind */
-      track.addEventListener("transitionend", e => {
-        if (e.propertyName === "grid-template-rows") draw();
-      });
-      draw();
-    } else if (line) {
-      line.style.setProperty("--p", "1");
-      jobs.forEach(j => j.classList.add("reached"));
+    /* The line draws itself once, when the section arrives.
+       It used to be scroll-linked, which fought the disclosures: opening a role
+       changes the track's height, so every open re-scaled a fill that was
+       measured against the old layout. Drawing once and staying drawn has none
+       of that problem and reads better anyway. */
+    const track = document.querySelector(".timeline");
+    if (track) {
+      jobs.forEach((j, n) => j.style.setProperty("--d", 140 + n * 320));
+      const draw = () => track.classList.add("drawn");
+      if (reduced || !("IntersectionObserver" in window)) draw();
+      else {
+        const io = new IntersectionObserver(rows => {
+          if (rows.some(r => r.isIntersecting)) { draw(); io.disconnect(); }
+        }, { rootMargin: "0px 0px -15% 0px" });
+        io.observe(track);
+      }
     }
   }
 })();
