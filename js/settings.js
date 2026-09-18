@@ -26,4 +26,7 @@
     close(); window.__startTour?.();
   });
   pop.querySelector("[data-open-palette]")?.addEventListener("click", close);
+  pop.querySelector("[data-collapse-side]")?.addEventListener("click", () => {
+    close(); document.getElementById("side-collapse")?.click();
+  });
 })();

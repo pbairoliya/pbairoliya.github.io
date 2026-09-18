@@ -253,3 +253,31 @@ section[id] > h2:hover .anchor, .anchor:focus-visible { opacity: 1; }
   body.side-open .side { visibility: visible; }
 }
 @media (prefers-reduced-motion: reduce) { .skip { transition: none; } }
+
+/* ---- sidebar: icons, collapse ---- */
+.side a i.ic { display: grid; place-items: center; }
+.side a i.ic svg { width: 15px; height: 15px; fill: currentColor; }
+.side-head { position: relative; }
+.side-collapse { position: absolute; top: 4px; right: 0; width: 26px; height: 26px;
+                 display: grid; place-items: center; border-radius: 7px; cursor: pointer;
+                 background: none; border: 0; color: var(--muted); opacity: 0;
+                 transition: opacity .16s, color .16s, background-color .16s; }
+.side:hover .side-collapse, .side-collapse:focus-visible { opacity: 1; }
+.side-collapse:hover { background: var(--code-bg); color: var(--accent); }
+.side-collapse svg { width: 17px; height: 17px; fill: currentColor; }
+
+/* collapsed: the rail keeps its icons and the page takes the width back */
+@media (min-width: 901px) {
+  body.side-collapsed .side { width: 58px; padding-inline: 9px; }
+  body.side-collapsed { padding-left: 58px; }
+  body.side-collapsed .side-name,
+  body.side-collapsed .side-label,
+  body.side-collapsed .side-foot,
+  body.side-collapsed .side a > :not(i) { display: none; }
+  body.side-collapsed .side a { justify-content: center; padding-inline: 0; }
+  body.side-collapsed .side-collapse { position: static; margin: 0 auto; opacity: 1; }
+  body.side-collapsed .side-collapse svg { transform: rotate(180deg); }
+  body.side-collapsed .side-head { flex-direction: column; gap: 10px; padding: 6px 0 12px; }
+  .side, body { transition: width .24s cubic-bezier(.2,.8,.3,1), padding-left .24s cubic-bezier(.2,.8,.3,1); }
+}
+@media (prefers-reduced-motion: reduce) { .side, body, .side-collapse { transition: none; } }
