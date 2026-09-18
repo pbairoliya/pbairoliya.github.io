@@ -16,7 +16,7 @@ css/motion.css                 entrances, reveals, crossing highlight
 
 js/field.js                    canvas background + the colour engine
 js/palette.js                  command palette (Cmd-K) and theme control
-js/pill.js                     floating section nav
+js/sidebar.js                  sidebar navigation
 js/spotlight.js                pointer-following highlight
 js/reveal.js                   reveal-on-scroll
 js/blocks.js                   per-section copy-link anchors
@@ -24,6 +24,10 @@ js/tour.js                     first-visit walkthrough
 js/settings.js                 the gear popover
 css/tour.css                   its styles
 ```
+
+**The resume is the source of truth.** Everything factual on this site comes from
+`~/Documents/Work/2026/Pratik-Bairol-Resume.tex`. When the resume changes, the site
+changes — not the other way round.
 
 **Colour follows the reader.** Every section owns a hue pair — cyan/azure for
 the intro, indigo/violet for the background, teal/cyan for the stack. Cool hues

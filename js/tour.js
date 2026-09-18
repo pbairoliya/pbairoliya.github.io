@@ -16,12 +16,12 @@
 
   const STEPS = [
     {
-      sel: ".props",
-      title: "The short version, up front",
-      body: "Role, team, scale, stack, and where I am \u2014 without scrolling.",
+      sel: ".side",
+      title: "Everything lives in the sidebar",
+      body: "Sections of this page up top, my resume and links underneath.",
     },
     {
-      sel: ".pill",
+      sel: ".side-head",
       title: "The sections live up here",
       body: "It tracks where you are as you scroll, and the colour of the page shifts with it.",
     },

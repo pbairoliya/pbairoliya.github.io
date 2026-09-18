@@ -4,36 +4,31 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pratik Bairoliya — SWE II @ Capital One</title>
-<meta name="description" content="Software Engineer II at Capital One on the End-of-Day team, building a custom batch ledger for the financial core. Builds local-first tools that run entirely on-device.">
+<meta name="description" content="Software Engineer II at Capital One. I own the nightly end-of-day close — posting, settlement and ledger cutoff across Card and Bank, run on Temporal.">
 <link rel="preconnect" href="https://cdn.simpleicons.org" crossorigin>
-<link rel="stylesheet" href="css/base.css?v=8">
-<link rel="stylesheet" href="css/components.css?v=8">
-<link rel="stylesheet" href="css/motion.css?v=8">
-<link rel="stylesheet" href="css/tour.css?v=8">
+<link rel="stylesheet" href="css/base.css?v=9">
+<link rel="stylesheet" href="css/components.css?v=9">
+<link rel="stylesheet" href="css/motion.css?v=9">
+<link rel="stylesheet" href="css/tour.css?v=9">
 </head>
 <body>
 <div class="wrap">
   <div class="boot">
 
   <h1>Pratik Bairoliya</h1>
-  <p class="tagline">Software Engineer II · Capital One</p>
+  <p class="tagline">SWE II @ Capital One</p>
   <p class="lede">
-    I build the <strong>nightly batch ledger</strong> behind Capital One's financial core —
-    the job that settles every Card, Bank and Financial Service account overnight and has to be
-    right by morning. Backend and infrastructure: <strong>Go, Kubernetes, Temporal, AWS</strong>.
+    Every night, a bank has to close its books. I own that job at Capital One — the run that
+    posts the day's transactions, settles balances and cuts the ledger across Card and Bank.
+    It gets one shot, so most of my work is making a very large batch fail loudly and early
+    instead of quietly at the last minute.
+  </p>
+  <p>
+    Off the clock I build small tools that use an AI model but keep everything on your own
+    laptop — a daily briefing, a receipt scanner. The fun part isn't the model, it's making
+    something that guesses behave like something that doesn't.
   </p>
 
-  <!-- the eight things a recruiter checks first, in one block they can scan -->
-  <dl class="props">
-    <div class="prop"><dt>Role</dt><dd>Software Engineer II — promoted from SWE I in one year</dd></div>
-    <div class="prop"><dt>Team</dt><dd>End-of-Day · custom batch ledger · financial core</dd></div>
-    <div class="prop"><dt>Based</dt><dd>Raleigh, NC — hybrid to McLean, VA</dd></div>
-    <div class="prop"><dt>Scale</dt><dd>80M+ records across 2M+ accounts, every night</dd></div>
-    <div class="prop"><dt>Stack</dt><dd>Go · Python · Java · Kubernetes · Temporal · AWS · Terraform</dd></div>
-    <div class="prop"><dt>Also</dt><dd>Local-first AI tools that run entirely on-device</dd></div>
-    <div class="prop"><dt>Study</dt><dd>NC State — B.S. Computer Science + B.S. Applied Maths, 4.0, Park Scholar</dd></div>
-    <div class="prop"><dt>Certified</dt><dd><a href="https://www.credly.com/badges/52c43a39-6628-4b8f-af31-9c52fe3b4f9c">AWS Solutions Architect — Associate</a></dd></div>
-  </dl>
 
   </div>
 
@@ -57,22 +52,6 @@
 
   </section>
 
-  <section id="background" data-label="Background" class="about">
-  <h2 class="reveal">Background</h2>
-
-  <p class="reveal">Before the ledger, and alongside it: eight years with
-  <a href="https://inspirenc.us/">InspireNC</a>, a STEAM non-profit in the Triangle. I joined at
-  seventeen as a programmer on FRC Team 6908 and left five years later as its
-  <strong>Chairman</strong> — free bootcamps, Java to cohorts of 35, a competitive robotics
-  season to keep funded. I was also a TA for Advanced MATLAB at NC State, where I answered over
-  a thousand questions on the course forum.</p>
-
-  <p class="pull reveal">I have been teaching people to program for almost as long as I have
-  been programming.</p>
-
-
-  </section>
-
   <section id="work" data-label="Work">
   <h2 class="reveal">Work</h2>
 
@@ -81,25 +60,39 @@
       <h3>Capital One — Software Engineer II</h3>
       <span class="meta">Jul 2026 –</span>
     </div>
-    <p class="job-sub">End-of-Day · batch ledger · McLean, VA</p>
+    <p class="job-sub">End-of-Day · McLean, VA</p>
     <ul>
-      <li>Own nightly settlement for every Card, Bank and Financial Service account.</li>
-      <li>Leading the SSUI integration into the End-of-Day APIs.</li>
-      <li>Building observability for a new Kubernetes and Temporal platform, shipped on Argo and Helm.</li>
+      <li>Own the nightly <strong>end-of-day close</strong> — posting, settlement and ledger
+          cutoff across Card and Bank, run on <strong>Temporal</strong>.</li>
+      <li>Lead the <strong>REST API</strong> replacing the vendor's close operator tooling,
+          bringing nightly controls in-house.</li>
+      <li>Monitoring and distributed tracing in <strong>OpenTelemetry</strong> and
+          <strong>Splunk</strong>: alerts page on-call mid-run, not at cutoff.</li>
+      <li>Ship end-of-day services on <strong>Kubernetes</strong> through <strong>Argo CD</strong>
+          and <strong>Helm</strong>, rollback one revision away.</li>
     </ul>
   </div>
 
   <div class="job reveal">
     <div class="job-head">
       <h3>Capital One — Software Engineer I</h3>
-      <span class="meta">Aug 2025 – Jul 2026</span>
+      <span class="meta">May 2024 – Jul 2026</span>
     </div>
-    <p class="job-sub">End-of-Day · batch ledger · McLean, VA</p>
+    <p class="job-sub">End-of-Day · McLean, VA</p>
     <ul>
-      <li>Took a batch data persistence API from zero to production in Go — now the system of
-          record for End-of-Day.</li>
-      <li>Automated nightly publication of 80M+ records across 2M+ accounts via Hive tuning on AWS EMR.</li>
-      <li>Closed a priority auth gap for Card and Bank accounts with a PoP token integration.</li>
+      <li>Wrote the ledger's <strong>batch write path</strong> in <strong>Go</strong>, empty repo
+          to production; every nightly cycle runs through it.</li>
+      <li>Designed a <strong>block-allocation ID service</strong>: one call reserves a range,
+          taking per-ID contention off bulk opens.</li>
+      <li>Built the nightly <strong>PySpark</strong>/<strong>Databricks</strong> reconciliation —
+          day-over-day aggregate diffs alert before a bad cycle ships.</li>
+      <li>Cut data egress on the nightly <strong>99M+ Card account</strong> publish by
+          performance-tuning <strong>Hive</strong> sort on <strong>AWS EMR</strong>.</li>
+      <li>Rolled <strong>proof-of-possession tokens</strong> across Card and Bank endpoints,
+          binding each call to a key a thief lacks.</li>
+      <li>Rebuilt the military rewards catalog in <strong>Vue.js</strong>/<strong>Spring
+          Boot</strong>/<strong>DynamoDB</strong>: <strong>2.8×</strong> faster, $9M projected
+          revenue.</li>
     </ul>
   </div>
 
@@ -108,14 +101,20 @@
       <h3>Fidelity Investments — Software Engineer</h3>
       <span class="meta">Jun 2023 – May 2024</span>
     </div>
-    <p class="job-sub">Mainframe modernisation · RTP, NC</p>
+    <p class="job-sub">Mainframe modernisation · Durham, NC</p>
     <ul>
-      <li>Moved 45% of mainframe stock and job requests to AWS with Terraform, serving 400+ associates.</li>
-      <li>Modeled 10,000 mainframe API nodes in Neo4j, cutting 5,000+ duplicates via Cypher automation.</li>
+      <li>Moved mainframe stock and job workflows to <strong>AWS</strong> with
+          <strong>Terraform</strong> — <strong>45%</strong> of volume, <strong>400+</strong>
+          associates.</li>
+      <li>Modeled system metadata as a <strong>Neo4j</strong> graph; <strong>Cypher</strong>
+          queries found and removed <strong>5,000+</strong> duplicate records.</li>
+      <li>Delivered the full stack on a 4-person team: <strong>Angular</strong> UI,
+          <strong>Java</strong> services, <strong>S3</strong> metadata sync.</li>
     </ul>
   </div>
 
   </section>
+
   <section id="stack" data-label="Stack">
   <h2 class="reveal">Stack</h2>
 
@@ -126,19 +125,21 @@
       <span class="tool" style="--i:1"><img src="https://cdn.simpleicons.org/python" alt="" loading="lazy">Python</span>
       <span class="tool" style="--i:2"><img src="https://cdn.simpleicons.org/openjdk" alt="" loading="lazy">Java</span>
       <span class="tool" style="--i:3"><img src="https://cdn.simpleicons.org/typescript" alt="" loading="lazy">TypeScript</span>
-      <span class="tool" style="--i:4"><img src="https://cdn.simpleicons.org/gnubash" alt="" loading="lazy">Bash</span>
+      <span class="tool" style="--i:4"><span class="txt">SQL</span>SQL</span>
+      <span class="tool" style="--i:5"><img src="https://cdn.simpleicons.org/neo4j" alt="" loading="lazy">Cypher</span>
+      <span class="tool" style="--i:6"><img src="https://cdn.simpleicons.org/gnubash" alt="" loading="lazy">Bash</span>
     </div>
   </div>
 
   <div class="stack-group reveal">
-    <p class="stack-label">Infrastructure</p>
+    <p class="stack-label">Cloud &amp; infrastructure</p>
     <div class="stack">
       <span class="tool" style="--i:0"><span class="txt">AWS</span>AWS</span>
       <span class="tool" style="--i:1"><img src="https://cdn.simpleicons.org/kubernetes" alt="" loading="lazy">Kubernetes</span>
       <span class="tool" style="--i:2"><img src="https://cdn.simpleicons.org/temporal" alt="" loading="lazy">Temporal</span>
       <span class="tool" style="--i:3"><img src="https://cdn.simpleicons.org/docker" alt="" loading="lazy">Docker</span>
       <span class="tool" style="--i:4"><img src="https://cdn.simpleicons.org/terraform" alt="" loading="lazy">Terraform</span>
-      <span class="tool" style="--i:5"><img src="https://cdn.simpleicons.org/argo" alt="" loading="lazy">Argo</span>
+      <span class="tool" style="--i:5"><img src="https://cdn.simpleicons.org/argo" alt="" loading="lazy">Argo CD</span>
       <span class="tool" style="--i:6"><img src="https://cdn.simpleicons.org/helm" alt="" loading="lazy">Helm</span>
       <span class="tool" style="--i:7"><img src="https://cdn.simpleicons.org/jenkins" alt="" loading="lazy">Jenkins</span>
     </div>
@@ -147,28 +148,40 @@
   <div class="stack-group reveal">
     <p class="stack-label">Data &amp; backend</p>
     <div class="stack">
-      <span class="tool" style="--i:0"><img src="https://cdn.simpleicons.org/apachehive" alt="" loading="lazy">Hive</span>
-      <span class="tool" style="--i:1"><img src="https://cdn.simpleicons.org/postgresql" alt="" loading="lazy">Postgres</span>
-      <span class="tool" style="--i:2"><img src="https://cdn.simpleicons.org/neo4j" alt="" loading="lazy">Neo4j</span>
-      <span class="tool" style="--i:3"><img src="https://cdn.simpleicons.org/springboot" alt="" loading="lazy">Spring Boot</span>
-      <span class="tool" style="--i:4"><img src="https://cdn.simpleicons.org/graphql" alt="" loading="lazy">GraphQL</span>
-      <span class="tool" style="--i:5"><img src="https://cdn.simpleicons.org/nodedotjs" alt="" loading="lazy">Node.js</span>
+      <span class="tool" style="--i:0"><img src="https://cdn.simpleicons.org/apachespark" alt="" loading="lazy">PySpark</span>
+      <span class="tool" style="--i:1"><img src="https://cdn.simpleicons.org/databricks" alt="" loading="lazy">Databricks</span>
+      <span class="tool" style="--i:2"><img src="https://cdn.simpleicons.org/apachehive" alt="" loading="lazy">Hive</span>
+      <span class="tool" style="--i:3"><span class="txt">EMR</span>AWS EMR</span>
+      <span class="tool" style="--i:4"><span class="txt">DDB</span>DynamoDB</span>
+      <span class="tool" style="--i:5"><img src="https://cdn.simpleicons.org/neo4j" alt="" loading="lazy">Neo4j</span>
+      <span class="tool" style="--i:6"><img src="https://cdn.simpleicons.org/springboot" alt="" loading="lazy">Spring Boot</span>
+      <span class="tool" style="--i:7"><span class="txt">API</span>REST</span>
+    </div>
+  </div>
+
+  <div class="stack-group reveal">
+    <p class="stack-label">Observability &amp; practice</p>
+    <div class="stack">
+      <span class="tool" style="--i:0"><img src="https://cdn.simpleicons.org/opentelemetry" alt="" loading="lazy">OpenTelemetry</span>
+      <span class="tool" style="--i:1"><img src="https://cdn.simpleicons.org/splunk" alt="" loading="lazy">Splunk</span>
+      <span class="tool" style="--i:2"><span class="txt">24/7</span>On-call</span>
+      <span class="tool" style="--i:3"><span class="txt">ETL</span>Batch ETL</span>
     </div>
   </div>
 
   <div class="stack-group reveal">
     <p class="stack-label">Frontend &amp; on-device AI</p>
     <div class="stack">
-      <span class="tool" style="--i:0"><img src="https://cdn.simpleicons.org/react" alt="" loading="lazy">React</span>
-      <span class="tool" style="--i:1"><img src="https://cdn.simpleicons.org/vuedotjs" alt="" loading="lazy">Vue</span>
-      <span class="tool" style="--i:2"><img src="https://cdn.simpleicons.org/angular" alt="" loading="lazy">Angular</span>
-      <span class="tool" style="--i:3"><img src="https://cdn.simpleicons.org/ollama" alt="" loading="lazy">Ollama</span>
-      <span class="tool" style="--i:4"><img src="https://cdn.simpleicons.org/pytorch" alt="" loading="lazy">PyTorch</span>
-      <span class="tool" style="--i:5"><img src="https://cdn.simpleicons.org/apple" alt="" loading="lazy">Vision</span>
+      <span class="tool" style="--i:0"><img src="https://cdn.simpleicons.org/vuedotjs" alt="" loading="lazy">Vue</span>
+      <span class="tool" style="--i:1"><img src="https://cdn.simpleicons.org/angular" alt="" loading="lazy">Angular</span>
+      <span class="tool" style="--i:2"><img src="https://cdn.simpleicons.org/ollama" alt="" loading="lazy">Ollama</span>
+      <span class="tool" style="--i:3"><img src="https://cdn.simpleicons.org/apple" alt="" loading="lazy">Vision OCR</span>
+      <span class="tool" style="--i:4"><img src="https://cdn.simpleicons.org/sqlite" alt="" loading="lazy">SQLite</span>
     </div>
   </div>
 
   </section>
+
   <section id="projects" data-label="Projects">
   <h2 class="reveal">Projects</h2>
 
@@ -177,11 +190,6 @@
     <p>Three programs sharing one core: Apple Vision OCR plus a local LLM, wrapped in a
        deterministic rules layer so the output behaves like software. A daily briefing, a receipt
        pipeline, and a screenshot sorter — none of them send your data anywhere.</p>
-    <div class="tags">
-      <span class="tag">Python</span><span class="tag">Ollama</span>
-      <span class="tag">Apple Vision</span><span class="tag">launchd</span>
-      <span class="tag">local-first</span>
-    </div>
   </a>
 
   <a class="card reveal" href="projects/lc.html">
@@ -189,10 +197,6 @@
     <p>A CLI that makes an Obsidian note the source of truth for a problem, reconciles it with a
        Git repo, schedules spaced-repetition reviews, and pushes nightly. 94 offline tests, most
        of them about the reconciliation rules.</p>
-    <div class="tags">
-      <span class="tag">Python</span><span class="tag">Git</span>
-      <span class="tag">CLI design</span><span class="tag">spaced repetition</span>
-    </div>
   </a>
 
   </section>
@@ -206,12 +210,37 @@
     </div>
     <p>A scan on my phone updates my pantry, shopping list and expense report seconds later.
        The interesting part isn't the receipts — it's <em>derive, don't mutate</em>.</p>
-    <div class="tags">
-      <span class="tag">local LLM</span><span class="tag">OCR</span><span class="tag">design decisions</span>
-    </div>
   </a>
 
   <p class="meta"><a href="writing/index.html">All writing →</a></p>
+
+  </section>
+
+  <section id="education" data-label="Education">
+  <h2 class="reveal">Education</h2>
+
+  <div class="job reveal">
+    <div class="job-head">
+      <h3>North Carolina State University</h3>
+      <span class="meta">Aug 2021 – May 2025</span>
+    </div>
+    <p class="job-sub">B.S. Computer Science and B.S. Applied Mathematics — GPA 4.0 · Raleigh, NC</p>
+    <ul>
+      <li><a href="https://park.ncsu.edu/">Park Scholar</a> — full merit scholarship to the top
+          <strong>1%</strong> of applicants, for leadership and service.</li>
+      <li><strong>Teaching Assistant</strong> — CSC 221 (Python) and MA 405 (Linear Algebra):
+          labs, office hours, grading.</li>
+      <li><strong>Undergraduate Researcher</strong>, 2022–2024 — built Python tooling that
+          automated a faculty group's data analysis.</li>
+      <li><strong>Chairman, <a href="https://inspirenc.us/">InspireNC</a></strong> — student-run
+          non-profit teaching FIRST Robotics in NC schools; captain of Team 6908.</li>
+    </ul>
+  </div>
+
+  <p class="meta reveal" style="margin-top:18px">
+    Away from a keyboard: underwater robotics, running the Krispy Kreme Challenge, and home-lab
+    automation.
+  </p>
 
   </section>
 
@@ -250,15 +279,36 @@
   </footer>
 
 </div>
-<nav class="pill" aria-label="Sections">
-  <span class="glide" aria-hidden="true"></span>
-  <a href="#intro">Intro</a>
-  <a href="#background">Background</a>
-  <a href="#work">Work</a>
-  <a href="#stack">Stack</a>
-  <a href="#projects">Projects</a>
-  <a href="#writing">Writing</a>
-  <a href="#credentials">Credentials</a>
+<button class="side-toggle" id="side-toggle" type="button"
+        aria-label="Menu" aria-expanded="false" aria-controls="side">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg>
+</button>
+<div class="side-scrim" aria-hidden="true"></div>
+
+<nav class="side" id="side" aria-label="Pages">
+  <div class="side-head">
+    <span class="side-avatar" aria-hidden="true">PB</span>
+    <span class="side-name">Pratik Bairoliya<span>SWE II @ Capital One</span></span>
+  </div>
+
+  <p class="side-label">This page</p>
+  <a href="#intro"><i>👋</i> Hello</a>
+  <a href="#work"><i>🏦</i> Work</a>
+  <a href="#stack"><i>🧰</i> Stack</a>
+  <a href="#projects"><i>🔨</i> Things I built</a>
+  <a href="#writing"><i>✍️</i> Writing</a>
+  <a href="#education"><i>🎓</i> School</a>
+  <a href="#credentials"><i>📜</i> Credentials</a>
+
+  <p class="side-label">Elsewhere</p>
+  <a href="Pratik-Bairoliya-Resume.pdf"><i>📄</i> Resume</a>
+  <a href="https://github.com/pbairoliya"><i>⌨︎</i> GitHub</a>
+  <a href="https://linkedin.com/in/pbairol"><i>in</i> LinkedIn</a>
+
+  <div class="side-foot">
+    <a href="mailto:pratik0520@gmail.com">pratik0520@gmail.com</a><br>
+    McLean, VA
+  </div>
 </nav>
 
 <button class="gear" id="gear" type="button" aria-label="Settings"
@@ -292,13 +342,13 @@
   </div>
 </div>
 
-<script src="js/field.js?v=8" defer></script>
-<script src="js/palette.js?v=8" defer></script>
-<script src="js/spotlight.js?v=8" defer></script>
-<script src="js/pill.js?v=8" defer></script>
-<script src="js/reveal.js?v=8" defer></script>
-<script src="js/blocks.js?v=8" defer></script>
-<script src="js/tour.js?v=8" defer></script>
-<script src="js/settings.js?v=8" defer></script>
+<script src="js/field.js?v=9" defer></script>
+<script src="js/palette.js?v=9" defer></script>
+<script src="js/spotlight.js?v=9" defer></script>
+<script src="js/sidebar.js?v=9" defer></script>
+<script src="js/reveal.js?v=9" defer></script>
+<script src="js/blocks.js?v=9" defer></script>
+<script src="js/tour.js?v=9" defer></script>
+<script src="js/settings.js?v=9" defer></script>
 </body>
 </html>
