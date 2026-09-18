@@ -123,21 +123,26 @@ body.side-open .side-scrim { opacity: 1; pointer-events: auto; }
    leaving empty columns, so a long label like "OpenTelemetry" has somewhere to
    go. Tiles stretch to the tallest in the row, so a wrapped label does not
    leave a short tile floating. */
-.stack { display: grid; gap: 8px; align-items: stretch;
-         grid-template-columns: repeat(auto-fit, minmax(clamp(104px, 28vw, 124px), 1fr)); }
-.tool { display: flex; align-items: center; gap: 8px; background: var(--panel);
-        border: 1px solid var(--line); border-radius: var(--r-md); padding: 9px 11px;
+.stack { display: grid; gap: var(--s2); align-items: stretch;
+         grid-template-columns: repeat(auto-fit, minmax(clamp(132px, 30vw, 158px), 1fr)); }
+.tool { display: flex; align-items: center; gap: var(--s2); background: var(--panel);
+        border: 1px solid var(--line); border-radius: var(--r-md); padding: var(--s2) var(--s3);
         font-size: var(--fs-sm); line-height: var(--lh-snug); color: var(--ink);
         min-width: 0;                    /* a flex item will not shrink without this */
         overflow-wrap: anywhere;         /* a long word breaks rather than overflowing */
         hyphens: auto; }
-.tool img { width: 17px; height: 17px; flex: 0 0 17px; }
-.tool .txt { flex: 0 0 auto; }
+.tool img { width: 20px; height: 20px; flex: 0 0 20px; }
 :root[data-theme="dark"] .tool img,
 :root:not([data-theme="light"]) .tool img { filter: brightness(1.7) saturate(.85); }
 @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .tool img { filter: none; } }
-.tool .txt { font: var(--fs-2xs)/1 var(--mono); font-weight: 600; width: 17px; flex: 0 0 17px;
-             color: var(--accent); transition: color .8s linear; }
+/* Six tools have no logo in the icon set. A single-letter monogram in the same
+   20px box as a real icon keeps the label column aligned; the old badge spelled
+   the tool's name and then the label repeated it ("AWS  AWS"). */
+.tool .txt { display: grid; place-items: center; width: 20px; height: 20px; flex: 0 0 20px;
+             border-radius: var(--r-xs); background: var(--code-bg);
+             border: 1px solid var(--line);
+             font: 700 var(--fs-xs)/1 var(--sans); color: var(--accent);
+             transition: color .8s linear, background-color .8s linear; }
 
 /* ---- credentials ---- */
 .cred { display: flex; align-items: flex-start; gap: 14px; background: var(--panel);

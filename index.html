@@ -22,10 +22,10 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <!-- /social -->
 <script>try{var t=localStorage.getItem("theme");if(t&&t!=="system")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
-<link rel="stylesheet" href="css/base.css?v=28">
-<link rel="stylesheet" href="css/components.css?v=28">
-<link rel="stylesheet" href="css/motion.css?v=28">
-<link rel="stylesheet" href="css/tour.css?v=28">
+<link rel="stylesheet" href="css/base.css?v=29">
+<link rel="stylesheet" href="css/components.css?v=29">
+<link rel="stylesheet" href="css/motion.css?v=29">
+<link rel="stylesheet" href="css/tour.css?v=29">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -35,23 +35,43 @@
   <h1>Pratik Bairoliya</h1>
   <p class="tagline">SWE @ Capital One</p>
   <p class="lede">
-    Backend and infrastructure engineer on Capital One's <strong>End-of-Day</strong> team.
-    I own the nightly close — posting, settlement and ledger cutoff across Card and Bank —
-    written in <strong>Go</strong>, orchestrated on <strong>Temporal</strong> and
-    <strong>Kubernetes</strong>, publishing <strong>99M+ account records a night</strong>
-    through <strong>PySpark</strong> and <strong>Hive</strong> on <strong>AWS EMR</strong>.
+    Hey, I'm Pratik. I'm a <strong>full-stack software engineer</strong> at Capital One, where I
+    own the nightly <strong>end-of-day close</strong> for Card and Bank — posting, settlement and
+    the ledger cutoff, orchestrated on <strong>Temporal</strong>. I love data and I love hard
+    problems, which is most of what this job is. <strong>Go</strong> and <strong>Python</strong>
+    are where I'm fastest, but I'm comfortable anywhere in the stack.
   </p>
   <p>
-    One window a night and no retry, so most of the engineering is making a large distributed
-    batch fail loudly and early rather than quietly at cutoff: distributed tracing in
-    <strong>OpenTelemetry</strong> and <strong>Splunk</strong> that pages on-call mid-run,
-    day-over-day reconciliation in <strong>Databricks</strong> that catches a bad cycle before
-    it ships, and <strong>Argo CD</strong> rollouts that are one revision from a rollback.
+    I wrote the ledger's batch write path in <strong>Go</strong>, empty repo to production, and
+    every nightly cycle still runs through it. Right now I'm leading the <strong>REST API</strong>
+    that replaces our vendor's close operator tooling and brings the nightly controls in-house. I
+    ship those services on <strong>Kubernetes</strong> through <strong>Argo CD</strong> and
+    <strong>Helm</strong> so a rollback is one revision away, and I instrumented the run with
+    <strong>OpenTelemetry</strong> and <strong>Splunk</strong> so alerts page on-call mid-cycle
+    instead of at cutoff.
   </p>
   <p>
-    Outside work I build local-first tools — a daily briefing, a receipt pipeline — that run a
-    language model entirely on-device. The interesting problem there is not the model, it is
-    making something that guesses behave like something that does not.
+    Data is my favourite part of the work, and the applied math half of my degree gets more use
+    than I expected. I built the nightly reconciliation in <strong>PySpark</strong> on
+    <strong>Databricks</strong> that diffs aggregates day over day and catches a bad cycle before
+    it ships, and I cut data egress on the <strong>99M+ Card account</strong> publish by
+    performance-tuning the <strong>Hive</strong> sort on <strong>AWS EMR</strong>. I work the front
+    end too — I rebuilt the military rewards catalog in <strong>Vue.js</strong>,
+    <strong>Spring Boot</strong> and <strong>DynamoDB</strong> (2.8× faster, $9M projected revenue),
+    and before Capital One I was at Fidelity moving mainframe workflows to <strong>AWS</strong> with
+    <strong>Terraform</strong> and shipping <strong>Angular</strong> and <strong>Java</strong> on a
+    four-person team.
+  </p>
+  <p>
+    I keep building outside of work. <a href="projects/on-device-tools.html">Lookback</a> merges my
+    calendar, mail and messages into one morning briefing using <strong>Python</strong>,
+    <strong>SQLite</strong> and a local <strong>Ollama</strong> model, so nothing leaves the
+    machine. <a href="projects/on-device-tools.html">Pantry</a> turns receipt photos into a grocery
+    list with spend rolled up by category, and rescanning a receipt can't double-count it. I'm also
+    an <strong>AWS Certified Solutions Architect – Associate</strong>. If you have a hard problem
+    and you're hiring someone to work on it, email me at
+    <a href="mailto:pratik0520@gmail.com">pratik0520@gmail.com</a> — I'd genuinely like to hear
+    about it.
   </p>
   </div>
 
@@ -128,7 +148,7 @@
       <li>Moved mainframe stock and job workflows to <strong>AWS</strong> with
           <strong>Terraform</strong> — <strong>45%</strong> of volume, <strong>400+</strong>
           associates.</li>
-      <li>Modeled system metadata as a <strong>Neo4j</strong> graph; <strong>Cypher</strong>
+      <li>Modeled system metadata as a <strong>Neo4j</strong> graph; graph
           queries found and removed <strong>5,000+</strong> duplicate records.</li>
       <li>Delivered the full stack on a 4-person team: <strong>Angular</strong> UI,
           <strong>Java</strong> services, <strong>S3</strong> metadata sync.</li>
@@ -148,7 +168,7 @@
       <span class="tool" style="--i:2"><img src="https://cdn.simpleicons.org/openjdk" alt="" loading="lazy">Java</span>
       <span class="tool" style="--i:3"><img src="https://cdn.simpleicons.org/typescript" alt="" loading="lazy">TypeScript</span>
       <span class="tool" style="--i:4"><img src="https://cdn.simpleicons.org/javascript" alt="" loading="lazy">JavaScript</span>
-      <span class="tool" style="--i:5"><span class="txt">SQL</span>SQL</span>
+      <span class="tool" style="--i:5"><span class="txt">S</span>SQL</span>
       <span class="tool" style="--i:6"><img src="https://cdn.simpleicons.org/cplusplus" alt="" loading="lazy">C++</span>
       <span class="tool" style="--i:7"><img src="https://cdn.simpleicons.org/gnubash" alt="" loading="lazy">Bash</span>
     </div>
@@ -157,9 +177,9 @@
   <div class="stack-group reveal">
     <p class="stack-label">Infrastructure</p>
     <div class="stack">
-      <span class="tool" style="--i:0"><span class="txt">AWS</span>AWS</span>
-      <span class="tool" style="--i:1"><span class="txt">EMR</span>AWS EMR</span>
-      <span class="tool" style="--i:2"><span class="txt">S3</span>S3</span>
+      <span class="tool" style="--i:0"><span class="txt">A</span>AWS</span>
+      <span class="tool" style="--i:1"><span class="txt">E</span>AWS EMR</span>
+      <span class="tool" style="--i:2"><span class="txt">S</span>S3</span>
       <span class="tool" style="--i:3"><img src="https://cdn.simpleicons.org/kubernetes" alt="" loading="lazy">Kubernetes</span>
       <span class="tool" style="--i:4"><img src="https://cdn.simpleicons.org/temporal" alt="" loading="lazy">Temporal</span>
       <span class="tool" style="--i:5"><img src="https://cdn.simpleicons.org/docker" alt="" loading="lazy">Docker</span>
@@ -171,6 +191,7 @@
       <span class="tool" style="--i:11"><img src="https://cdn.simpleicons.org/opentelemetry" alt="" loading="lazy">OpenTelemetry</span>
       <span class="tool" style="--i:12"><img src="https://cdn.simpleicons.org/splunk" alt="" loading="lazy">Splunk</span>
       <span class="tool" style="--i:13"><img src="https://cdn.simpleicons.org/linux" alt="" loading="lazy">Linux</span>
+      <span class="tool" style="--i:14"><img src="https://cdn.simpleicons.org/git" alt="" loading="lazy">Git</span>
     </div>
   </div>
 
@@ -181,13 +202,13 @@
       <span class="tool" style="--i:1"><img src="https://cdn.simpleicons.org/databricks" alt="" loading="lazy">Databricks</span>
       <span class="tool" style="--i:2"><img src="https://cdn.simpleicons.org/apachehive" alt="" loading="lazy">Hive</span>
       <span class="tool" style="--i:3"><img src="https://cdn.simpleicons.org/postgresql" alt="" loading="lazy">Postgres</span>
-      <span class="tool" style="--i:4"><span class="txt">DDB</span>DynamoDB</span>
+      <span class="tool" style="--i:4"><span class="txt">D</span>DynamoDB</span>
       <span class="tool" style="--i:5"><img src="https://cdn.simpleicons.org/neo4j" alt="" loading="lazy">Neo4j</span>
       <span class="tool" style="--i:6"><img src="https://cdn.simpleicons.org/mongodb" alt="" loading="lazy">MongoDB</span>
       <span class="tool" style="--i:7"><img src="https://cdn.simpleicons.org/sqlite" alt="" loading="lazy">SQLite</span>
       <span class="tool" style="--i:8"><img src="https://cdn.simpleicons.org/redis" alt="" loading="lazy">Redis</span>
       <span class="tool" style="--i:9"><img src="https://cdn.simpleicons.org/springboot" alt="" loading="lazy">Spring Boot</span>
-      <span class="tool" style="--i:10"><span class="txt">API</span>REST APIs</span>
+      <span class="tool" style="--i:10"><span class="txt">R</span>REST APIs</span>
       <span class="tool" style="--i:11"><img src="https://cdn.simpleicons.org/graphql" alt="" loading="lazy">GraphQL</span>
       <span class="tool" style="--i:12"><img src="https://cdn.simpleicons.org/nodedotjs" alt="" loading="lazy">Node.js</span>
       <span class="tool" style="--i:13"><img src="https://cdn.simpleicons.org/fastify" alt="" loading="lazy">Fastify</span>
@@ -398,15 +419,15 @@
   </div>
 </div>
 
-<script src="js/theme.js?v=28" defer></script>
-<script src="js/field.js?v=28" defer></script>
-<script src="js/palette.js?v=28" defer></script>
-<script src="js/spotlight.js?v=28" defer></script>
-<script src="js/sidebar.js?v=28" defer></script>
-<script src="js/reveal.js?v=28" defer></script>
-<script src="js/a11y.js?v=28" defer></script>
-<script src="js/blocks.js?v=28" defer></script>
-<script src="js/tour.js?v=28" defer></script>
-<script src="js/settings.js?v=28" defer></script>
+<script src="js/theme.js?v=29" defer></script>
+<script src="js/field.js?v=29" defer></script>
+<script src="js/palette.js?v=29" defer></script>
+<script src="js/spotlight.js?v=29" defer></script>
+<script src="js/sidebar.js?v=29" defer></script>
+<script src="js/reveal.js?v=29" defer></script>
+<script src="js/a11y.js?v=29" defer></script>
+<script src="js/blocks.js?v=29" defer></script>
+<script src="js/tour.js?v=29" defer></script>
+<script src="js/settings.js?v=29" defer></script>
 </body>
 </html>
