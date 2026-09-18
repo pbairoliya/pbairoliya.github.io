@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Writing — Pratik Bairoliya</title>
-<meta name="description" content="Notes from building things — local-first AI tools, batch systems, and what each one taught me.">
+<title>Systems and algorithms — Pratik Bairoliya</title>
+<meta name="description" content="A Unix shell in C++, two game-AI agents, an unfinished Deep Q-Network, and the LeetCode practice archive underneath them.">
 
-<link rel="canonical" href="https://pbairoliya.github.io/writing/">
+<link rel="canonical" href="https://pbairoliya.github.io/projects/systems-and-algorithms.html">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Writing — Pratik Bairoliya">
-<meta property="og:description" content="Notes from building things. What a project taught me that I did not expect going in.">
-<meta property="og:url" content="https://pbairoliya.github.io/writing/">
+<meta property="og:title" content="Systems and algorithms — Pratik Bairoliya">
+<meta property="og:description" content="A shell, two game-AI agents, an unfinished DQN, and the practice archive underneath.">
+<meta property="og:url" content="https://pbairoliya.github.io/projects/systems-and-algorithms.html">
 <meta property="og:site_name" content="Pratik Bairoliya">
 <meta property="og:image" content="https://pbairoliya.github.io/og.png">
 <meta property="og:image:width" content="1200">
@@ -81,11 +81,11 @@
 
   <p class="side-label">Pages</p>
   <a href="../"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 11h3v9h5v-6h4v6h5v-9h3L12 3Z"/></svg><span>Home</span></a>
-  <a href="../writing/" class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17.3V21h3.7L17.8 9.9l-3.7-3.7L3 17.3ZM20.7 7a1 1 0 0 0 0-1.4l-2.3-2.3a1 1 0 0 0-1.4 0l-1.8 1.8 3.7 3.7L20.7 7Z"/></svg><span>Writing</span></a>
+  <a href="../writing/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17.3V21h3.7L17.8 9.9l-3.7-3.7L3 17.3ZM20.7 7a1 1 0 0 0 0-1.4l-2.3-2.3a1 1 0 0 0-1.4 0l-1.8 1.8 3.7 3.7L20.7 7Z"/></svg><span>Writing</span></a>
   <a href="../writing/receipts-local-llm.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h8l4 4v16H6V2Zm7 1.5V7h3.5L13 3.5ZM8 12h8v1.5H8V12Zm0 3.5h8V17H8v-1.5Z"/></svg><span>Receipts &amp; a local LLM</span></a>
   <a href="../projects/on-device-tools.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 1 5.4 5.2l-1.6-1.6-1.9.5-.5 1.9 1.6 1.6a4 4 0 0 1-5.2-5.4L4.4 2 2 4.4l6.5 8.1a4 4 0 0 0 5.4 5.4l4.3 4.3 2.4-2.4-4.3-4.3"/></svg><span>On-device tools</span></a>
   <a href="../projects/lc.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a1.5 1.5 0 0 1 1.5 1.5V5H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3h3.5V3.5A1.5 1.5 0 0 1 12 2ZM9 10a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm-6 5.5h6V17H9v-1.5Z"/></svg><span>LC Bot</span></a>
-  <a href="../projects/systems-and-algorithms.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v2H4V4Zm0 4h10v2H4V8Zm0 4h16v2H4v-2Zm0 4h10v2H4v-2Zm0 4h16v2H4v-2Z"/></svg><span>Systems &amp; algorithms</span></a>
+  <a href="../projects/systems-and-algorithms.html" class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v2H4V4Zm0 4h10v2H4V8Zm0 4h16v2H4v-2Zm0 4h10v2H4v-2Zm0 4h16v2H4v-2Z"/></svg><span>Systems &amp; algorithms</span></a>
   <a href="../projects/coursework.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 1 8l11 5 9-4.1V15h2V8L12 3ZM5 13.2V17c0 1.7 3.1 3 7 3s7-1.3 7-3v-3.8l-7 3.2-7-3.2Z"/></svg><span>Coursework</span></a>
 
   <div class="side-end">
@@ -100,35 +100,99 @@
   </div>
 </nav>
 
-<main class="wrap" id="main" tabindex="-1">
-  <h1>Writing</h1>
+<main class="wrap post" id="main" tabindex="-1">
+  <p class="tagline">Older work</p>
+  <h1>Systems and algorithms</h1>
   <p class="lede">
-    Notes from building things. Mostly what a project taught me that I did not expect going in —
-    the decision that turned out to matter, and the one I would make differently.
+    Five repositories kept public because the trajectory is the interesting part: a shell, two
+    game-AI agents, an unfinished reinforcement-learning experiment, and the practice archive
+    underneath all of it.
+  </p>
+  <p class="byline meta">
+    <a href="https://github.com/pbairoliya">github.com/pbairoliya</a> · C++, Python · 2020–2024
   </p>
 
-  <h2 id="posts">Posts</h2>
-
-  <a class="card" href="receipts-local-llm.html">
-    <div class="row">
-      <h3 style="margin:0">Scanning receipts into Obsidian with a local LLM →</h3>
-      <span class="meta">Jun 2026</span>
-    </div>
-    <p>A scan on my phone updates my pantry, shopping list and expense report seconds later —
-       Apple Vision and a local model, nothing leaving the laptop. The interesting part isn't
-       the receipts, it's <em>derive, don't mutate</em>.</p>
-  </a>
-
-  <h2 id="also-worth-reading">Also worth reading</h2>
-  <p class="meta">
-    The two project write-ups go deeper on the engineering:
-    <a href="../projects/on-device-tools.html">on-device tools</a> and
-    <a href="../projects/lc.html">LC Bot</a>.
+  <h2 id="shell">A Unix shell, written from scratch</h2>
+  <p>
+    <a href="https://github.com/pbairoliya/customBash">customBash</a> is a shell in C++ — parse a
+    line, fork, exec, wire up pipes and redirection, and hold onto the job so you can wait on it.
+    It has <code>cd</code> and <code>exit</code> as builtins, which it has to, because a child
+    process cannot change its parent's working directory. That single constraint is the reason
+    every shell on earth has builtins, and you do not really feel it until you write one.
+  </p>
+  <p class="callout">
+    Writing a shell is the fastest way to stop treating <code>fork</code> and <code>exec</code> as
+    trivia. You cannot get a pipeline working without understanding that the file descriptor table
+    survives the exec, and that nothing else does.
   </p>
 
-  <footer>
-    <a href="../">← back</a>
-  </footer>
+  <h2 id="pursuit">Two agents, two algorithms, one room</h2>
+  <p>
+    <a href="https://github.com/pbairoliya/ai-cops-and-robbers">ai-cops-and-robbers</a> is a
+    pursuit-evasion game in C++ and SFML. A cop and a robber move around the same map running
+    <em>different</em> search algorithms, which turns the project into a comparison rather than a
+    demo: same world, same constraints, and you get to watch which strategy actually wins.
+  </p>
+  <p>
+    It came out of NC State's game-AI course, where the broader version of this — steering,
+    pathfinding and a decision tree stacked on top of each other — is written up in
+    <a href="coursework.html">the coursework notes</a>.
+  </p>
+
+  <h2 id="snake">An unfinished Deep Q-Network, kept unfinished</h2>
+  <p>
+    <a href="https://github.com/pbairoliya/ai-arcade-games">ai-arcade-games</a> is Snake rebuilt as
+    a reinforcement-learning environment, plus the scaffolding for an agent that learns to play it.
+    The environment is complete — <code>play_step(action)</code> returns
+    <code>(reward, done, score)</code> — and so is the training loop: state encoding, replay memory,
+    epsilon-greedy action selection. The network itself was never written.
+    <code>Agent.model</code> and <code>Agent.trainer</code> are still <code>None</code>.
+  </p>
+  <p>
+    It is published that way on purpose. The part worth reading is the state encoding: the agent
+    never sees the board. It sees eleven booleans — danger straight, danger right, danger left, the
+    four direction flags, and where the food is relative to the head. Feeding a network that instead
+    of raw pixels is the difference between training on a laptop and needing a cluster, and it is a
+    decision you make before you write a single layer.
+  </p>
+  <p>
+    Rewards are deliberately sparse: <code>+10</code> for food, <code>-10</code> for dying,
+    <code>0</code> the rest of the time.
+  </p>
+
+  <h2 id="practice">The practice archive</h2>
+  <p>
+    <a href="https://github.com/pbairoliya/leetcode-archive">leetcode-archive</a> holds 221 problems
+    solved in Python between May 2023 and September 2024 — the first sustained run, kept as a record
+    and not cleaned up afterwards. Some of the solutions are not optimal. They are as I first wrote
+    them.
+  </p>
+  <p>
+    It is heavier on the patterns that actually repeat: two pointers, sliding window, monotonic
+    stack, BFS and DFS on trees and grids, heaps, dynamic programming. The design problems are the
+    ones worth reading if you only read a few — LRU cache, min stack, underground system, browser
+    history.
+  </p>
+  <p>
+    What replaced it is <a href="lc.html">LC Bot</a>, where an Obsidian note is the source of truth
+    and the repository is generated from it, with spaced repetition scheduling the reviews. The
+    archive is what that workflow was built to fix.
+  </p>
+
+  <h2 id="start">Where it started</h2>
+  <p>
+    <a href="https://github.com/pbairoliya/first-code">first-code</a> is the first C++ I ever wrote,
+    in 2020, unedited. The board game Trouble across six numbered attempts. An expression tree
+    across four. K-ary and binary trees by hand, because the STL was not allowed. It is the bottom
+    of the graph, and it stays up for the same reason the Snake agent does.
+  </p>
+  <p>
+    There is one line in it I will not fix — an <code>#include</code> pointing at an absolute path
+    on a Windows drive letter, on a machine I no longer own. It compiled on exactly one computer on
+    earth and at the time I thought that was fine.
+  </p>
+
+  <p class="meta"><a href="../#projects">← Back to projects</a></p>
 </main>
 <script src="../js/theme.js?v=34" defer></script>
 <script src="../js/field.js?v=34" defer></script>

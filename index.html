@@ -22,10 +22,10 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <!-- /social -->
 <script>try{var t=localStorage.getItem("theme");if(t&&t!=="system")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
-<link rel="stylesheet" href="css/base.css?v=33">
-<link rel="stylesheet" href="css/components.css?v=33">
-<link rel="stylesheet" href="css/motion.css?v=33">
-<link rel="stylesheet" href="css/tour.css?v=33">
+<link rel="stylesheet" href="css/base.css?v=34">
+<link rel="stylesheet" href="css/components.css?v=34">
+<link rel="stylesheet" href="css/motion.css?v=34">
+<link rel="stylesheet" href="css/tour.css?v=34">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -69,88 +69,91 @@
   <section id="work">
   <h2 class="reveal">Work</h2>
 
-  <div class="job reveal">
-    <span class="job-node" aria-hidden="true"></span>
-    <h3 class="job-head">
-      <button class="job-toggle" type="button" aria-expanded="true" aria-controls="job-1">
-        <span class="job-name">Capital One — Software Engineer II</span>
-        <span class="meta">Jul 2026 – Present</span>
-        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 10.5 12 15l4.5-4.5"/></svg>
-      </button>
-    </h3>
-    <p class="job-sub">McLean, VA</p>
-    <div class="job-body" id="job-1">
-      <div>
-      <ul>
-        <li>Own the nightly <strong>end-of-day close</strong> — posting, settlement and ledger
-            cutoff across Card and Bank, run on <strong>Temporal</strong>.</li>
-        <li>Lead the <strong>REST API</strong> replacing the vendor's close operator tooling,
-            bringing nightly controls in-house.</li>
-        <li>Monitoring and distributed tracing in <strong>OpenTelemetry</strong> and
-            <strong>Splunk</strong>: alerts page on-call mid-run, not at cutoff.</li>
-        <li>Ship end-of-day services on <strong>Kubernetes</strong> through <strong>Argo CD</strong>
-            and <strong>Helm</strong>, rollback one revision away.</li>
-      </ul>
+  <div class="timeline">
+    <span class="tl-line" aria-hidden="true"><i></i></span>
+    <div class="job reveal">
+      <span class="job-node" aria-hidden="true"></span>
+      <h3 class="job-head">
+        <button class="job-toggle" type="button" aria-expanded="true" aria-controls="job-1">
+          <span class="job-name">Capital One — Software Engineer II</span>
+          <span class="meta">Jul 2026 – Present</span>
+          <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 10.5 12 15l4.5-4.5"/></svg>
+        </button>
+      </h3>
+      <p class="job-sub">McLean, VA</p>
+      <div class="job-body" id="job-1">
+        <div>
+        <ul>
+          <li>Own the nightly <strong>end-of-day close</strong> — posting, settlement and ledger
+              cutoff across Card and Bank, run on <strong>Temporal</strong>.</li>
+          <li>Lead the <strong>REST API</strong> replacing the vendor's close operator tooling,
+              bringing nightly controls in-house.</li>
+          <li>Monitoring and distributed tracing in <strong>OpenTelemetry</strong> and
+              <strong>Splunk</strong>: alerts page on-call mid-run, not at cutoff.</li>
+          <li>Ship end-of-day services on <strong>Kubernetes</strong> through <strong>Argo CD</strong>
+              and <strong>Helm</strong>, rollback one revision away.</li>
+        </ul>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="job reveal">
-    <span class="job-node" aria-hidden="true"></span>
-    <h3 class="job-head">
-      <button class="job-toggle" type="button" aria-expanded="true" aria-controls="job-2">
-        <span class="job-name">Capital One — Software Engineer I</span>
-        <span class="meta">May 2024 – Jul 2026</span>
-        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 10.5 12 15l4.5-4.5"/></svg>
-      </button>
-    </h3>
-    <p class="job-sub">McLean, VA</p>
-    <div class="job-body" id="job-2">
-      <div>
-      <ul>
-        <li>Wrote the ledger's <strong>batch write path</strong> in <strong>Go</strong>, empty repo
-          to production; every nightly cycle runs through it.</li>
-        <li>Designed a <strong>block-allocation ID service</strong>: one call reserves a range,
-          taking per-ID contention off bulk opens.</li>
-        <li>Built the nightly <strong>PySpark</strong>/<strong>Databricks</strong> reconciliation —
-          day-over-day aggregate diffs alert before a bad cycle ships.</li>
-        <li>Cut data egress on the nightly <strong>99M+ Card account</strong> publish by
-          performance-tuning <strong>Hive</strong> sort on <strong>AWS EMR</strong>.</li>
-        <li>Rolled <strong>proof-of-possession tokens</strong> across Card and Bank endpoints,
-          binding each call to a key a thief lacks.</li>
-        <li>Rebuilt the military rewards catalog in <strong>Vue.js</strong>/<strong>Spring
-          Boot</strong>/<strong>DynamoDB</strong>: <strong>2.8×</strong> faster, $9M projected
-          revenue.</li>
-      </ul>
+    <div class="job reveal">
+      <span class="job-node" aria-hidden="true"></span>
+      <h3 class="job-head">
+        <button class="job-toggle" type="button" aria-expanded="true" aria-controls="job-2">
+          <span class="job-name">Capital One — Software Engineer I</span>
+          <span class="meta">May 2024 – Jul 2026</span>
+          <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 10.5 12 15l4.5-4.5"/></svg>
+        </button>
+      </h3>
+      <p class="job-sub">McLean, VA</p>
+      <div class="job-body" id="job-2">
+        <div>
+        <ul>
+          <li>Wrote the ledger's <strong>batch write path</strong> in <strong>Go</strong>, empty repo
+            to production; every nightly cycle runs through it.</li>
+          <li>Designed a <strong>block-allocation ID service</strong>: one call reserves a range,
+            taking per-ID contention off bulk opens.</li>
+          <li>Built the nightly <strong>PySpark</strong>/<strong>Databricks</strong> reconciliation —
+            day-over-day aggregate diffs alert before a bad cycle ships.</li>
+          <li>Cut data egress on the nightly <strong>99M+ Card account</strong> publish by
+            performance-tuning <strong>Hive</strong> sort on <strong>AWS EMR</strong>.</li>
+          <li>Rolled <strong>proof-of-possession tokens</strong> across Card and Bank endpoints,
+            binding each call to a key a thief lacks.</li>
+          <li>Rebuilt the military rewards catalog in <strong>Vue.js</strong>/<strong>Spring
+            Boot</strong>/<strong>DynamoDB</strong>: <strong>2.8×</strong> faster, $9M projected
+            revenue.</li>
+        </ul>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="job reveal">
-    <span class="job-node" aria-hidden="true"></span>
-    <h3 class="job-head">
-      <button class="job-toggle" type="button" aria-expanded="true" aria-controls="job-3">
-        <span class="job-name">Fidelity Investments — Software Engineer</span>
-        <span class="meta">Jun 2023 – May 2024</span>
-        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 10.5 12 15l4.5-4.5"/></svg>
-      </button>
-    </h3>
-    <p class="job-sub">Durham, NC</p>
-    <div class="job-body" id="job-3">
-      <div>
-      <ul>
-        <li>Moved mainframe stock and job workflows to <strong>AWS</strong> with
-            <strong>Terraform</strong> — <strong>45%</strong> of volume, <strong>400+</strong>
-          associates.</li>
-        <li>Modeled system metadata as a <strong>Neo4j</strong> graph; graph
-          queries found and removed <strong>5,000+</strong> duplicate records.</li>
-        <li>Delivered the full stack on a 4-person team: <strong>Angular</strong> UI,
-            <strong>Java</strong> services, <strong>S3</strong> metadata sync.</li>
-      </ul>
+    <div class="job reveal">
+      <span class="job-node" aria-hidden="true"></span>
+      <h3 class="job-head">
+        <button class="job-toggle" type="button" aria-expanded="true" aria-controls="job-3">
+          <span class="job-name">Fidelity Investments — Software Engineer</span>
+          <span class="meta">Jun 2023 – May 2024</span>
+          <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 10.5 12 15l4.5-4.5"/></svg>
+        </button>
+      </h3>
+      <p class="job-sub">Durham, NC</p>
+      <div class="job-body" id="job-3">
+        <div>
+        <ul>
+          <li>Moved mainframe stock and job workflows to <strong>AWS</strong> with
+              <strong>Terraform</strong> — <strong>45%</strong> of volume, <strong>400+</strong>
+            associates.</li>
+          <li>Modeled system metadata as a <strong>Neo4j</strong> graph; graph
+            queries found and removed <strong>5,000+</strong> duplicate records.</li>
+          <li>Delivered the full stack on a 4-person team: <strong>Angular</strong> UI,
+              <strong>Java</strong> services, <strong>S3</strong> metadata sync.</li>
+        </ul>
+        </div>
       </div>
     </div>
-  </div>
 
+  </div>
   </section>
 
   <section id="stack">
@@ -250,39 +253,27 @@
        of them about the reconciliation rules.</p>
   </a>
 
-  <div class="card reveal">
+  <a class="card reveal" href="projects/systems-and-algorithms.html">
     <div class="row">
-      <h3>Systems and algorithms</h3>
+      <h3>Systems and algorithms →</h3>
       <span class="meta">C++ · Python</span>
     </div>
-    <p>Earlier work, kept public:
-       <a href="https://github.com/pbairoliya/customBash">a Unix shell in C++</a> with process
-       control, piping and job handling;
-       <a href="https://github.com/pbairoliya/ai-cops-and-robbers">a pursuit-evasion game</a> in
-       C++/SFML running two search algorithms against each other;
-       <a href="https://github.com/pbairoliya/ai-arcade-games">an unfinished Deep Q-Network</a>
-       for Snake, kept honest about where it stops; and
-       <a href="https://github.com/pbairoliya/leetcode-archive">600+ LeetCode solutions</a>
-       from 2023–24.</p>
-  </div>
+    <p>Earlier work, kept public. A Unix shell written from scratch, a pursuit-evasion game where
+       two agents run different search algorithms against each other, a Deep Q-Network for Snake
+       that is published unfinished on purpose, and the 221-problem practice archive underneath
+       all of it.</p>
+  </a>
 
-  <div class="card reveal">
-    <div class="card-head">
-      <h3>Coursework, published</h3>
-      <span class="meta">NC State · C, C++, Java, Python</span>
+  <a class="card reveal" href="projects/coursework.html">
+    <div class="row">
+      <h3>Coursework, published →</h3>
+      <span class="meta">NC State · C, C++, Java</span>
     </div>
-    <p>Four semesters of systems work, cleaned up and documented rather than dumped:
-       <a href="https://github.com/pbairoliya/csc230-c-software-tools">CSC 230</a> — a
-       base-swappable calculator and a generic hash map built on hand-written vtables;
-       <a href="https://github.com/pbairoliya/csc246-operating-systems">CSC 246</a> — a shell
-       written without libc, and max-subarray solved five ways (fork/pipe, semaphores, monitors,
-       threads, CUDA);
-       <a href="https://github.com/pbairoliya/csc474-network-security">CSC 474</a> — a
-       repeating-key XOR breaker using index-of-coincidence, plus a port scanner and the
-       sliding-window detector that catches it; and
-       <a href="https://github.com/pbairoliya/csc484-game-ai">CSC 484</a> — steering behaviours,
-       A* with swappable heuristics, and a decision tree driving both.</p>
-  </div>
+    <p>Four semesters of systems work, documented rather than dumped. A generic hash map built on
+       a vtable written by hand, max-subarray solved five ways down to CUDA, a repeating-key XOR
+       key recovered from statistics alone, and a game agent that moves, plans and decides in
+       three layers.</p>
+  </a>
 
   </section>
   <section id="writing">
@@ -442,15 +433,15 @@
   </div>
 </div>
 
-<script src="js/theme.js?v=33" defer></script>
-<script src="js/field.js?v=33" defer></script>
-<script src="js/palette.js?v=33" defer></script>
-<script src="js/spotlight.js?v=33" defer></script>
-<script src="js/sidebar.js?v=33" defer></script>
-<script src="js/reveal.js?v=33" defer></script>
-<script src="js/a11y.js?v=33" defer></script>
-<script src="js/blocks.js?v=33" defer></script>
-<script src="js/tour.js?v=33" defer></script>
-<script src="js/settings.js?v=33" defer></script>
+<script src="js/theme.js?v=34" defer></script>
+<script src="js/field.js?v=34" defer></script>
+<script src="js/palette.js?v=34" defer></script>
+<script src="js/spotlight.js?v=34" defer></script>
+<script src="js/sidebar.js?v=34" defer></script>
+<script src="js/reveal.js?v=34" defer></script>
+<script src="js/a11y.js?v=34" defer></script>
+<script src="js/blocks.js?v=34" defer></script>
+<script src="js/tour.js?v=34" defer></script>
+<script src="js/settings.js?v=34" defer></script>
 </body>
 </html>

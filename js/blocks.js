@@ -63,7 +63,49 @@
         }
       });
       if (i > 0) set(job, false);
+      /* a role still running keeps a pulse on its node */
+      if (/present/i.test(job.querySelector(".job-toggle .meta")?.textContent || ""))
+        job.classList.add("job-now");
     });
 
+    /* The line draws itself as you scroll past it.
+       p is 0 when the timeline's top crosses three-quarters of the way down the
+       viewport and 1 when its bottom crosses a third of the way down, so the
+       fill tracks reading position rather than raw scroll offset. Nodes light
+       as the fill passes them. */
+    const line = document.querySelector(".tl-line");
+    if (line && !reduced) {
+      const track = line.parentElement;
+      let queued = false;
+
+      const draw = () => {
+        queued = false;
+        const r = track.getBoundingClientRect();
+        const from = innerHeight * 0.75, to = innerHeight * 0.35;
+        const span = (r.height || 1) + (from - to);
+        const p = Math.min(1, Math.max(0, (from - r.top) / span));
+        line.style.setProperty("--p", p.toFixed(4));
+
+        const lr = line.getBoundingClientRect();
+        const front = lr.top + lr.height * p;
+        jobs.forEach(j => {
+          const n = j.querySelector(".job-node").getBoundingClientRect();
+          j.classList.toggle("reached", n.top + n.height / 2 <= front + 1);
+        });
+      };
+      const onScroll = () => { if (!queued) { queued = true; requestAnimationFrame(draw); } };
+
+      addEventListener("scroll", onScroll, { passive: true });
+      addEventListener("resize", onScroll, { passive: true });
+      /* opening a role changes the track's height, so redraw after the
+         0fr -> 1fr transition rather than leaving a stale fill behind */
+      track.addEventListener("transitionend", e => {
+        if (e.propertyName === "grid-template-rows") draw();
+      });
+      draw();
+    } else if (line) {
+      line.style.setProperty("--p", "1");
+      jobs.forEach(j => j.classList.add("reached"));
+    }
   }
 })();
