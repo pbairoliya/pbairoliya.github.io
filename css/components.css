@@ -64,7 +64,8 @@ a.side-head:hover { background: var(--code-bg); text-decoration: none; }
 .side-collapse svg { width: 16px; height: 16px; fill: currentColor; }
 
 /* The menu button mirrors the settings gear on the other side. It appears
-   whenever the rail is not on screen. Below the sheet (8), above the scrim (7). */
+   whenever the rail is not on screen. Below the scrim (7), and hidden outright
+   once the sheet is open. */
 /* On a phone these float over the page, and at 390px the menu button was
    landing directly on a line of text. Give them a ground of their own. */
 .side-toggle, .gear { backdrop-filter: blur(10px) saturate(1.4); }
@@ -129,7 +130,7 @@ div.job-head .meta { white-space: nowrap; }
   .job-name { grid-column: 1 / -1; }
 }
 .job-toggle .meta { white-space: nowrap; }
-.job-toggle .chev { width: 18px; height: 18px; flex: 0 0 18px; align-self: center;
+.job-toggle .chev { width: 18px; height: 18px; align-self: center;
                     fill: none; stroke: var(--muted); stroke-width: 2;
                     stroke-linecap: round; stroke-linejoin: round; opacity: 0;
                     transition: transform .34s cubic-bezier(.34,1.3,.64,1),
@@ -483,7 +484,7 @@ body.side-open { overflow: hidden; }
 .course-head { margin: var(--s5) 0 var(--s3); align-items: baseline; }
 .course-head .stack-label { margin: 0; }
 .course-head a { white-space: nowrap; }
-@media (max-width: 400px) { .course-head a { white-space: normal; } }
+@media (max-width: 400px) { .row.course-head a.meta { white-space: normal; } }
 .courses a { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr);
              gap: var(--s3); align-items: center; overflow: hidden;
              padding: var(--s3) var(--s4); border: 1px solid var(--line);
@@ -512,7 +513,7 @@ body.side-open { overflow: hidden; }
            color: var(--muted); transition: color .25s; }
 #projects .card:hover .card-no { color: var(--accent); }
 .armed #projects .card.reveal { transition-delay: calc(var(--n, 0) * 70ms); }
-.armed #projects .card.reveal.seen { transition-delay: calc(var(--n, 0) * 70ms); }
+.armed #projects .card.reveal.seen { transition-delay: 0s; }   /* the stagger is spent */
 #projects .card::before {
   content: ""; position: absolute; inset: 0 auto 0 0; width: 3px;
   background: linear-gradient(var(--accent), var(--accent-2));
@@ -593,19 +594,7 @@ body.side-open { overflow: hidden; }
    and the dates; below 900px there is no room for it and it goes. */
 
 /* the lane, and the faint year gridlines behind every row */
-/* No track behind the bar. A pill on a grey pill reads as a progress meter;
-   the year rules behind it are what give the bar its position. */
-.job-toggle .span { position: relative; display: none; height: 7px; align-self: center; }
-.job-toggle .span > i { position: absolute; top: 0; bottom: 0; border-radius: inherit;
-                        background: var(--pin, var(--accent)); opacity: .85;
-                        transform-origin: left center;
-                        transition: opacity .2s, filter .2s; }
-.job:hover .span > i, .job:not(.shut) .span > i { opacity: 1;
-                        filter: drop-shadow(0 0 6px color-mix(in srgb, var(--pin, var(--accent)) 60%, transparent)); }
-.timeline.drawn .span > i { animation: bar-grow .5s cubic-bezier(.2,.8,.3,1)
-                            calc(var(--e, 0) * 80ms + 200ms) backwards; }
 @keyframes bar-grow { from { transform: scaleX(0); opacity: 0; } }
-.timeline.settled .span > i { animation: none; }
 
 
 
@@ -736,7 +725,7 @@ body.side-open { overflow: hidden; }
 @media (max-width: 760px) { .views button[data-view="chart"] { display: none; } }
 @media (prefers-reduced-motion: reduce) {
   .views button, .tlc-bar, .tlc-scrub { transition: none; }
-  .tlc-bar:hover { transform: none; }
+  .tlc-row:hover .tlc-bar, .tlc-bar:focus-visible { transform: none; }
 }
 
 /* The coursework opens with the degree it belongs to. Tiles cascade in behind
