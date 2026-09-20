@@ -125,8 +125,17 @@
     const track = document.querySelector(".timeline");
 
     if (track) {
-      jobs.forEach((j, n) => j.style.setProperty("--d", 120 + n * 150));
-      const last = 120 + (jobs.length - 1) * 150;
+      /* One sweep over everything in the list, in document order, so a year
+         divider arrives just before the entries it introduces instead of
+         being on its own clock. */
+      const list = document.getElementById("tl-list");
+      const steps = [...(list || track).querySelectorAll(".tl-year, .job")];
+      let last = 0;
+      steps.forEach((el, n) => {
+        const d = 100 + n * 90;
+        el.style.setProperty(el.classList.contains("tl-year") ? "--y" : "--d", d);
+        last = d;
+      });
       const draw = () => {
         track.classList.add("drawn");
         /* The per-node stagger is a transition-delay, so it would otherwise
@@ -306,7 +315,7 @@
          off the viewport, where nothing can scroll it back */
       scrub.classList.toggle("flip", box.width - x < 150);
       chip.textContent = MONTHS[d.getMonth()] + " " + d.getFullYear() +
-        " · " + live + (live === 1 ? " thing" : " things");
+        " · " + live + (live === 1 ? " run" : " runs");
     }, { passive: true });
     body.addEventListener("pointerleave", clear);
 

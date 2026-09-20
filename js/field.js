@@ -24,7 +24,7 @@
     "ACID", "partition key", "write-ahead log", "cache-aside", "backpressure",
     "kubectl apply -f", "go func() { … }()", "defer mu.Unlock()", "ctx, cancel := …",
     "SELECT … GROUP BY", "EXPLAIN ANALYZE", "SHA-256", "git rebase -i",
-    "ledger cutoff", "99M+ accounts / night",
+    "ledger cutoff", "idempotent replay",
     // maths
     "e^{iπ} + 1 = 0", "∑ 1/n² = π²/6", "∫e^{−x²}dx = √π", "φ = (1+√5)/2",
     "Ax = λx", "det(A − λI) = 0", "∂u/∂t = α∇²u", "P(A|B)P(B) = P(B|A)P(A)",

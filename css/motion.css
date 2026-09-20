@@ -21,7 +21,10 @@
    blocked script used to leave the whole page below the intro invisible. */
 .reveal { opacity: 1; transform: none; }
 .armed .reveal { opacity: 0; transform: translateY(12px);
-                 transition: opacity .48s ease, transform .56s var(--ease); }
+                 /* keep the hover properties, or the glow and the border snap */
+                 transition: opacity .48s ease, transform .56s var(--ease),
+                             box-shadow .28s ease, background-color .28s ease,
+                             border-color .28s ease; }
 .armed .reveal.seen { opacity: 1; transform: none; }
 h2.reveal { transition-duration: .4s, .46s; }
 
@@ -30,7 +33,7 @@ h2.reveal { transition-duration: .4s, .46s; }
   from { opacity:0; transform: translateY(10px) scale(.97); }
   to   { opacity:1; transform:none; }
 }
-.armed .stack-group.seen .tool { animation: dealIn .4s var(--ease) both;
+.armed .stack-group.seen .tool { animation: dealIn .4s var(--ease) backwards;
                           animation-delay: calc(var(--i, 0) * 30ms); }
 
 /* ---- palette button asks to be noticed, once ---- */
@@ -73,6 +76,7 @@ h2.reveal { transition-duration: .4s, .46s; }
 .lit > .lit-edge { opacity: 1; }
 
 .lit { background-color: color-mix(in srgb, var(--hit) 5%, var(--panel)); }
+.armed .job.lit, .armed .card.lit, .armed .cred.lit,
 .job.lit, .card.lit, .cred.lit {
   transform: translateY(-2px);
   box-shadow: 0 14px 34px -16px color-mix(in srgb, var(--hit) 60%, transparent);
@@ -81,7 +85,9 @@ h2.reveal { transition-duration: .4s, .46s; }
    a grey rectangle sitting on the line; the pointer glow and the pin's ring are
    the whole highlight here. */
 .timeline .job.lit { background-color: transparent; box-shadow: none; transform: none; }
-.timeline .job > .lit-edge { display: none; }
+.timeline .job > .lit-edge,
+.timeline .job > .rail { display: none; }
+.armed .stack-group.seen .tool.lit,
 .tool.lit, .btn.lit { transform: translateY(-2px); }
 /* scaleY rather than height: the same growing bar, off the layout path */
 .job .rail { height: calc(100% - 24px); transform: translateY(-50%) scaleY(0);

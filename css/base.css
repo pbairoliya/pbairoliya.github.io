@@ -20,7 +20,8 @@
   --fs-md:  .875rem;    /* 14 — secondary text, captions */
   --fs-base: 1rem;      /* 16 — body                     */
   --fs-lg:  1.125rem;   /* 18 — lede                     */
-  --fs-xl:  1.25rem;    /* 20 — h2                       */
+  --fs-xl:  1.25rem;    /* 20 — a long page's lede        */
+  --fs-2xl: 1.5rem;     /* 24 — section headings         */
 
   --lh-tight: 1.15;     /* display */
   --lh-snug:  1.3;      /* headings and UI rows */
@@ -48,14 +49,14 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg:#0e0f12; --panel:#16171b; --ink:#e9e9ea; --muted:#9a9ca3;
-    --line:#26282d; --code-bg:#1d1f23;
+    --line:#2f323a; --code-bg:#1d1f23;
     --accent:#7fb2ff; --accent-2:#b18cff; --hit:#a97bff; --on-accent:#0e0f12;
     --hit2:#f0b429; --muted-strong:#9aa3ad;
   }
 }
 :root[data-theme="dark"] {
   --bg:#0e0f12; --panel:#16171b; --ink:#e9e9ea; --muted:#9a9ca3;
-  --line:#26282d; --code-bg:#1d1f23;
+  --line:#2f323a; --code-bg:#1d1f23;
   --accent:#7fb2ff; --accent-2:#b18cff; --hit:#a97bff; --on-accent:#0e0f12;
   --hit2:#f0b429; --muted-strong:#9aa3ad;
 }
@@ -86,10 +87,11 @@ body::before {
 a { color: var(--accent); text-decoration: none; transition: color .8s linear; }
 a:hover { text-decoration: underline; }
 
-h1 { font-size: clamp(1.9rem, 6vw, 2.4rem); line-height: var(--lh-tight); letter-spacing: var(--ls-tight); margin: 0 0 var(--s1); }
-h2 { font-size: var(--fs-xl); line-height: var(--lh-snug); letter-spacing: var(--ls-tight); margin: var(--s8) 0 var(--s4);
+h1 { font-size: clamp(1.9rem, 5vw, 2.125rem); line-height: var(--lh-tight); letter-spacing: var(--ls-tight); margin: 0 0 var(--s1); }
+h2 { font-size: var(--fs-2xl); line-height: var(--lh-snug); letter-spacing: var(--ls-tight); margin: var(--s9) 0 var(--s4);
      padding-bottom: var(--s2); border-bottom: 1px solid var(--line); }
-h3 { font-size: var(--fs-lg); line-height: var(--lh-snug); margin: var(--s7) 0 var(--s2); }
+h3 { font-size: var(--fs-base); font-weight: 700; line-height: var(--lh-snug);
+     margin: var(--s7) 0 var(--s2); }
 p  { margin: 0 0 var(--s3); }
 ul { padding-left: var(--s5); margin: 0 0 var(--s3); }
 li { margin-bottom: var(--s1); }
@@ -97,6 +99,9 @@ li { margin-bottom: var(--s1); }
 .lede { color: var(--ink); font-size: var(--fs-lg);
         line-height: var(--lh-body); margin-bottom: var(--s5); max-width: 34em; }
 .meta { color: var(--muted); font-size: var(--fs-md); }
+/* The line a recruiter filters on, before any prose: where he is, what he
+   works in, how to reach him. */
+.standfirst { margin: 0 0 var(--s4); color: var(--muted); font-size: var(--fs-md); }
 .tagline { font: 600 var(--fs-xs)/1 var(--sans); letter-spacing: var(--ls-caps); text-transform: uppercase;
            color: var(--accent); margin: 0 0 var(--s3); transition: color .8s linear; }
 
