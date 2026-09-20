@@ -65,6 +65,9 @@ a.side-head:hover { background: var(--code-bg); text-decoration: none; }
 
 /* The menu button mirrors the settings gear on the other side. It appears
    whenever the rail is not on screen. Below the sheet (8), above the scrim (7). */
+/* On a phone these float over the page, and at 390px the menu button was
+   landing directly on a line of text. Give them a ground of their own. */
+.side-toggle, .gear { backdrop-filter: blur(10px) saturate(1.4); }
 .side-toggle { position: fixed; z-index: 6; display: none; place-items: center;
                line-height: 0;
                top: max(12px, env(safe-area-inset-top)); left: clamp(12px, 3vw, 18px);
@@ -94,9 +97,10 @@ body.side-open .side-scrim { opacity: 1; pointer-events: auto; }
 .job { padding: 12px clamp(12px, 4vw, 18px); margin-inline: clamp(-18px, -4vw, -12px);
        border: 1px solid transparent; border-radius: var(--r-md); }
 .job + .job { margin-top: 2px; }
+/* One rule between entries, not one above and one below each. */
 .job:not(:last-of-type)::before {
-  content: ""; position: absolute; inset-inline: clamp(12px, 4vw, 18px); bottom: -1px; height: 1px;
-  background: var(--line); transition: opacity .25s;
+  content: ""; position: absolute; inset-inline: clamp(12px, 4vw, 18px); bottom: 0; height: 1px;
+  background: color-mix(in srgb, var(--line) 60%, transparent); transition: opacity .25s;
 }
 .job.lit::before, .job.lit + .job::before { opacity: 0; }
 .job-head { margin: 0; }
@@ -116,7 +120,7 @@ div.job-head .meta { white-space: nowrap; }
               align-items: baseline; gap: 2px var(--s3);
               width: 100%; padding: 0; background: none; border: 0; cursor: pointer;
               color: inherit; font: inherit; text-align: left; }
-.job-name { font: 600 var(--fs-md)/var(--lh-snug) var(--sans); letter-spacing: var(--ls-tight); }
+.job-name { font: 700 var(--fs-md)/var(--lh-snug) var(--sans); letter-spacing: var(--ls-tight); }
 .job-name i { font-style: normal; font-weight: 400; font-size: var(--fs-2xs);
               color: var(--muted); white-space: nowrap; }
 .job-name i::before { content: " · "; }
@@ -418,10 +422,32 @@ body.side-open { overflow: hidden; }
    transition — a transition-delay would stay on the element and make every
    later hover answer late. `backwards` fill holds the from-state during the
    delay and hands the element back to its own styles afterwards. */
+/* The sweep owns these rows. reveal.js was ALSO animating them — .reveal
+   fades and lifts every block on the page — so two entrances ran on the same
+   element at once and the result read as mush. Neutralise one. */
+.armed .timeline .reveal,
+.armed .timeline .reveal.seen { opacity: 1; transform: none; transition: none; }
+
 .timeline.drawn .job-head {
-  animation: role-in .45s cubic-bezier(.2,.8,.3,1) calc(var(--d, 0) * 1ms + 70ms) backwards;
+  animation: role-in .42s cubic-bezier(.22,.9,.3,1) calc(var(--d, 0) * 1ms + 60ms) backwards;
 }
-@keyframes role-in { from { opacity: 0; transform: translateX(-12px); } }
+@keyframes role-in { from { opacity: 0; transform: translateX(-14px); } }
+
+/* the dot lands just before its row, so the line builds and the text follows */
+.timeline.drawn .job-dot {
+  animation: dot-in .46s cubic-bezier(.34,1.5,.64,1) calc(var(--d, 0) * 1ms) backwards;
+}
+@keyframes dot-in { from { transform: scale(0); opacity: 0; } }
+
+/* a year divider draws its rule out before the entries it introduces */
+.tl-year::after { transform-origin: left center; }
+.timeline.drawn .tl-year span {
+  animation: role-in .4s cubic-bezier(.22,.9,.3,1) calc(var(--y, 0) * 1ms) backwards;
+}
+.timeline.drawn .tl-year::after {
+  animation: rule-draw .5s cubic-bezier(.22,.9,.3,1) calc(var(--y, 0) * 1ms) backwards;
+}
+@keyframes rule-draw { from { transform: scaleX(0); opacity: 0; } }
 
 /* the open role's bullets wait their turn rather than arriving before the line */
 .timeline:not(.drawn) .job-body li { opacity: 0; transform: translateX(-12px); }
@@ -429,7 +455,10 @@ body.side-open { overflow: hidden; }
 /* A safety floor. blocks.js marks the timeline settled once the sweep's wall
    clock has run out, which clears the entrance animation and hands the element
    back to its own styles. In a normal browser this changes nothing. */
-.timeline.settled .job-head { animation: none; }
+.timeline.settled .job-head,
+.timeline.settled .job-dot,
+.timeline.settled .tl-year span,
+.timeline.settled .tl-year::after { animation: none; }
 
 .job[data-kind="work"]       { --pin: var(--accent); }
 .job[data-kind="teaching"],
@@ -441,7 +470,8 @@ body.side-open { overflow: hidden; }
 #work .job { cursor: pointer; }   /* the whole entry toggles */
 
 @media (prefers-reduced-motion: reduce) {
-  .timeline.drawn .job-head { animation: none; }
+  .timeline.drawn .job-head, .timeline.drawn .job-dot,
+  .timeline.drawn .tl-year span, .timeline.drawn .tl-year::after { animation: none; }
   .timeline:not(.drawn) .job-body li { opacity: 1; transform: none; }
 }
 
@@ -490,6 +520,9 @@ body.side-open { overflow: hidden; }
   transition: transform .34s cubic-bezier(.2,.8,.3,1);
 }
 #projects .card:hover::before, #projects .card:focus-visible::before { transform: scaleY(1); }
+/* the accent bar IS the hover state; the wash, the lift and the shadow
+   on top of it were three more answers to the same question */
+.shelf .card.lit { background-color: var(--panel); box-shadow: none; transform: none; }
 #projects .card .row h3 { transition: transform .24s cubic-bezier(.2,.8,.3,1); }
 #projects .card:hover .row h3 { transform: translateX(4px); }
 
@@ -521,7 +554,7 @@ body.side-open { overflow: hidden; }
 
 /* School's contents line up with the entries above them */
 
-.shelf { display: block; }
+.shelf { display: block; margin-top: var(--s9); }
 
 @media (max-width: 560px) {
 }
@@ -582,7 +615,7 @@ body.side-open { overflow: hidden; }
    years punctuate the list instead of being ruled across it — the horizontal
    chart needed six vertical lines through everything to place its bars, and
    they were the noisiest thing on the page. */
-.timeline { --lane: 72px; margin: var(--s8) 0 var(--s7); }
+.timeline { --lane: 56px; margin: var(--s9) 0 var(--s7); }
 #tl-list { position: relative; }
 
 .tl-year { position: relative; padding-left: var(--lane); margin: var(--s5) 0 var(--s2);
@@ -591,10 +624,11 @@ body.side-open { overflow: hidden; }
 .tl-year span { position: absolute; left: 0; width: 40px; text-align: right;
                 font: 700 var(--fs-2xs)/1 var(--sans); letter-spacing: var(--ls-caps);
                 color: var(--muted); }
-.tl-year::after { content: ""; flex: 1; height: 1px; background: var(--line); opacity: .7; }
+.tl-year::after { content: ""; flex: 1; height: 1px;
+                  background: linear-gradient(90deg, var(--line), transparent 55%); }
 
 .timeline .job { position: relative; padding-left: var(--lane); }
-.job-dot { position: absolute; left: 46px; top: 16px; width: 11px; height: 11px; border-radius: var(--r-pill); box-sizing: border-box;
+.job-dot { position: absolute; left: 30px; top: 16px; width: 11px; height: 11px; border-radius: var(--r-pill); box-sizing: border-box;
            border: 2px solid var(--pin, var(--accent)); background: var(--bg); z-index: 1;
            transition: transform .3s cubic-bezier(.34,1.4,.64,1), background-color .3s; }
 .job:hover .job-dot { transform: scale(1.25); }
@@ -614,7 +648,7 @@ body.side-open { overflow: hidden; }
 
 @media (max-width: 560px) {
   .timeline { --lane: 52px; }
-    .job-dot { left: 28px; }
+    .job-dot { left: 22px; }
   .tl-year span { width: 26px; font-size: 10px; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -658,9 +692,7 @@ body.side-open { overflow: hidden; }
 
 .tlc-bar { position: absolute; top: 50%; height: 14px; margin-top: -7px;
            padding: 0; border: 0; border-radius: var(--r-pill); cursor: pointer;
-           background: linear-gradient(90deg,
-             color-mix(in srgb, var(--k) 78%, transparent),
-             color-mix(in srgb, var(--k) 52%, transparent));
+           background: var(--k);   /* flat: a gradient on a chart reads as decoration */
            transition: opacity .18s, filter .18s, transform .18s cubic-bezier(.2,.8,.3,1); }
 .tlc-bar[data-kind="work"]       { --k: var(--accent); }
 .tlc-bar[data-kind="teaching"],
@@ -673,12 +705,17 @@ body.side-open { overflow: hidden; }
 .tlc-row:hover .tlc-name,
 .tlc-row:focus-within .tlc-name { color: var(--ink); }
 .tlc-row:hover .tlc-bar,
-.tlc-bar:focus-visible { transform: scaleY(1.35); filter: brightness(1.15); outline: none;
+.tlc-bar:focus-visible { transform: scaleY(1.25); filter: brightness(1.15); outline: none;
            box-shadow: 0 0 0 3px color-mix(in srgb, var(--k) 22%, transparent); }
 .tlc-body:has(.tlc-row:hover) .tlc-row:not(:hover) .tlc-name { opacity: .45; }
-.tlc-body:has(.tlc-row:hover) .tlc-row:not(:hover) .tlc-bar { opacity: .35; }
+/* Row-hover used to dim every other BAR as well, which fought the scrubber's
+   own dimming: the chart washed out to 35% and the emphasised row was often
+   not the one the chip was describing. Hovering a row now only quiets the
+   other NAMES. */
+.tlc-body.scrubbing:has(.tlc-row:hover) .tlc-row:not(:hover) .tlc-name { opacity: 1; }
 /* a run with no end yet fades out to the right rather than stopping flat */
-.tlc-bar.is-open-ended { mask-image: linear-gradient(90deg, #000 82%, transparent); }
+/* the current role is the most important bar; a fade-out made it a dot */
+.tlc-bar.is-open-ended { mask-image: linear-gradient(90deg, #000 94%, transparent); }
 .tlc-bar.dim { opacity: .18; }
 .tlc-lane.undated::after { content: ""; position: absolute; inset: 50% 8px auto; height: 1px;
             margin-top: -.5px;
