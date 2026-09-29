@@ -85,6 +85,12 @@
     links.forEach((a, j) => a.classList.toggle("on", j === i));
     const href = links[i]?.getAttribute("href") || "#intro";
     dispatchEvent(new CustomEvent("sectionchange", { detail: href.slice(1) }));
+    /* Do not overwrite a deep link. Arriving at #fidelity and having the spy
+       rewrite it to #work within a second means anyone who copies the URL out
+       of the address bar hands on the wrong one. */
+    const deep = location.hash.slice(1);
+    if (deep && deep !== href.slice(1) && document.getElementById(deep)?.closest("section")?.id === href.slice(1))
+      return;
     if (readerMoved && location.hash !== href) history.replaceState(null, "", href);
   }
 

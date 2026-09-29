@@ -872,3 +872,7 @@ body.side-open { overflow: hidden; }
 /* The three icon buttons are one group. Unwrapped they split 1 + 2 across two
    lines at 390px, which read as one orphaned circle rather than a set. */
 .btn-row { display: flex; gap: var(--s2); flex: 0 0 auto; }
+
+/* A logo that failed to load is worse than no logo: alt="" renders the
+   browser's torn-page glyph. blocks.js marks these; the label carries it. */
+.tool img.no-icon { display: none; }
