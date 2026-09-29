@@ -450,13 +450,16 @@ body.side-open { overflow: hidden; }
 .timeline.drawn .job-head {
   animation: role-in .42s cubic-bezier(.22,.9,.3,1) calc(var(--d, 0) * 1ms + 60ms) backwards;
 }
-@keyframes role-in { from { opacity: 0; transform: translateX(-14px); } }
+/* Fade only. This used to slide the row in from translateX(-14px) while the
+   dot beside it stayed put, so the text visibly pulled away from its own
+   bullet and then caught up. Nothing on this page should move sideways. */
+@keyframes role-in { from { opacity: 0; } }
 
 /* the dot lands just before its row, so the line builds and the text follows */
 .timeline.drawn .job-dot {
-  animation: dot-in .46s cubic-bezier(.34,1.5,.64,1) calc(var(--d, 0) * 1ms) backwards;
+  animation: dot-in .4s cubic-bezier(.22,.9,.3,1) calc(var(--d, 0) * 1ms) backwards;
 }
-@keyframes dot-in { from { transform: scale(0); opacity: 0; } }
+@keyframes dot-in { from { transform: scale(.7); opacity: 0; } }
 
 /* a year divider draws its rule out before the entries it introduces */
 .tl-year::after { transform-origin: left center; }
@@ -546,14 +549,11 @@ body.side-open { overflow: hidden; }
 /* the accent bar IS the hover state; the wash, the lift and the shadow
    on top of it were three more answers to the same question */
 .shelf .card.lit { background-color: var(--panel); box-shadow: none; transform: none; }
-#projects .card .row h3 { transition: transform .24s cubic-bezier(.2,.8,.3,1); }
-#projects .card:hover .row h3 { transform: translateX(4px); }
 
 @media (prefers-reduced-motion: reduce) {
-  .courses a, .courses a::after, #projects .card::before,
-  #projects .card .row h3, .card-no { transition: none; }
+  .courses a, .courses a::after, #projects .card::before, .card-no { transition: none; }
   .armed #projects .card.reveal, .armed #projects .card.reveal.seen { transition-delay: 0s; }
-  .courses a:hover, #projects .card:hover .row h3 { transform: none; }
+  .courses a:hover { transform: none; }
 }
 
 /* The stack a project is built in, up top where a recruiter scans first. */
@@ -781,8 +781,7 @@ body.side-open { overflow: hidden; }
           background: var(--code-bg); border: 1px solid var(--line);
           font: 700 var(--fs-2xs)/1.5 var(--sans); letter-spacing: var(--ls-caps);
           color: var(--accent);
-          opacity: 0; transform: translateX(-8px);
-          transition: opacity .2s ease, transform .26s cubic-bezier(.34,1.4,.64,1); }
+          opacity: 0; transition: opacity .2s ease; }
 .peek i:nth-child(1) { transition-delay: .06s; }
 .peek i:nth-child(2) { transition-delay: .11s; }
 .peek i:nth-child(3) { transition-delay: .16s; }
@@ -794,11 +793,11 @@ body.side-open { overflow: hidden; }
   opacity: 1; transform: none; transition-delay: .12s;
 }
 .job.shut:hover .peek i, .job.shut:focus-within .peek i,
-.job.shut:hover .peek em, .job.shut:focus-within .peek em { opacity: 1; transform: none; }
+.job.shut:hover .peek em, .job.shut:focus-within .peek em { opacity: 1; }
 
 @media (hover: none), (max-width: 620px) { .peek { display: none; } }
 @media (prefers-reduced-motion: reduce) {
-  .peek, .peek i, .peek em { transition: opacity .12s ease; transform: none; }
+  .peek, .peek i, .peek em { transition: opacity .12s ease; }
 }
 
 /* ===== the rule a project turns on =====
