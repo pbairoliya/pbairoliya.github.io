@@ -172,6 +172,10 @@ h2.reveal { transition-duration: .4s, .46s; }
   .stack-label { margin: 1.5mm 0 .5mm; }
 
   .card, .cred, .job, .courses li { break-inside: avoid; }
-  .job-body ul { break-inside: avoid; }
+  .job-body ul, .job-body li { break-inside: avoid; }
+  /* Keep a heading with what it introduces. Credentials was orphaning two of
+     its own cards onto a page that was otherwise three-quarters empty. */
+  h2 { break-after: avoid; }
+  #credentials { break-inside: avoid; }
   a[href^="http"]::after { content: ""; }        /* URLs bloat a printed resume */
 }

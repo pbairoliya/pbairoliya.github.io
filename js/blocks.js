@@ -4,6 +4,9 @@
    shareable instead of making the whole page shareable. */
 (() => {
   "use strict";
+  /* One declaration. It was declared inside two sibling blocks and read from a
+     third, so every Gantt click threw ReferenceError. */
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const toast = m => (window.__toast ? window.__toast(m) : null);
 
   /* One copy-a-deep-link implementation, used by the heading anchors and by
@@ -47,8 +50,6 @@
      page opens as a timeline rather than as one expanded entry. */
   const jobs = [...document.querySelectorAll(".job:has(.job-toggle)")];
   if (jobs.length) {
-    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-
     const set = (job, open) => {
       job.classList.toggle("shut", !open);
       job.querySelector(".job-toggle").setAttribute("aria-expanded", String(open));
@@ -80,6 +81,10 @@
         const grip = document.createElement("button");
         grip.type = "button";
         grip.className = "grip";
+        /* Pointer affordance: in the tab order it put a stop before every
+           entry, 16 to cross Experience. Clicking an entry still puts its
+           id in the address bar. */
+        grip.tabIndex = -1;
         grip.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true">' +
           '<circle cx="6" cy="4" r="1.3"/><circle cx="10" cy="4" r="1.3"/>' +
           '<circle cx="6" cy="8" r="1.3"/><circle cx="10" cy="8" r="1.3"/>' +
@@ -98,6 +103,10 @@
          text selection inside an open entry. */
       job.addEventListener("click", e => {
         if (e.target.closest("a")) return;
+        /* The header is the toggle; the body is not. Tapping a bullet used to
+           collapse the entry you were reading, and on touch there is no text
+           selection to guard against it. */
+        if (e.target.closest(".job-body")) return;
         if (!e.target.closest(".job-toggle") &&
             (getSelection?.()?.toString() || "")) return;
         const open = job.classList.contains("shut");
@@ -188,7 +197,6 @@
   if (shelf && filters) {
     const cards = [...shelf.querySelectorAll(".card[data-type]")];
     const btns = [...filters.querySelectorAll("button[data-filter]")];
-    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
     let tidy = 0;
 
     const apply = (want) => {
@@ -300,7 +308,10 @@
         line.classList.add("is-live");
         line.addEventListener("click", () => {
           setView("list");
-          r.el.querySelector(".job-toggle").click();
+          /* The bar says "Open". It used to call the toggle, so clicking the
+             bar of an already-open entry closed it and left you in Details
+             with nothing expanded. */
+          if (r.el.classList.contains("shut")) r.el.querySelector(".job-toggle").click();
           r.el.scrollIntoView({ block: "center", behavior: reduced ? "auto" : "smooth" });
         });
       }
@@ -332,7 +343,12 @@
       const d = new Date(at);
       let live = 0;
       dated.forEach(r => {
-        const on = at >= r.start && at <= r.end;
+        /* A run with no end date is still running, so it counts to the end of
+           the axis. Stopping it at Date.now() dimmed every bar right of the
+           today marker and made the chip read "0 runs" — which says he is
+           between jobs. */
+        const end = r.open ? t1 : r.end;
+        const on = at >= r.start && at <= end;
         r.bar.classList.toggle("dim", !on);
         if (on) live++;
       });
@@ -452,4 +468,13 @@
     });
     addEventListener("scroll", hide, { passive: true });
   })();
+
+  /* A blocked CDN turned the stack grid into 47 torn-page glyphs. alt="" means
+     there is nothing to fall back to, so hide the image and let the label
+     stand on its own. */
+  document.querySelectorAll(".tool img").forEach(img => {
+    const fail = () => img.classList.add("no-icon");
+    img.addEventListener("error", fail);
+    if (img.complete && !img.naturalWidth) fail();
+  });
 })();
