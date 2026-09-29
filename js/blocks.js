@@ -6,6 +6,15 @@
   "use strict";
   const toast = m => (window.__toast ? window.__toast(m) : null);
 
+  /* One copy-a-deep-link implementation, used by the heading anchors and by
+     the per-entry handles. It was about to be written twice. */
+  async function copyLink(id, name) {
+    const url = location.href.split("#")[0] + "#" + id;
+    try { await navigator.clipboard.writeText(url); toast("Link to “" + name + "” copied"); }
+    catch { toast(url); }
+    history.replaceState(null, "", "#" + id);
+  }
+
   document.querySelectorAll("section[id] > h2, h2[id]").forEach(h => {
     /* Three headings on the landing page are sr-only, so a button appended to
        one sits inside a 1px clip-path box: focusable, invisible, and
@@ -18,13 +27,7 @@
     a.title = "Copy link to this section";
     const name = h.textContent.trim();          // read BEFORE the button is appended
     a.setAttribute("aria-label", `Copy link to ${name}`);
-    a.addEventListener("click", async () => {
-      const id = h.id || h.parentElement.id;
-      const url = location.href.split("#")[0] + "#" + id;
-      try { await navigator.clipboard.writeText(url); toast("Link to “" + name + "” copied"); }
-      catch { toast(url); }
-      history.replaceState(null, "", "#" + id);
-    });
+    a.addEventListener("click", () => copyLink(h.id || h.parentElement.id, name));
     h.appendChild(a);
   });
 
@@ -69,6 +72,27 @@
       /* the coursework tiles still cascade; the bullets no longer do */
       job.querySelectorAll(".job-body .courses li")
          .forEach((li, n) => li.style.setProperty("--c", n));
+
+      /* Notion's "copy link to block", on a role. A recruiter can send someone
+         one job rather than the whole page, and the deep-link handler below
+         already opens whatever a #id points at. */
+      if (job.id) {
+        const grip = document.createElement("button");
+        grip.type = "button";
+        grip.className = "grip";
+        grip.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true">' +
+          '<circle cx="6" cy="4" r="1.3"/><circle cx="10" cy="4" r="1.3"/>' +
+          '<circle cx="6" cy="8" r="1.3"/><circle cx="10" cy="8" r="1.3"/>' +
+          '<circle cx="6" cy="12" r="1.3"/><circle cx="10" cy="12" r="1.3"/></svg>';
+        const label = job.querySelector(".job-name")?.firstChild?.textContent?.trim() || job.id;
+        grip.title = "Copy link to this entry";
+        grip.setAttribute("aria-label", "Copy link to " + label);
+        grip.addEventListener("click", e => {
+          e.stopPropagation();          // the whole row toggles; this must not
+          copyLink(job.id, label);
+        });
+        job.prepend(grip);
+      }
       /* The whole entry is the target, not just the header row. Two things it
          must not swallow: a click on a real link, and the mouse-up that ends a
          text selection inside an open entry. */
@@ -362,4 +386,70 @@
     narrow.addEventListener("change", applyWidth);
   })();
 
+
+  /* ---- link previews ----
+     Notion previews a linked page on hover. These are the site's own pages, so
+     the copy is authored here rather than fetched — a fetch on hover would be
+     a request per pointer pass, and there is no build step to inline it at.
+     Pointer only, aria-hidden, and absent wherever .peek is. */
+  (() => {
+    const PAGES = {
+      "projects/lc.html": ["LC Bot",
+        "A LeetCode workflow that lives in your notes: one command imports a problem, another publishes the repo."],
+      "projects/on-device-tools.html": ["On-device tools",
+        "Three programs, one shared core — Apple Vision OCR and a local model, wrapped in a deterministic rules layer."],
+      "projects/systems-and-algorithms.html": ["Systems and algorithms",
+        "Five repositories kept public because the trajectory is the interesting part."],
+      "projects/coursework.html": ["Coursework",
+        "Four courses at NC State, one repository each, every one for a single idea it made me build by hand."],
+      "writing/receipts-local-llm.html": ["Scanning receipts into Obsidian with a local LLM",
+        "A scan on my phone updates my pantry, shopping list and expense report seconds later."],
+      "writing/": ["Writing", "Notes from building things. One post so far."],
+    };
+    if (matchMedia("(hover: none)").matches || matchMedia("(max-width: 620px)").matches) return;
+
+    const key = (a) => {
+      const h = a.getAttribute("href") || "";
+      return Object.keys(PAGES).find(k => h === k || h === "../" + k || h === "/" + k);
+    };
+    const links = [...document.querySelectorAll('a[href]')].filter(a =>
+      key(a) && !a.closest(".card") && !a.closest(".side") && !a.closest("#palette"));
+    if (!links.length) return;
+
+    const pop = document.createElement("div");
+    pop.className = "linkpeek";
+    pop.setAttribute("aria-hidden", "true");
+    document.body.appendChild(pop);
+    let over = null, timer = 0;
+
+    const hide = () => { clearTimeout(timer); over = null; pop.classList.remove("on"); };
+    const show = (a) => {
+      const [title, line] = PAGES[key(a)];
+      pop.innerHTML = "";
+      const h = document.createElement("b"); h.textContent = title;
+      const p = document.createElement("span"); p.textContent = line;
+      pop.append(h, p);
+      pop.classList.add("on");
+      /* measure, then clamp inside the viewport on both axes — the same
+         problem tour.js solves, at a tenth of the size */
+      const r = a.getBoundingClientRect(), box = pop.getBoundingClientRect();
+      const pad = 8;
+      let x = Math.min(Math.max(r.left, pad), innerWidth - box.width - pad);
+      let y = r.bottom + 10;
+      if (y + box.height > innerHeight - pad) y = r.top - box.height - 10;
+      pop.style.left = Math.round(x) + "px";
+      pop.style.top = Math.round(y + scrollY) + "px";
+    };
+
+    links.forEach(a => {
+      a.addEventListener("pointerenter", e => {
+        if (e.pointerType === "touch") return;
+        clearTimeout(timer); over = a;
+        timer = setTimeout(() => { if (over === a) show(a); }, 260);
+      });
+      a.addEventListener("pointerleave", hide);
+      a.addEventListener("click", hide);
+    });
+    addEventListener("scroll", hide, { passive: true });
+  })();
 })();
