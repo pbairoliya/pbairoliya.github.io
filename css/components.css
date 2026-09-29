@@ -868,3 +868,7 @@ body.side-open { overflow: hidden; }
                  font-size: var(--fs-md); line-height: var(--lh-snug); }
 @media (hover: none), (max-width: 620px) { .linkpeek { display: none; } }
 @media (prefers-reduced-motion: reduce) { .linkpeek { transition: none; } }
+
+/* The three icon buttons are one group. Unwrapped they split 1 + 2 across two
+   lines at 390px, which read as one orphaned circle rather than a set. */
+.btn-row { display: flex; gap: var(--s2); flex: 0 0 auto; }
