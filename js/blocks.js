@@ -7,6 +7,10 @@
   const toast = m => (window.__toast ? window.__toast(m) : null);
 
   document.querySelectorAll("section[id] > h2, h2[id]").forEach(h => {
+    /* Three headings on the landing page are sr-only, so a button appended to
+       one sits inside a 1px clip-path box: focusable, invisible, and
+       unreachable by the hover that is supposed to reveal it. */
+    if (h.classList.contains("sr-only")) return;
     const a = document.createElement("button");
     a.type = "button";
     a.className = "anchor";
@@ -62,9 +66,7 @@
     };
 
     jobs.forEach((job, i) => {
-      /* the stagger is per-bullet and lives in CSS; JS only supplies the index */
-      job.querySelectorAll(".job-body > div > ul > li")
-         .forEach((li, n) => li.style.setProperty("--i", n));
+      /* the coursework tiles still cascade; the bullets no longer do */
       job.querySelectorAll(".job-body .courses li")
          .forEach((li, n) => li.style.setProperty("--c", n));
       /* The whole entry is the target, not just the header row. Two things it
@@ -129,6 +131,8 @@
          divider arrives just before the entries it introduces instead of
          being on its own clock. */
       const list = document.getElementById("tl-list");
+      const tabs = track.querySelector(".views");
+      if (tabs) tabs.style.setProperty("--d", 0);
       const steps = [...(list || track).querySelectorAll(".tl-year, .job")];
       let last = 0;
       steps.forEach((el, n) => {
@@ -258,7 +262,6 @@
         bar.dataset.kind = r.kind;
         bar.style.left = pct(r.start) + "%";
         bar.style.width = Math.max(pct(r.end) - pct(r.start), 2) + "%";
-        bar.style.setProperty("--e", rows.indexOf(r));
         /* the name column says the name; a bar repeating it just clips */
         bar.title = r.name + " · " + r.el.querySelector(".meta").textContent.trim();
         bar.setAttribute("aria-label", "Open " + r.name);

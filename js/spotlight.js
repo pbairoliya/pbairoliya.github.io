@@ -27,24 +27,12 @@
     }
     return e;
   }
-  function railOf(el) {
-    if (!el.classList.contains("job")) return null;
-    let r = el.querySelector(":scope > .rail");
-    if (!r) {
-      r = document.createElement("span");
-      r.className = "rail";
-      r.setAttribute("aria-hidden", "true");
-      el.appendChild(r);
-    }
-    return r;
-  }
-
   function setActive(el) {
     if (el === active) return;
     active?.classList.remove("lit");
     active = el;
     if (!active) return;
-    edgeOf(active); railOf(active);
+    edgeOf(active);
     const r = active.getBoundingClientRect();
     // start the light where the pointer entered, so it doesn't sweep in from 0,0
     cur = { x: want.x - r.left, y: want.y - r.top };

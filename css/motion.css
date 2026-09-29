@@ -76,8 +76,8 @@ h2.reveal { transition-duration: .4s, .46s; }
 .lit > .lit-edge { opacity: 1; }
 
 .lit { background-color: color-mix(in srgb, var(--hit) 5%, var(--panel)); }
-.armed .job.lit, .armed .card.lit, .armed .cred.lit,
-.job.lit, .card.lit, .cred.lit {
+.armed .card.lit, .armed .cred.lit,
+.card.lit, .cred.lit {
   transform: translateY(-2px);
   box-shadow: 0 14px 34px -16px color-mix(in srgb, var(--hit) 60%, transparent);
 }
@@ -85,14 +85,9 @@ h2.reveal { transition-duration: .4s, .46s; }
    a grey rectangle sitting on the line; the pointer glow and the pin's ring are
    the whole highlight here. */
 .timeline .job.lit { background-color: transparent; box-shadow: none; transform: none; }
-.timeline .job > .lit-edge,
-.timeline .job > .rail { display: none; }
+.timeline .job > .lit-edge { display: none; }
 .armed .stack-group.seen .tool.lit,
 .tool.lit, .btn.lit { transform: translateY(-2px); }
-/* scaleY rather than height: the same growing bar, off the layout path */
-.job .rail { height: calc(100% - 24px); transform: translateY(-50%) scaleY(0);
-             transform-origin: center; transition: transform .3s cubic-bezier(.2,.8,.3,1); }
-.job.lit .rail { transform: translateY(-50%) scaleY(1); }
 
 @supports not (background: color-mix(in srgb, red 10%, blue)) {
   .job::after, .card::after, .cred::after, .tool::after, .btn::after,
@@ -105,7 +100,7 @@ h2.reveal { transition-duration: .4s, .46s; }
   .btn.palette-btn.hint { animation: none; }
   /* must out-specify `.armed .reveal`, or the hidden state wins here too */
   .armed .reveal, .reveal { opacity: 1; transform: none; transition: none; }
-  .job, .card, .cred, .tool, .btn, .job .rail, .side a, #toast { transition: none; }
+  .job, .card, .cred, .tool, .btn, .side a, #toast { transition: none; }
   .job.lit, .card.lit, .cred.lit, .tool.lit, .btn.lit { transform: none; }
 }
 
