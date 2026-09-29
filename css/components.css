@@ -154,26 +154,18 @@ div.job-head .meta { white-space: nowrap; }
                                   visibility 0s .34s; }
 
 /* The bullets arrive one after another rather than all at once. */
-/* A bullet gets a drawn dash in the entry's own colour instead of a disc, and
-   the two arrive separately: the dash strikes out from the left, the line
-   rises behind it. A fade-and-slide on the whole row read as generic. */
-.job-body > div > ul { list-style: none; padding-left: 0; }
+/* Notion does not stagger anything. A toggle opens, the content is there, and
+   the only thing that moved was the height. The bullets had a two-part spring
+   entrance with a 55ms cascade — that was the weird animation. They are now
+   simply present, and the disclosure's own height change does all the work.
+   The marker is a small disc in the entry's colour: a bullet, not a gesture. */
+.job-body > div > ul { list-style: none; padding-left: 0; margin-top: var(--s2); }
 .job-body > div > ul > li { position: relative; padding-left: 20px; }
 .job-body > div > ul > li::before {
-  content: ""; position: absolute; left: 0; top: .66em; width: 9px; height: 2px;
-  border-radius: var(--r-pill); background: var(--pin, var(--accent));
-  transform-origin: left center;
-  transition: transform .34s cubic-bezier(.34,1.5,.64,1), opacity .2s ease;
-  transition-delay: calc(var(--i, 0) * 55ms + 40ms);
+  content: ""; position: absolute; left: 3px; top: .58em;
+  width: 5px; height: 5px; border-radius: var(--r-pill);
+  background: var(--pin, var(--accent)); opacity: .9;
 }
-.job-body > div > ul > li {
-  transition: opacity .3s ease, transform .34s cubic-bezier(.22,1.08,.36,1);
-  transition-delay: calc(var(--i, 0) * 55ms);
-}
-.job.shut .job-body > div > ul > li { opacity: 0; transform: translateY(7px);
-                                      transition-delay: 0s; }
-.job.shut .job-body > div > ul > li::before { transform: scaleX(0); opacity: 0;
-                                              transition-delay: 0s; }
 
 .job .rail { position: absolute; left: 4px; top: 50%; width: 3px;
              border-radius: var(--r-xs); pointer-events: none;
@@ -431,8 +423,7 @@ body.side-open { overflow: hidden; }
 /* Card title and its metadata on one line, title left, meta right, baselines aligned. */
 
 @media (prefers-reduced-motion: reduce) {
-  .job-body, .job-body li, .job-body > div > ul > li::before,
-  .job-toggle .chev { transition: none; }
+  .job-body, .job-body li, .job-toggle .chev { transition: none; }
 }
 
 /* ===== Work reads as a timeline =====
@@ -478,8 +469,6 @@ body.side-open { overflow: hidden; }
 @keyframes rule-draw { from { transform: scaleX(0); opacity: 0; } }
 
 /* the open role's bullets wait their turn rather than arriving before the line */
-.timeline:not(.drawn) .job-body > div > ul > li { opacity: 0; transform: translateY(7px); }
-.timeline:not(.drawn) .job-body > div > ul > li::before { transform: scaleX(0); }
 
 /* A safety floor. blocks.js marks the timeline settled once the sweep's wall
    clock has run out, which clears the entrance animation and hands the element
@@ -495,14 +484,18 @@ body.side-open { overflow: hidden; }
 .job[data-kind="leadership"] { --pin: var(--hit2); }
 .job[data-kind="school"]     { --pin: var(--muted-strong); }
 
-#work .job-toggle { padding: var(--s1) 0; }
+/* The same row treatment as the rail: rounded, soft, and quick. The version
+   he rejected was a hard-edged grey rectangle the width of the entry; this is
+   inset, 8px-rounded and the rail's own 130ms. */
+#work .job-toggle { padding: var(--s2) var(--s3); margin: 0 calc(var(--s3) * -1);
+                    border-radius: var(--r-sm);
+                    transition: background-color .13s; }
+#work .job:hover .job-toggle { background: var(--code-bg); }
 #work .job { cursor: pointer; }   /* the whole entry toggles */
 
 @media (prefers-reduced-motion: reduce) {
   .timeline.drawn .job-head, .timeline.drawn .job-dot,
   .timeline.drawn .tl-year span, .timeline.drawn .tl-year::after { animation: none; }
-  .timeline:not(.drawn) .job-body > div > ul > li,
-  .timeline:not(.drawn) .job-body > div > ul > li::before { opacity: 1; transform: none; }
 }
 
 /* ---- coursework, linked straight at the repositories ---- */
