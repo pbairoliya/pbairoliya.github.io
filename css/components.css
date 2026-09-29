@@ -778,3 +778,23 @@ body.side-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .peek, .peek i, .peek em { transition: opacity .12s ease; transform: none; }
 }
+
+/* ===== the rule a project turns on =====
+   A card used to carry a summary of a summary. Each one now shows the actual
+   decision underneath it — the conflict rule, the trust boundary, the state
+   encoding — because that is the thing a reader remembers, and it is already
+   written on the page behind the card. Monospace earns its place here: this is
+   content, not garnish. */
+.rule { margin: var(--s3) 0 0; padding: var(--s3); overflow-x: auto;
+        background: var(--code-bg); border: 1px solid var(--line);
+        border-left: 2px solid var(--accent); border-radius: var(--r-sm);
+        font: var(--fs-2xs)/1.65 var(--mono); color: var(--muted);
+        white-space: pre; transition: border-left-color .8s linear, color .2s; }
+.rule code { background: none; padding: 0; font: inherit; }
+.card:hover .rule { color: var(--ink); }
+/* A card is a link, so a horizontally scrollable block inside one is a drag
+   that might navigate instead. On a phone it wraps rather than scrolls. */
+@media (max-width: 560px) {
+  .rule { font-size: 10px; padding: var(--s2); white-space: pre-wrap; overflow-x: visible; }
+}
+@media (prefers-reduced-motion: reduce) { .rule { transition: none; } }
