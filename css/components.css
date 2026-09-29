@@ -95,7 +95,17 @@ body.side-open .side-scrim { opacity: 1; pointer-events: auto; }
                       padding: 2px 6px; opacity: .85; }
 
 /* ---- work rows ---- */
-.job { padding: 12px clamp(12px, 4vw, 18px); margin-inline: clamp(-18px, -4vw, -12px);
+.job { --job-pad: 12px;
+       /* Where the header row's first line sits, measured rather than guessed:
+          the entry's own padding, the toggle's, then half a line. Anything that
+          has to line up with the title derives from this — the dot and the grip
+          each carried their own constant and both drifted the moment the
+          toggle gained padding. */
+       --head-mid: calc(var(--job-pad) + var(--s2)
+                        + (var(--fs-md) * var(--lh-snug)) / 2
+                        - .037em);   /* optical, same reason as the bullets */
+       padding: var(--job-pad) clamp(12px, 4vw, 18px);
+       margin-inline: clamp(-18px, -4vw, -12px);
        border: 1px solid transparent; border-radius: var(--r-md); }
 .job + .job { margin-top: 2px; }
 /* One rule between entries, not one above and one below each. */
@@ -636,7 +646,9 @@ body.side-open { overflow: hidden; }
                   background: linear-gradient(90deg, var(--line), transparent 55%); }
 
 .timeline .job { position: relative; padding-left: var(--lane); }
-.job-dot { position: absolute; left: 30px; top: 16px; width: 11px; height: 11px; border-radius: var(--r-pill); box-sizing: border-box;
+.job-dot { --dot: 11px;
+           position: absolute; left: 30px; top: calc(var(--head-mid) - var(--dot) / 2);
+           width: var(--dot); height: var(--dot); border-radius: var(--r-pill); box-sizing: border-box;
            border: 2px solid var(--pin, var(--accent)); background: var(--bg); z-index: 1;
            transition: transform .3s cubic-bezier(.34,1.4,.64,1), background-color .3s; }
 .job:hover .job-dot { transform: scale(1.25); }
@@ -821,8 +833,9 @@ body.side-open { overflow: hidden; }
    Fades into the gutter on hover, sits left of the dot, and never moves
    horizontally. Hidden where there is no hover to reveal it and no room to
    put it. */
-.grip { position: absolute; left: 4px; top: 12px; z-index: 2;
-        display: grid; place-items: center; width: 20px; height: 20px;
+.grip { --grip: 20px;
+        position: absolute; left: 4px; top: calc(var(--head-mid) - var(--grip) / 2); z-index: 2;
+        display: grid; place-items: center; width: var(--grip); height: var(--grip);
         padding: 0; border: 0; border-radius: var(--r-xs);
         background: none; color: var(--muted); cursor: pointer;
         opacity: 0; transition: opacity .16s ease, color .16s, background-color .16s; }
