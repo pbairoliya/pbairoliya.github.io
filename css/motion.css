@@ -111,11 +111,72 @@ h2.reveal { transition-duration: .4s, .46s; }
 
 /* Without this the page prints blank: anything the observer has not revealed yet
    is still at opacity 0 when the print snapshot is taken. */
+/* ===== print is a resume =====
+   Everyone hits Cmd-P on a portfolio out of habit and gets six mangled pages
+   with a sidebar on every one. This lays the same facts out as a resume, so
+   the PDF cannot go stale relative to the page — it IS the page. */
+@page { size: letter; margin: 13mm 14mm; }
+
 @media print {
   .reveal, .armed .reveal { opacity: 1 !important; transform: none !important; }
-  #field, .side, .side-toggle, .gear, .settings, #palette, .tour, .anchor, .skip { display: none !important; }
-  body { padding-left: 0 !important; background: #fff; color: #000; }
+  #field, .side, .side-toggle, .gear, .settings, #palette, .tour, .anchor, .skip,
+  .views, #tl-chart, .peek, .filters, .chips, .card-no, .job-dot, .chev,
+  .cred-mark, #toast, .actions, .course-head, .courses,
+  footer .callout, #writing > .meta, .shelf-head { display: none !important; }
+  body { padding-left: 0 !important; background: #fff; color: #000;
+         font-size: 9.6pt; line-height: 1.35; }
   .wrap { max-width: none; padding: 0; }
-  .card, .cred, .job, .tool { break-inside: avoid; }
-  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: .85em; color: #555; }
+  a { color: #000; text-decoration: none; }
+
+  /* every entry prints open, however the page left it */
+  .job-body { grid-template-rows: 1fr !important; visibility: visible !important; }
+  .job-body li, .job-body .courses li, .job-body .course-head { opacity: 1 !important;
+         transform: none !important; }
+
+  /* a resume's rhythm, not a web page's */
+  h1 { font-size: 19pt; margin: 0; }
+  .tagline { font-size: 8pt; margin: 1mm 0 0; color: #000; }
+  .standfirst { font-size: 8.4pt; margin: 1mm 0 3mm; color: #000; }
+  .lede, .boot p { font-size: 9.6pt; margin: 0 0 1.5mm; max-width: none; }
+  .boot > p:last-of-type { display: none; }   /* the weekend line is not resume copy */
+  h2 { font-size: 10.5pt; margin: 3mm 0 1.2mm; padding-bottom: .6mm;
+       border-bottom: .4pt solid #999; }
+  .timeline { margin: 3mm 0 0; }
+  .timeline .job { padding: 0; margin: 0 0 1.6mm; }
+  .job:not(:last-of-type)::before { display: none; }
+  .tl-year { display: none; }                    /* the dates are on every row */
+  .job-toggle { display: flex !important; justify-content: space-between;
+                align-items: baseline; gap: 4mm; padding: 0; }
+  .job-name { font-size: 10pt; }
+  .job-body ul { margin: .8mm 0 0; padding-left: 4.5mm; }
+  .job-body li { margin: 0 0 .5mm; }
+  .courses { grid-template-columns: 1fr 1fr; gap: 1mm; margin-top: 1.5mm; }
+  .courses a { padding: 1mm 2mm; border-color: #ccc; }
+  .card { padding: 1mm 0; border: 0; background: none; }
+  .card p { font-size: 8.8pt; }
+  .card .row h3 { font-size: 9.6pt; }
+  .card p { margin: .5mm 0 0; }
+  .cred { padding: 1mm 0; border: 0; border-left: 0; background: none; }
+  .cred-body h3 { font-size: 9.6pt; }
+  .interests { margin: 1.5mm 0 3mm; }
+  .shelf { margin-top: 0; }
+  .shelf section:first-child::before { content: "Projects"; display: block;
+        font-size: 10.5pt; font-weight: 700; margin: 3mm 0 1.2mm;
+        padding-bottom: .6mm; border-bottom: .4pt solid #999; }
+  .shelf #writing::before { content: "Writing"; display: block;
+        font-size: 10.5pt; font-weight: 700; margin: 3mm 0 1.2mm;
+        padding-bottom: .6mm; border-bottom: .4pt solid #999; }
+
+  /* the stack grid is 52 logo chips; in print it is one line of text */
+  #stack .stack { display: block; }
+  #stack .tool { display: inline; border: 0; background: none; padding: 0;
+                 font-size: 8.6pt; }
+  #stack .tool::after { content: " · "; color: #666; }
+  #stack .stack > .tool:last-child::after { content: ""; }
+  #stack .tool img, #stack .tool .gl { display: none; }
+  .stack-label { margin: 1.5mm 0 .5mm; }
+
+  .card, .cred, .job, .courses li { break-inside: avoid; }
+  .job-body ul { break-inside: avoid; }
+  a[href^="http"]::after { content: ""; }        /* URLs bloat a printed resume */
 }

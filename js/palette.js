@@ -34,6 +34,7 @@
     { g:"Do",         i:"⧉", label:"Copy email address", hint:"pratik0520@gmail.com", run: copyEmail },
     { g:"Do",         i:"✉", label:"Email me",           hint:"mailto",     run:() => location.assign("mailto:pratik0520@gmail.com") },
     { g:"Do",         i:"⧉", label:"Copy link to this page", hint:"url",    run: copyUrl },
+    { g:"Do",         i:"⎙", label:"Print or save as PDF",  hint:"one page", run:() => print() },
     // "collapse" means nothing at sheet widths, where the rail is already hidden
     ...(matchMedia("(min-width: 900.02px)").matches
         ? [{ g:"Do", i:"◧", label:"Hide the sidebar", hint:"[",
