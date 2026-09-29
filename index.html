@@ -23,10 +23,10 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <!-- /social -->
 <script>try{var t=localStorage.getItem("theme");if(t&&t!=="system")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
-<link rel="stylesheet" href="css/base.css?v=60">
-<link rel="stylesheet" href="css/components.css?v=60">
-<link rel="stylesheet" href="css/motion.css?v=60">
-<link rel="stylesheet" href="css/tour.css?v=60">
+<link rel="stylesheet" href="css/base.css?v=61">
+<link rel="stylesheet" href="css/components.css?v=61">
+<link rel="stylesheet" href="css/motion.css?v=61">
+<link rel="stylesheet" href="css/tour.css?v=61">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -287,6 +287,9 @@
     <p>A daily briefing, a receipt pipeline and a screenshot sorter, all sharing one core: OCR plus
        a language model running on the machine, wrapped in a deterministic rules layer so the output
        behaves like software rather than like a guess. Nothing is uploaded, and no key is needed.</p>
+    <pre class="rule"><code>the model proposes   →  a vendor, a total, a category
+the rules decide     →  every number is re-derived, never trusted
+the same scan twice  →  one row, because the fingerprint already exists</code></pre>
   </a>
 
   <a class="card reveal" style="--n:2" href="projects/lc.html" data-type="tool">
@@ -298,6 +301,9 @@
     <p>A CLI that makes an Obsidian note the source of truth for a problem, reconciles it with a Git
        repo, schedules spaced-repetition reviews and pushes nightly. Most of the 94 tests are about
        one thing: which side wins when the note and the repo disagree.</p>
+    <pre class="rule"><code>note has real code   →  note wins, the repo is rewritten
+note has the stub    →  repo wins, and the code is written BACK into the note
+neither has code     →  skip the problem entirely</code></pre>
   </a>
 
   <a class="card reveal" style="--n:3" href="projects/systems-and-algorithms.html" data-type="archive">
@@ -309,6 +315,10 @@
     <p>Earlier work, kept public. A Unix shell written from scratch, a pursuit-evasion game where two
        agents run different search algorithms against each other, a Deep Q-Network for Snake that is
        published unfinished on purpose, and the 221-problem practice archive underneath all of it.</p>
+    <pre class="rule"><code>danger straight / right / left   →  3 booleans
+which way am I facing            →  4 booleans
+where is the food, relative      →  4 booleans
+                                    ——— 11, and it trains on a laptop</code></pre>
   </a>
 
   <a class="card reveal" style="--n:4" href="projects/coursework.html" data-type="archive">
@@ -320,6 +330,9 @@
     <p>Systems work, documented rather than dumped. A generic hash map built on a vtable written by
        hand, max-subarray solved five ways down to CUDA, a repeating-key XOR key recovered from
        statistics alone, and a game agent that moves, plans and decides in three layers.</p>
+    <pre class="rule"><code>C has no generics        →  a struct of function pointers
+hash, equals, print, free →  supplied per concrete type
+which is to say           →  a vtable, written by hand</code></pre>
   </a>
 
   </section>
@@ -544,15 +557,15 @@
   </div>
 </div>
 
-<script src="js/theme.js?v=60" defer></script>
-<script src="js/field.js?v=60" defer></script>
-<script src="js/palette.js?v=60" defer></script>
-<script src="js/spotlight.js?v=60" defer></script>
-<script src="js/sidebar.js?v=60" defer></script>
-<script src="js/reveal.js?v=60" defer></script>
-<script src="js/a11y.js?v=60" defer></script>
-<script src="js/blocks.js?v=60" defer></script>
-<script src="js/tour.js?v=60" defer></script>
-<script src="js/settings.js?v=60" defer></script>
+<script src="js/theme.js?v=61" defer></script>
+<script src="js/field.js?v=61" defer></script>
+<script src="js/palette.js?v=61" defer></script>
+<script src="js/spotlight.js?v=61" defer></script>
+<script src="js/sidebar.js?v=61" defer></script>
+<script src="js/reveal.js?v=61" defer></script>
+<script src="js/a11y.js?v=61" defer></script>
+<script src="js/blocks.js?v=61" defer></script>
+<script src="js/tour.js?v=61" defer></script>
+<script src="js/settings.js?v=61" defer></script>
 </body>
 </html>
