@@ -160,16 +160,21 @@ div.job-head .meta { white-space: nowrap; }
    simply present, and the disclosure's own height change does all the work.
    The marker is a small disc in the entry's colour: a bullet, not a gesture. */
 .job-body > div > ul { list-style: none; padding-left: 0; margin-top: var(--s2); }
-.job-body > div > ul > li { position: relative; padding-left: 20px; }
+.job-body > div > ul > li { position: relative; padding-left: 18px;
+                            line-height: var(--lh-body); }
+/* Centred on the first line by arithmetic rather than by a guessed em: half of
+   (line box − dot). `top: .58em` sat a pixel low at 16/1.6 and drifted with
+   any size change. --bullet is declared once so both halves agree. */
 .job-body > div > ul > li::before {
-  content: ""; position: absolute; left: 3px; top: .58em;
-  width: 5px; height: 5px; border-radius: var(--r-pill);
+  --bullet: 5px;
+  content: ""; position: absolute; left: 4px;
+  /* minus .05em: a line BOX is taller than the text in it, so centring on
+     the box sits the dot ~0.8px under the text's optical middle at 16/1.6 */
+  top: calc((1em * var(--lh-body) - var(--bullet)) / 2 - .05em);
+  width: var(--bullet); height: var(--bullet); border-radius: var(--r-pill);
   background: var(--pin, var(--accent)); opacity: .9;
 }
 
-.job .rail { position: absolute; left: 4px; top: 50%; width: 3px;
-             border-radius: var(--r-xs); pointer-events: none;
-             background: linear-gradient(var(--accent), var(--accent-2)); }
 
 /* ---- cards ---- */
 .card { display: block; background: var(--panel); border: 1px solid var(--line);
@@ -243,7 +248,7 @@ a.cred:hover { text-decoration: none; }
                  background: none; color: var(--ink); font: var(--fs-base) var(--sans);
                  padding: 15px 18px; }
 .pal-list { max-height: 330px; overflow-y: auto; padding: 6px; }
-.pal-row { display: flex; justify-content: space-between; align-items: baseline; gap: 14px;
+.pal-row { justify-content: space-between; align-items: baseline;
            width: 100%; text-align: left; background: none; border: 0; cursor: pointer;
            color: var(--ink); font: var(--fs-sm) var(--sans); padding: 9px 12px; border-radius: var(--r-sm); }
 .pal-row:hover, .pal-row.on { background: var(--code-bg); }
@@ -338,7 +343,7 @@ section[id] > h2:hover .anchor, h2[id]:hover .anchor,
 .set-item { display: flex; justify-content: space-between; align-items: center; gap: 10px;
             min-width: 0; text-align: left;
             width: 100%; background: none; border: 0; cursor: pointer; border-radius: var(--r-sm);
-            padding: 9px 10px; font: var(--fs-sm) var(--sans); color: var(--ink); text-align: left; }
+            padding: 9px 10px; font: var(--fs-sm) var(--sans); color: var(--ink); }
 .set-item:hover { background: var(--code-bg); text-decoration: none; }
 .set-item span { font: 600 var(--fs-2xs) var(--sans); letter-spacing: var(--ls-caps); color: var(--muted); }
 .set-sep { height: 1px; background: var(--line); margin: 5px 8px; }
@@ -441,13 +446,8 @@ body.side-open { overflow: hidden; }
    transition — a transition-delay would stay on the element and make every
    later hover answer late. `backwards` fill holds the from-state during the
    delay and hands the element back to its own styles afterwards. */
-/* The sweep owns these rows. reveal.js was ALSO animating them — .reveal
-   fades and lifts every block on the page — so two entrances ran on the same
-   element at once and the result read as mush. Neutralise one. */
-.armed .timeline .reveal,
-.armed .timeline .reveal.seen { opacity: 1; transform: none; transition: none; }
-
-.timeline.drawn .job-head {
+.timeline.drawn .job-head,
+.timeline.drawn .views {
   animation: role-in .42s cubic-bezier(.22,.9,.3,1) calc(var(--d, 0) * 1ms + 60ms) backwards;
 }
 /* Fade only. This used to slide the row in from translateX(-14px) while the
@@ -461,15 +461,14 @@ body.side-open { overflow: hidden; }
 }
 @keyframes dot-in { from { transform: scale(.7); opacity: 0; } }
 
-/* a year divider draws its rule out before the entries it introduces */
-.tl-year::after { transform-origin: left center; }
+/* a year divider arrives just before the entries it introduces */
 .timeline.drawn .tl-year span {
   animation: role-in .4s cubic-bezier(.22,.9,.3,1) calc(var(--y, 0) * 1ms) backwards;
 }
 .timeline.drawn .tl-year::after {
   animation: rule-draw .5s cubic-bezier(.22,.9,.3,1) calc(var(--y, 0) * 1ms) backwards;
 }
-@keyframes rule-draw { from { transform: scaleX(0); opacity: 0; } }
+@keyframes rule-draw { from { opacity: 0; } }
 
 /* the open role's bullets wait their turn rather than arriving before the line */
 
@@ -477,6 +476,7 @@ body.side-open { overflow: hidden; }
    clock has run out, which clears the entrance animation and hands the element
    back to its own styles. In a normal browser this changes nothing. */
 .timeline.settled .job-head,
+.timeline.settled .views,
 .timeline.settled .job-dot,
 .timeline.settled .tl-year span,
 .timeline.settled .tl-year::after { animation: none; }
@@ -579,8 +579,6 @@ body.side-open { overflow: hidden; }
 
 .shelf { display: block; margin-top: var(--s9); }
 
-@media (max-width: 560px) {
-}
 
 /* ===== one shelf, filtered =====
    Projects and Writing are the same kind of object — a thing that was made —
@@ -616,7 +614,6 @@ body.side-open { overflow: hidden; }
    and the dates; below 900px there is no room for it and it goes. */
 
 /* the lane, and the faint year gridlines behind every row */
-@keyframes bar-grow { from { transform: scaleX(0); opacity: 0; } }
 
 
 

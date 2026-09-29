@@ -86,9 +86,6 @@
 
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const seen = () => {
-    try { return !!localStorage.getItem(KEY); } catch { return true; }
-  };
   const remember = () => {
     try { localStorage.setItem(KEY, "1"); } catch { /* private mode; it just runs again */ }
   };
