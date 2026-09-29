@@ -154,9 +154,26 @@ div.job-head .meta { white-space: nowrap; }
                                   visibility 0s .34s; }
 
 /* The bullets arrive one after another rather than all at once. */
-.job-body li { transition: opacity .26s ease, transform .26s cubic-bezier(.2,.8,.3,1);
-               transition-delay: calc(var(--i, 0) * 45ms); }
-.job.shut .job-body li { opacity: 0; transform: translateX(-12px); transition-delay: 0s; }
+/* A bullet gets a drawn dash in the entry's own colour instead of a disc, and
+   the two arrive separately: the dash strikes out from the left, the line
+   rises behind it. A fade-and-slide on the whole row read as generic. */
+.job-body > div > ul { list-style: none; padding-left: 0; }
+.job-body > div > ul > li { position: relative; padding-left: 20px; }
+.job-body > div > ul > li::before {
+  content: ""; position: absolute; left: 0; top: .66em; width: 9px; height: 2px;
+  border-radius: var(--r-pill); background: var(--pin, var(--accent));
+  transform-origin: left center;
+  transition: transform .34s cubic-bezier(.34,1.5,.64,1), opacity .2s ease;
+  transition-delay: calc(var(--i, 0) * 55ms + 40ms);
+}
+.job-body > div > ul > li {
+  transition: opacity .3s ease, transform .34s cubic-bezier(.22,1.08,.36,1);
+  transition-delay: calc(var(--i, 0) * 55ms);
+}
+.job.shut .job-body > div > ul > li { opacity: 0; transform: translateY(7px);
+                                      transition-delay: 0s; }
+.job.shut .job-body > div > ul > li::before { transform: scaleX(0); opacity: 0;
+                                              transition-delay: 0s; }
 
 .job .rail { position: absolute; left: 4px; top: 50%; width: 3px;
              border-radius: var(--r-xs); pointer-events: none;
@@ -369,8 +386,17 @@ section[id] > h2:hover .anchor, h2[id]:hover .anchor,
    so a stored `side-collapsed` pinned the sheet off-screen at every width and
    the menu button silently did nothing. */
 @media not all and (max-width: 900px) {
-  /* the page sits beside the rail rather than under it */
-  body:not(.bare) { padding-left: 232px; }
+  /* the page sits beside the rail rather than under it, and moves with it —
+     the padding used to snap from 232px to 0 while the rail took 280ms to
+     leave, so the text jumped and then the rail followed it out */
+  body:not(.bare) { padding-left: 232px;
+                    transition: padding-left .28s cubic-bezier(.2,.8,.3,1); }
+  /* The transition belongs to the RAIL, not to the collapsed state. Declaring
+     it only on `.side-collapsed .side` meant it existed while collapsing and
+     vanished the instant the class came off — so closing animated and opening
+     snapped. Only the delayed `visibility` is state-specific: hide after the
+     slide, reveal before it. */
+  .side { transition: transform .28s cubic-bezier(.2,.8,.3,1), visibility 0s; }
   body.side-collapsed .side {
     transform: translateX(-102%);
     visibility: hidden;
@@ -385,7 +411,7 @@ section[id] > h2:hover .anchor, h2[id]:hover .anchor,
   body.side-open .side-toggle { opacity: 0; pointer-events: none; }
 }
 @media (prefers-reduced-motion: reduce) and (min-width: 900.02px) {
-  body.side-collapsed .side { transition: none; }
+  .side, body.side-collapsed .side, body:not(.bare) { transition: none; }
 }
 .side a:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--accent); }
 
@@ -405,7 +431,8 @@ body.side-open { overflow: hidden; }
 /* Card title and its metadata on one line, title left, meta right, baselines aligned. */
 
 @media (prefers-reduced-motion: reduce) {
-  .job-body, .job-body li, .job-toggle .chev { transition: none; }
+  .job-body, .job-body li, .job-body > div > ul > li::before,
+  .job-toggle .chev { transition: none; }
 }
 
 /* ===== Work reads as a timeline =====
@@ -451,7 +478,8 @@ body.side-open { overflow: hidden; }
 @keyframes rule-draw { from { transform: scaleX(0); opacity: 0; } }
 
 /* the open role's bullets wait their turn rather than arriving before the line */
-.timeline:not(.drawn) .job-body li { opacity: 0; transform: translateX(-12px); }
+.timeline:not(.drawn) .job-body > div > ul > li { opacity: 0; transform: translateY(7px); }
+.timeline:not(.drawn) .job-body > div > ul > li::before { transform: scaleX(0); }
 
 /* A safety floor. blocks.js marks the timeline settled once the sweep's wall
    clock has run out, which clears the entrance animation and hands the element
@@ -473,7 +501,8 @@ body.side-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .timeline.drawn .job-head, .timeline.drawn .job-dot,
   .timeline.drawn .tl-year span, .timeline.drawn .tl-year::after { animation: none; }
-  .timeline:not(.drawn) .job-body li { opacity: 1; transform: none; }
+  .timeline:not(.drawn) .job-body > div > ul > li,
+  .timeline:not(.drawn) .job-body > div > ul > li::before { opacity: 1; transform: none; }
 }
 
 /* ---- coursework, linked straight at the repositories ---- */
