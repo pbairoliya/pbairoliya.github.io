@@ -816,3 +816,42 @@ body.side-open { overflow: hidden; }
   .rule { font-size: 10px; padding: var(--s2); white-space: pre-wrap; overflow-x: visible; }
 }
 @media (prefers-reduced-motion: reduce) { .rule { transition: none; } }
+
+/* ===== Notion's "copy link to block", on a role =====
+   Fades into the gutter on hover, sits left of the dot, and never moves
+   horizontally. Hidden where there is no hover to reveal it and no room to
+   put it. */
+.grip { position: absolute; left: 4px; top: 12px; z-index: 2;
+        display: grid; place-items: center; width: 20px; height: 20px;
+        padding: 0; border: 0; border-radius: var(--r-xs);
+        background: none; color: var(--muted); cursor: pointer;
+        opacity: 0; transition: opacity .16s ease, color .16s, background-color .16s; }
+.grip svg { width: 15px; height: 15px; fill: currentColor; }
+.grip:hover { color: var(--ink); background: var(--code-bg); }
+.job:hover > .grip, .job:focus-within > .grip { opacity: 1; }
+.grip:focus-visible { opacity: 1; outline: 2px solid var(--accent); outline-offset: 1px; }
+@media (hover: none), (max-width: 620px) { .grip { display: none; } }
+@media (prefers-reduced-motion: reduce) { .grip { transition: none; } }
+
+/* ===== the dots complete as you scroll =====
+   A dot was a hollow ring that filled only while its entry was open. It now
+   fills for good as the sweep reaches it, so scrolling the timeline visibly
+   finishes it. The open state keeps its halo, which is still distinct. */
+.timeline.drawn .job-dot { background: var(--pin, var(--accent)); }
+
+/* ===== link previews =====
+   Notion previews a linked page on hover. Fades in below the link, clamped
+   inside the viewport, absent wherever there is no hover to trigger it. */
+.linkpeek { position: absolute; left: 0; top: 0; z-index: 12; max-width: 340px;
+            padding: var(--s3) var(--s4); border: 1px solid var(--line);
+            border-radius: var(--r-md); background: var(--panel);
+            box-shadow: var(--shadow-pop); pointer-events: none;
+            opacity: 0; visibility: hidden;
+            transition: opacity .16s ease, visibility 0s .16s; }
+.linkpeek.on { opacity: 1; visibility: visible; transition-delay: 0s; }
+.linkpeek b { display: block; font: 700 var(--fs-md)/var(--lh-snug) var(--sans);
+              color: var(--ink); margin-bottom: 3px; }
+.linkpeek span { display: block; color: var(--muted);
+                 font-size: var(--fs-md); line-height: var(--lh-snug); }
+@media (hover: none), (max-width: 620px) { .linkpeek { display: none; } }
+@media (prefers-reduced-motion: reduce) { .linkpeek { transition: none; } }
