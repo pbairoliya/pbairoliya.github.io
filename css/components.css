@@ -211,10 +211,7 @@ div.job-head .meta { white-space: nowrap; }
         min-width: 0;                    /* a flex item will not shrink without this */
         overflow-wrap: anywhere;         /* a long word breaks rather than overflowing */
         hyphens: auto; }
-.tool img { width: 20px; height: 20px; flex: 0 0 20px; }
-:root[data-theme="dark"] .tool img,
-:root:not([data-theme="light"]) .tool img { filter: brightness(1.7) saturate(.85); }
-@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .tool img { filter: none; } }
+.tool img { width: 20px; height: 20px; flex: 0 0 20px; filter: var(--logo-fx); }
 /* A handful of tools have no logo anywhere public — S3, EMR, DynamoDB, SQL and
    "REST APIs" are services or concepts, not brands. They get a drawn glyph in
    the same 20px box as a real logo, which reads as an icon; the letter badges
@@ -739,9 +736,14 @@ body.side-open { overflow: hidden; }
    not the one the chip was describing. Hovering a row now only quiets the
    other NAMES. */
 .tlc-body.scrubbing:has(.tlc-row:hover) .tlc-row:not(:hover) .tlc-name { opacity: 1; }
-/* a run with no end yet fades out to the right rather than stopping flat */
-/* the current role is the most important bar; a fade-out made it a dot */
-.tlc-bar.is-open-ended { mask-image: linear-gradient(90deg, #000 94%, transparent); }
+/* A run with no end yet reaches the right edge of the chart and fades after
+   today (--solid, set per bar). The old version masked the last 6% of a bar
+   that stopped at today, which only made the current role smaller than the
+   internship it needed to outweigh. */
+.tlc-bar.is-open-ended { mask-image: linear-gradient(90deg,
+            #000 var(--solid, 90%),
+            color-mix(in srgb, #000 55%, transparent) calc(var(--solid, 90%) + 14%),
+            transparent); }
 .tlc-bar.dim { opacity: .18; }
 .tlc-lane.undated::after { content: ""; position: absolute; inset: 50% 8px auto; height: 1px;
             margin-top: -.5px;
@@ -822,7 +824,9 @@ body.side-open { overflow: hidden; }
    written on the page behind the card. Monospace earns its place here: this is
    content, not garnish. */
 .rule { margin: var(--s3) 0 0; padding: var(--s3); overflow-x: auto;
-        background: var(--code-bg); border: 1px solid var(--line);
+        /* background-COLOR: the shorthand would drop the scroll-shadow layers
+           base.css puts on every scrollable block. */
+        background-color: var(--code-bg); border: 1px solid var(--line);
         border-left: 2px solid var(--accent); border-radius: var(--r-sm);
         font: var(--fs-2xs)/1.65 var(--mono); color: var(--muted);
         white-space: pre; transition: border-left-color .8s linear, color .2s; }

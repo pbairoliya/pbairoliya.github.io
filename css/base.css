@@ -45,6 +45,16 @@
   --scrim: rgba(8, 9, 12, .55);
   --shadow-float: 0 6px 20px -10px rgba(0, 0, 0, .4);
   --shadow-pop: 0 18px 46px -18px rgba(0, 0, 0, .5);
+
+  /* ---- brand logos ----
+     Every logo in the stack is an SVG drawn by its owner for a white page, so
+     the two themes need opposite help. Dark lifts them off the panel. Light
+     has the harder problem: Hive is #FDEE21 and JavaScript is #F7DF1E, which
+     are all but invisible on #fff — a hairline dark contour gives those an
+     edge without touching the brand colour, and is imperceptible on a logo
+     that was already dark. */
+  --logo-fx: drop-shadow(0 0 .6px rgba(17, 20, 24, .5))
+               drop-shadow(0 0 .6px rgba(17, 20, 24, .28));
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -52,6 +62,7 @@
     --line:#2f323a; --code-bg:#1d1f23;
     --accent:#7fb2ff; --accent-2:#b18cff; --hit:#a97bff; --on-accent:#0e0f12;
     --hit2:#f0b429; --muted-strong:#9aa3ad;
+    --logo-fx: brightness(1.7) saturate(.85);
   }
 }
 :root[data-theme="dark"] {
@@ -59,10 +70,13 @@
   --line:#2f323a; --code-bg:#1d1f23;
   --accent:#7fb2ff; --accent-2:#b18cff; --hit:#a97bff; --on-accent:#0e0f12;
   --hit2:#f0b429; --muted-strong:#9aa3ad;
+  --logo-fx: brightness(1.7) saturate(.85);
 }
 :root[data-theme="light"] {
   --bg:#fbfbfa; --panel:#fff; --ink:#16171a; --muted:#62646b;
   --line:#e6e5e2; --code-bg:#f3f3f1;
+  --logo-fx: drop-shadow(0 0 .6px rgba(17, 20, 24, .5))
+               drop-shadow(0 0 .6px rgba(17, 20, 24, .28));
 }
 
 * { box-sizing: border-box; }
@@ -107,8 +121,26 @@ li { margin-bottom: var(--s1); }
 
 code { font: .88em var(--mono); background: var(--code-bg); padding: 2px 5px; border-radius: var(--r-xs); }
 pre  { background: var(--code-bg); border: 1px solid var(--line); border-radius: var(--r-sm);
-       padding: var(--s3) var(--s4); overflow-x: auto; font: var(--fs-sm)/var(--lh-body) var(--mono); }
+       padding: var(--s3) var(--s4); overflow-x: auto; font: var(--fs-sm)/var(--lh-body) var(--mono);
+       overscroll-behavior-x: contain; }
 pre code { background: none; padding: 0; }
+
+/* A scrollable block has to say so. The pipeline diagram in the receipts
+   write-up is 96 columns wide and loses half of itself on a phone, where the
+   scrollbar is hidden until you already know to swipe. Two layers scroll WITH
+   the content and two stay put, so a shadow appears on whichever edge still
+   has something behind it and vanishes at the end of the run. */
+pre, .rule {
+  background-image:
+    linear-gradient(90deg,  var(--code-bg), transparent),
+    linear-gradient(270deg, var(--code-bg), transparent),
+    radial-gradient(farthest-side at 0    50%, color-mix(in srgb, var(--ink) 20%, transparent), transparent),
+    radial-gradient(farthest-side at 100% 50%, color-mix(in srgb, var(--ink) 20%, transparent), transparent);
+  background-position: 0 0, 100% 0, 0 0, 100% 0;
+  background-repeat: no-repeat;
+  background-size: 26px 100%, 26px 100%, 13px 100%, 13px 100%;
+  background-attachment: local, local, scroll, scroll;
+}
 
 #field { position: fixed; inset: 0; z-index: -1; display: block; pointer-events: none; }
 
