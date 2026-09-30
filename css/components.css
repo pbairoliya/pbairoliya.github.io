@@ -89,6 +89,11 @@ body.side-open .side-scrim { opacity: 1; pointer-events: auto; }
        padding: 9px 16px; font: var(--fs-sm)/1 var(--sans); color: var(--ink); cursor: pointer; }
 .btn:hover { text-decoration: none; }
 .btn .k { font: var(--fs-2xs) var(--mono); color: var(--muted); }
+/* A phone has no command key. Pointing a touch visitor at a keyboard shortcut
+   is the fastest way to make a page feel written for somebody else — tour.js
+   already branches on this; the button had not. "PDF" on the resume button is
+   a file type, not a shortcut, so it stays. */
+@media (hover: none), (max-width: 620px) { .btn.palette-btn .k { display: none; } }
 .btn.primary { border-color: var(--accent); color: var(--accent); }
 .btn.palette-btn { border-color: var(--accent); color: var(--accent); }
 .btn.palette-btn .k { border: 1px solid currentColor; border-radius: var(--r-pill);
@@ -142,11 +147,19 @@ div.job-head .meta { white-space: nowrap; }
 .job-toggle .meta { white-space: nowrap; }
 .job-toggle .chev { width: 18px; height: 18px; align-self: center;
                     fill: none; stroke: var(--muted); stroke-width: 2;
-                    stroke-linecap: round; stroke-linejoin: round; opacity: 0;
+                    stroke-linecap: round; stroke-linejoin: round; opacity: .42;
                     transition: transform .34s cubic-bezier(.34,1.3,.64,1),
                                 opacity .2s, stroke .2s; }
+/* The resting chevron used to be opacity 0, so seven of the eight entries
+   advertised nothing at all until the pointer was already on them. Seven rows
+   of bare job titles is exactly the page a recruiter closes. Faint at rest,
+   full on approach: the row says it opens without shouting it eight times. */
 .job:hover .chev, .job-toggle:focus-visible .chev, .job:not(.shut) .chev { opacity: 1; }
-@media (hover: none) { .job-toggle .chev { opacity: 1; } }
+/* A touch device has no approach, so there is no faint state to resolve. The
+   width clause is not redundant: a headless browser reports hover: hover under
+   device emulation, so a rule gated only on the media feature is untestable —
+   this project has shipped that mistake once already. */
+@media (hover: none), (max-width: 620px) { .job-toggle .chev { opacity: 1; } }
 .job-toggle:hover .job-name, .job-toggle:hover .chev { color: var(--accent); stroke: var(--accent); }
 .job-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px;
                             border-radius: var(--r-xs); }
@@ -832,10 +845,16 @@ body.side-open { overflow: hidden; }
         white-space: pre; transition: border-left-color .8s linear, color .2s; }
 .rule code { background: none; padding: 0; font: inherit; }
 .card:hover .rule { color: var(--ink); }
-/* A card is a link, so a horizontally scrollable block inside one is a drag
-   that might navigate instead. On a phone it wraps rather than scrolls. */
+/* These blocks are two aligned columns — a condition and what it decides — and
+   pre-wrap folded the second column under the first, so "note has real code ->
+   note wins, the repo is / rewritten" stopped being a table and started being
+   a sentence with arrows in it. One of them lost a total row entirely. It
+   scrolls on a phone now: the columns survive, and the scroll shadow base.css
+   puts on every code block says there is more to the right. A touch drag that
+   scrolls an inner box does not fire a click on the card it sits in, and
+   overscroll-behavior-x keeps the page out of it. */
 @media (max-width: 560px) {
-  .rule { font-size: 10px; padding: var(--s2); white-space: pre-wrap; overflow-x: visible; }
+  .rule { font-size: 10px; padding: var(--s2); overscroll-behavior-x: contain; }
 }
 @media (prefers-reduced-motion: reduce) { .rule { transition: none; } }
 

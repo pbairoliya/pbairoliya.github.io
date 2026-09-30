@@ -418,7 +418,23 @@
     const narrow = matchMedia("(max-width: 760px)");
     let want = "list";
     try { want = localStorage.getItem("tl-view") || "list"; } catch {}
-    const applyWidth = () => narrow.matches ? setView("list", false) : setView(want);
+    /* A tablist with one tab in it is furniture. Below 760 the Gantt has
+       nowhere to go, so the strip goes with it — and the list stops calling
+       itself a tabpanel, because a panel labelled by a hidden tab is a dead
+       reference for anything reading the page aloud. */
+    const applyWidth = () => {
+      const one = narrow.matches;
+      tabs.hidden = one;
+      if (one) {
+        list.removeAttribute("role");
+        list.removeAttribute("aria-labelledby");
+        setView("list", false);
+      } else {
+        list.setAttribute("role", "tabpanel");
+        list.setAttribute("aria-labelledby", "view-list");
+        setView(want);
+      }
+    };
     applyWidth();
     /* a Gantt has nowhere to go on a phone — but widening should give it back */
     narrow.addEventListener("change", applyWidth);
