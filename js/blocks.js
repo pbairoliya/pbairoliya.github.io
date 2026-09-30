@@ -302,7 +302,20 @@
         bar.className = "tlc-bar";
         bar.dataset.kind = r.kind;
         bar.style.left = pct(r.start) + "%";
-        bar.style.width = Math.max(pct(r.end) - pct(r.start), 2) + "%";
+        /* A run that has not ended draws all the way to the right edge and
+           fades out after today, so "still going" is a shape rather than a
+           caption. It used to stop at today like every other bar, which made
+           three months in the current role look exactly like the three-month
+           internship — the one comparison the chart must not invite. The fade
+           starts exactly on the today line, so the two read as one mark. */
+        const span = pct(r.end) - pct(r.start);
+        if (r.open) {
+          const full = pct(t1) - pct(r.start);
+          bar.style.width = full + "%";
+          bar.style.setProperty("--solid", (span / full * 100).toFixed(2) + "%");
+        } else {
+          bar.style.width = Math.max(span, 2) + "%";
+        }
         /* the name column says the name; a bar repeating it just clips */
         bar.title = r.name + " · " + r.el.querySelector(".meta").textContent.trim();
         bar.setAttribute("aria-label", "Open " + r.name);
