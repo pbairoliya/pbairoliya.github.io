@@ -2,6 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://pbairoliya.github.io/</loc><priority>1.0</priority></url>
   <url><loc>https://pbairoliya.github.io/projects/on-device-tools.html</loc><priority>0.8</priority></url>
+  <url><loc>https://pbairoliya.github.io/projects/statement-fetcher.html</loc><priority>0.9</priority></url>
   <url><loc>https://pbairoliya.github.io/projects/lc.html</loc><priority>0.8</priority></url>
   <url><loc>https://pbairoliya.github.io/projects/systems-and-algorithms.html</loc><priority>0.8</priority></url>
   <url><loc>https://pbairoliya.github.io/projects/coursework.html</loc><priority>0.8</priority></url>

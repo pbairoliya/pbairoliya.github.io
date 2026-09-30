@@ -432,6 +432,8 @@
      Pointer only, aria-hidden, and absent wherever .peek is. */
   (() => {
     const PAGES = {
+      "projects/statement-fetcher.html": ["Statement fetcher",
+        "Logs into four banks and files the statements. It worked on day one; everything worth writing down happened after."],
       "projects/lc.html": ["LC Bot",
         "A LeetCode workflow that lives in your notes: one command imports a problem, another publishes the repo."],
       "projects/on-device-tools.html": ["On-device tools",

@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>On-device tools — Pratik Bairoliya</title>
-<meta name="description" content="Three local-first programs sharing one OCR + local-LLM core, with a deterministic rules layer that makes model output behave like software.">
+<title>Statement fetcher — Pratik Bairoliya</title>
+<meta name="description" content="A tool that logs into my banks, downloads new statements, and files them into a document archive by its own rules. Everything interesting happened after it worked.">
 
-<link rel="canonical" href="https://pbairoliya.github.io/projects/on-device-tools.html">
+<link rel="canonical" href="https://pbairoliya.github.io/projects/statement-fetcher.html">
 <meta property="og:type" content="website">
-<meta property="og:title" content="On-device tools — Pratik Bairoliya">
-<meta property="og:description" content="Three programs sharing one core: OCR plus a local LLM, wrapped in a deterministic rules layer so the output behaves like software.">
-<meta property="og:url" content="https://pbairoliya.github.io/projects/on-device-tools.html">
+<meta property="og:title" content="Statement fetcher — Pratik Bairoliya">
+<meta property="og:description" content="Logs into four banks, downloads new statements, and files them into an archive that already had opinions.">
+<meta property="og:url" content="https://pbairoliya.github.io/projects/statement-fetcher.html">
 <meta property="og:site_name" content="Pratik Bairoliya">
 <meta property="og:image" content="https://pbairoliya.github.io/og.png">
 <meta property="og:image:width" content="1200">
@@ -83,8 +83,8 @@
   <a href="../"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 11h3v9h5v-6h4v6h5v-9h3L12 3Z"/></svg><span>Home</span></a>
   <a href="../writing/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17.3V21h3.7L17.8 9.9l-3.7-3.7L3 17.3ZM20.7 7a1 1 0 0 0 0-1.4l-2.3-2.3a1 1 0 0 0-1.4 0l-1.8 1.8 3.7 3.7L20.7 7Z"/></svg><span>Writing</span></a>
   <a href="../writing/receipts-local-llm.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h8l4 4v16H6V2Zm7 1.5V7h3.5L13 3.5ZM8 12h8v1.5H8V12Zm0 3.5h8V17H8v-1.5Z"/></svg><span>Receipts &amp; a local LLM</span></a>
-  <a href="../projects/statement-fetcher.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 2 7v2h20V7L12 2ZM4 10v8H2v3h20v-3h-2v-8h-3v8h-3v-8h-2v8H7v-8H4Z"/></svg><span>Statement fetcher</span></a>
-  <a href="../projects/on-device-tools.html" class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 1 5.4 5.2l-1.6-1.6-1.9.5-.5 1.9 1.6 1.6a4 4 0 0 1-5.2-5.4L4.4 2 2 4.4l6.5 8.1a4 4 0 0 0 5.4 5.4l4.3 4.3 2.4-2.4-4.3-4.3"/></svg><span>Local-first tools</span></a>
+  <a href="../projects/statement-fetcher.html" class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 2 7v2h20V7L12 2ZM4 10v8H2v3h20v-3h-2v-8h-3v8h-3v-8h-2v8H7v-8H4Z"/></svg><span>Statement fetcher</span></a>
+  <a href="../projects/on-device-tools.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 1 5.4 5.2l-1.6-1.6-1.9.5-.5 1.9 1.6 1.6a4 4 0 0 1-5.2-5.4L4.4 2 2 4.4l6.5 8.1a4 4 0 0 0 5.4 5.4l4.3 4.3 2.4-2.4-4.3-4.3"/></svg><span>Local-first tools</span></a>
   <a href="../projects/lc.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a1.5 1.5 0 0 1 1.5 1.5V5H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3h3.5V3.5A1.5 1.5 0 0 1 12 2ZM9 10a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm-6 5.5h6V17H9v-1.5Z"/></svg><span>LC Bot</span></a>
   <a href="../projects/systems-and-algorithms.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v2H4V4Zm0 4h10v2H4V8Zm0 4h16v2H4v-2Zm0 4h10v2H4v-2Zm0 4h16v2H4v-2Z"/></svg><span>Systems &amp; algorithms</span></a>
   <a href="../projects/coursework.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 1 8l11 5 9-4.1V15h2V8L12 3ZM5 13.2V17c0 1.7 3.1 3 7 3s7-1.3 7-3v-3.8l-7 3.2-7-3.2Z"/></svg><span>Coursework</span></a>
@@ -102,87 +102,112 @@
 </nav>
 
 <main class="wrap post" id="main" tabindex="-1">
-  <h1>On-device tools</h1>
+  <h1>Statement fetcher</h1>
   <p class="lede">
-    Three programs, one shared core: Apple Vision OCR and a local LLM (Ollama, <code>gemma3:12b</code>),
-    wrapped in a deterministic rules layer. Nothing they read ever leaves the machine.
+    Logs into my banks, downloads new statements, and files them into a document archive that
+    already had opinions. It worked on day one. Everything worth writing down happened after that.
+  </p>
+  <p class="meta"><a href="https://github.com/pbairoliya/statement-fetcher">Source on GitHub →</a> · Python · Playwright · 110 offline tests</p>
+
+  <h2 id="why-it-exists">Why it exists</h2>
+  <p>
+    Four banks, six accounts, once a month: log in, click through to statements, download a PDF,
+    rename it, drag it into the right folder. Twenty minutes a computer should obviously be doing,
+    and the kind of chore that quietly stops happening until the year you need it to have happened.
+  </p>
+  <p>
+    The archive has rules. A statement goes in
+    <code>Finance/Assets/Banking/&lt;Bank&gt;/&lt;Account&gt;/&lt;year&gt;/</code> as
+    <code>2026-09-24_BofA_Statement_x3984.pdf</code>, and the year in that path is the year the
+    <em>statement period ended</em> — not the year I got around to downloading it.
   </p>
 
-  <h2 id="the-problem-i-was-actually-solving">The problem I was actually solving</h2>
+  <h2 id="the-second-run-is-the-real-design-problem">The second run is the real design problem</h2>
   <p>
-    A language model is a terrible component to build on. It is nondeterministic, it drifts
-    between runs, and it will happily invent a plausible answer. Every one of these tools runs
-    unattended on a schedule, which means the same input has to produce the same output — a
-    scheduled job that re-rolls its answer every night is worse than no job at all.
+    Downloading a statement is easy. Downloading it twice is the bug. Two checks run, cheapest
+    first:
+  </p>
+  <pre><code>listed on the page  →  already on disk?  →  yes: never download it
+                            │
+                            no
+                            ▼
+                    download  →  hash  →  in the ledger?  →  yes: skip
+</code></pre>
+  <p>
+    The first check is what makes a monthly run cost one page load per account instead of
+    re-pulling a year of PDFs to hash them. The second is the one that still works after you have
+    moved, renamed or deleted a file by hand: every filed statement is recorded by the SHA-256 of
+    its bytes in an append-only ledger, and <strong>the ledger is the source of truth, not the
+    folder</strong>.
+  </p>
+
+  <h2 id="look-at-the-destination-before-you-write-to-it">Look at the destination before you write to it</h2>
+  <p>
+    The code generated <code>BankofAmerica</code>. Ninety-eight files already on disk said
+    <code>BofA</code>, and credit cards said <code>CC-Statement</code> where everything else said
+    <code>Statement</code>. Nothing would have crashed. It would have written thirty-five
+    near-duplicates beside statements that were already there, and I would have noticed in a year
+    when the folders had two names for every document.
   </p>
   <p>
-    So the interesting engineering here isn't the prompting. It's the layer around it:
+    So the institution has two names on purpose: the folder says "Bank of America", the files say
+    "BofA", and conflating them is a config error rather than an assumption.
+  </p>
+
+  <h2 id="the-structure-was-wrong-and-only-the-archive-could-tell-me">The structure was wrong, and only the archive could tell me</h2>
+  <p>
+    Four accounts at one bank filed into <code>Bank of America/2026/</code>. On paper that is fine
+    — every filename carries the last four, nothing collides, every test passed. Then I opened the
+    folder: September had four statements in it, from two checking accounts and two credit cards,
+    and finding the one I wanted meant reading a masked number off each filename. The tool had
+    faithfully automated a layout that only worked when I was filing by hand.
+  </p>
+  <p>
+    Each account got its own folder — <code>Savings 8256</code>, name and number together, because
+    two cards at one bank can share a product name but never a last four. The change was one line.
+    What it dragged along was not:
   </p>
   <ul>
-    <li><strong>The model proposes; deterministic code decides.</strong> In the daily briefing
-      the model suggests categories for a task and those suggestions are <em>discarded</em> —
-      a fixed taxonomy assigns every task by keyword precedence, so the note looks identical
-      day to day instead of being reorganised by the model's mood.</li>
-    <li><strong>Append-only state stores make reruns safe.</strong> Sections are regenerated
-      from scratch each run, so any user edit inside them would be erased. Decisions
-      ("stop showing me this sender", "this bill is paid") are persisted outside the generated
-      text and replayed, so a rerun is idempotent rather than destructive.</li>
-    <li><strong>An index is the source of truth, not the files.</strong> The receipt pipeline
-      writes an append-only JSONL index; pantry and expense reports are rebuilt from it every
-      run. Re-scanning the same receipt is a fingerprint match (store + date + time), so it
-      corrects numbers by item delta instead of double-counting.</li>
-    <li><strong>Everything is tested with the world stubbed out.</strong> OCR, the model, and
-      the Google APIs are all replaceable, so the pipeline runs end-to-end in CI with no
-      network, no daemon and no credentials.</li>
+    <li><strong>The duplicate check has to straddle both layouts.</strong> Point it at the new path
+      and every statement on disk becomes invisible; the next run re-downloads a year of history
+      and files a second copy of all of it. Lookups search the account folder <em>and</em> the old
+      flat one.</li>
+    <li><strong>Migrating is its own command.</strong> <code>statements reorganize</code> is dry by
+      default, prints every move, and writes a flushed undo log before it touches anything. A
+      hundred and sixty-one files through a personal archive is not something to do without a way
+      back.</li>
+    <li><strong>Some files cannot be placed.</strong> Twenty-two had no account number anywhere in
+      the name. They are listed and left exactly where they are, because a wrong guess buries a
+      document somewhere I will never look again.</li>
   </ul>
 
-  <h2 id="the-three">The three</h2>
-
-  <h3><a href="https://github.com/pbairoliya/daily-lookback">daily-lookback</a></h3>
+  <h2 id="where-the-automation-stops">Where the automation stops</h2>
   <p>
-    Generates a daily note from Calendar, Gmail and iMessage — what's on today, what needs a
-    reply, what a family member mentioned that you'd otherwise miss. Runs from
-    <code>launchd</code> at 00:05 with a 09:00 retry.
-  </p>
-  <p>
-    The hardest part was <strong>not nagging</strong>. A regenerated reminders section will
-    resurface a bill you already paid and an email you already dismissed, forever. That took
-    three separate mechanisms: a grow-only ignore store keyed on (sender, subject) with dates
-    and digits stripped so siblings of a dismissed mail stay visible; paid-bill suppression
-    keyed per billing month so next month's statement still appears; and a signature store so a
-    commitment extracted from a message is surfaced once even when the model rewords it on the
-    next run.
+    When a bank asks for a verification code, the tool stops and hands over the open browser. It
+    does not read codes from mail, from messages, or from anywhere else. For anything touching
+    money the second factor is a good place to stop — and credentials live in the macOS Keychain
+    rather than a file that every backup daemon on the machine would copy.
   </p>
 
-  <h3><a href="https://github.com/pbairoliya/grocery-receipts">grocery-receipts</a></h3>
+  <h2 id="a-monitor-that-can-only-report-good-news-reports-nothing">A monitor that can only report good news reports nothing</h2>
   <p>
-    Drop a photo of any receipt into a watched folder; it comes out the other side as a line in
-    a monthly expense report and, if it's groceries, as pantry stock. The model classifies
-    openly — it can invent a category it has never seen and the pipeline creates the folder.
-  </p>
-  <p>
-    Receipts with poor ink are caught by a simple check (item sum versus printed total off by
-    more than 10%) and held in a review folder with a checkbox; ticking it finalises the record.
-    The watcher holds an <code>fcntl</code> lock so two overlapping runs can't deadlock on
-    Apple Vision. 52 tests.
+    The monthly run texts a summary over iMessage. It took three separate silent failures to get
+    there — an unset environment variable that made the notifier return quietly, a launchd job that
+    does not inherit your shell, and a run that found zero statements and said nothing at all. The
+    last one is the important one: an empty month and a broken scraper look identical unless the
+    tool says which it was.
   </p>
 
-  <h3><a href="https://github.com/pbairoliya/screenshot-organizer">screenshot-organizer</a></h3>
-  <p>
-    Sorts a Desktop full of screenshots into a foldered tree by reading what's in them. The rule
-    that shapes the whole design: <strong>existing files are never touched.</strong> The Desktop
-    is read-only and everything is written by copying into a new tree, so the worst case of a bad
-    classification is a misfiled copy, never a lost file.
+  <h2 id="shape">Shape</h2>
+  <pre><code>statements login "Wells Fargo"   once per bank, into the Keychain
+statements doctor                check every login, download nothing
+statements fetch --dry-run       say what would happen
+statements reorganize            print every move, change nothing
+statements install               a launchd job, monthly</code></pre>
+  <p class="callout">
+    110 tests, none of which touch the network, over the parts that must not be wrong: where a file
+    goes, what it is called, and whether it has been filed before.
   </p>
-
-  <h2 id="what-i-d-do-differently">What I'd do differently</h2>
-  <ul>
-    <li>The three tools share <code>ocr.py</code> and <code>ollama.py</code> by copying them
-      between repos. That was the right call for the first week and the wrong one by the third
-      tool; they belong in one installable package.</li>
-    <li>Prompts lived in source until they didn't — a prompt with real names in it is a privacy
-      bug waiting to be published. They're configuration now.</li>
-  </ul>
 
   <footer><a href="../">← back</a></footer>
 </main>

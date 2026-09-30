@@ -14,6 +14,7 @@
     { g:"Open",       i:"↓", label:"Resume (PDF)",       hint:"download",   run:() => location.assign("/Pratik-Bairoliya-Resume.pdf") },
     { g:"Open",       i:"✎", label:"Writing",              hint:"blog",       run:() => location.assign("/writing/") },
     { g:"Open",       i:"◆", label:"Local-first tools",  hint:"write-up",   run:() => location.assign("/projects/on-device-tools.html") },
+    { g:"Open",       i:"◆", label:"Statement fetcher",  hint:"write-up",   run:() => location.assign("/projects/statement-fetcher.html") },
     { g:"Open",       i:"◆", label:"LC Bot",             hint:"write-up",   run:() => location.assign("/projects/lc.html") },
     { g:"Open",       i:"◆", label:"Systems and algorithms", hint:"write-up", run:() => location.assign("/projects/systems-and-algorithms.html") },
     { g:"Open",       i:"◆", label:"Coursework",         hint:"write-up", run:() => location.assign("/projects/coursework.html") },
