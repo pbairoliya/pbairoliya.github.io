@@ -125,7 +125,11 @@
           if (top < 0) job.scrollIntoView({ block: "start", behavior: "smooth" });
         }
       });
-      set(job, false);
+      /* The current role opens; everything else stays shut. A recruiter's
+         first scroll used to give three job titles and no evidence, which is
+         the one thing the page exists to provide — and seven open entries is
+         the wall the collapse was added to avoid. One is the answer to both. */
+      set(job, i === 0);
       /* A link that points AT a collapsed entry should open it — the rail's
          "School" now targets the degree row, and landing on a closed row that
          says nothing is a dead end. */
@@ -205,7 +209,12 @@
       cards.forEach(c => {
         const on = want === "all" || c.dataset.type === want;
         c.hidden = !on;
-        if (on) c.style.setProperty("--p", shown++);
+        if (!on) return;
+        c.style.setProperty("--p", shown++);
+        /* the index is the position in what you are looking at; filtering to
+           "Older" used to show cards numbered 03 and 04 with no 01 or 02 */
+        const n = c.querySelector(".card-no");
+        if (n) n.textContent = String(shown).padStart(2, "0");
       });
       if (reduced) return;
       /* restart the deal-in: drop the class, force a reflow, add it back */

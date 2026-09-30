@@ -596,9 +596,15 @@ body.side-open { overflow: hidden; }
    than the page splitting it. No JS means no filter and everything visible,
    which is the right fallback. */
 .shelf-head { margin: var(--s6) 0 var(--s4); align-items: center; }
+/* On a phone the chips wrap to two rows and the label sat across the seam
+   between them, reading as broken alignment. Stack them instead. */
+@media (max-width: 560px) {
+  .shelf-head { display: block; }
+  .shelf-head .stack-label { margin-bottom: var(--s2); }
+}
 .shelf-head .stack-label { margin: 0; }
 .filters { display: flex; gap: var(--s1); flex-wrap: wrap; }
-.filters button { padding: 4px var(--s3); border: 1px solid var(--line);
+.filters button { padding: 4px var(--s3); min-height: 32px; border: 1px solid var(--line);
                   border-radius: var(--r-pill); background: none; cursor: pointer;
                   color: var(--muted); font: 600 var(--fs-2xs)/1.6 var(--sans);
                   letter-spacing: var(--ls-caps); text-transform: uppercase;
@@ -876,3 +882,33 @@ body.side-open { overflow: hidden; }
 /* A logo that failed to load is worse than no logo: alt="" renders the
    browser's torn-page glyph. blocks.js marks these; the label carries it. */
 .tool img.no-icon { display: none; }
+
+/* ===== touch sizing =====
+   A QA pass measured 19 of 36 tap targets under 44x44 on a phone — the filter
+   chips at 27.6px tall, several inline links at 17px. Gated on WIDTH, not on
+   `hover: none`: a 390px viewport deserves a thumb-sized target whether or not
+   the browser reports a coarse pointer, and `hover` cannot be emulated over
+   CDP, so a rule gated on it is a rule nobody can verify. Where a control
+   cannot grow without moving the layout, its HIT AREA grows instead. */
+@media (max-width: 620px), (hover: none) {
+  .filters button { min-height: 40px; }
+  .btn, .views button { min-height: 44px; }
+  .btn.icon, .side-toggle, .gear { min-width: 44px; min-height: 44px; }
+  .side a { padding-block: 12px; }          /* 31px rows in the sheet */
+  /* Both are pointer-only affordances: the rail's collapse is a desktop idea,
+     and a heading anchor only ever appears on hover. Leaving them rendered put
+     two 19px and one 28px target in a thumb's way for no reachable function. */
+  .side-collapse, .anchor { display: none; }
+  .standfirst a, .interests a, .shelf .meta a, footer a, .courses a { position: relative; }
+  .standfirst a::after, .interests a::after, .shelf .meta a::after,
+  footer a::after {
+    content: ""; position: absolute; left: 0; right: 0;
+    top: 50%; height: 44px; transform: translateY(-50%);
+  }
+}
+
+/* The fixed menu and settings buttons sat on top of the content column at
+   390px — the "All writing" link and a row heading both passed under them. */
+@media (max-width: 900px) {
+  body:not(.bare) main.wrap { padding-top: var(--s9); }
+}
